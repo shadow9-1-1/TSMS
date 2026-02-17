@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}Create Account - {{ app_name }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex">
+    <!-- Left Side - Background -->
+    <div class="hidden lg:block lg:w-1/2 bg-gradient-to-br from-primary-600 to-primary-800">
+        <div class="flex items-center justify-center h-full px-12">
+            <div class="text-center">
+                <h2 class="text-4xl font-bold text-white">
+                    Join TSMS Today
+                </h2>
+                <p class="mt-4 text-lg text-primary-100 max-w-md">
+                    Start managing your educational institution with our comprehensive management system.
+                </p>
+                
+                <!-- Benefits list -->
+                <div class="mt-12 text-left max-w-sm mx-auto space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="flex-shrink-0 w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                        <span class="text-white/90">Manage unlimited students</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="flex-shrink-0 w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                        <span class="text-white/90">Track attendance & grades</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="flex-shrink-0 w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                        <span class="text-white/90">Generate detailed reports</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="flex-shrink-0 w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                        <span class="text-white/90">Role-based access control</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Right Side - Form -->
+    <div class="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-md w-full space-y-8">
+            <!-- Logo and Header -->
+            <div class="text-center">
+                <a href="{{ url_for('main.index') }}" class="inline-flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-primary-500 rounded-xl flex items-center justify-center">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                    </div>
+                    <span class="text-2xl font-bold text-gray-900">TSMS</span>
+                </a>
+                <h2 class="mt-6 text-3xl font-bold text-gray-900">
+                    Create your account
+                </h2>
+                <p class="mt-2 text-sm text-gray-600">
+                    Get started with TSMS in minutes
+                </p>
+            </div>
+            
+            <!-- Registration Form -->
+            <form class="mt-8 space-y-6" method="POST" action="{{ url_for('auth.register') }}">
+                {{ form.hidden_tag() }}
+                
+                <div class="space-y-4">
+                    <!-- Name fields in a row -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
+                            <div class="mt-1">
+                                {{ form.first_name(class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors" + (" border-red-300" if form.first_name.errors else ""), placeholder="John") }}
+                            </div>
+                            {% if form.first_name.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.first_name.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+                        
+                        <div>
+                            <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
+                            <div class="mt-1">
+                                {{ form.last_name(class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors" + (" border-red-300" if form.last_name.errors else ""), placeholder="Doe") }}
+                            </div>
+                            {% if form.last_name.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.last_name.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Username -->
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                        <div class="mt-1">
+                            {{ form.username(class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors" + (" border-red-300" if form.username.errors else ""), placeholder="johndoe") }}
+                        </div>
+                        {% if form.username.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.username.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
+                        <div class="mt-1">
+                            {{ form.email(class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors" + (" border-red-300" if form.email.errors else ""), placeholder="you@example.com") }}
+                        </div>
+                        {% if form.email.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.email.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Password -->
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <div class="mt-1">
+                            {{ form.password(class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors" + (" border-red-300" if form.password.errors else ""), placeholder="At least 8 characters") }}
+                        </div>
+                        {% if form.password.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.password.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Confirm Password -->
+                    <div>
+                        <label for="password_confirm" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                        <div class="mt-1">
+                            {{ form.password_confirm(class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors" + (" border-red-300" if form.password_confirm.errors else ""), placeholder="Repeat your password") }}
+                        </div>
+                        {% if form.password_confirm.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.password_confirm.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Terms -->
+                <div class="flex items-start">
+                    <input type="checkbox" required class="mt-1 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                    <label class="ml-2 text-sm text-gray-600">
+                        I agree to the 
+                        <a href="#" class="text-primary-600 hover:text-primary-700">Terms of Service</a> and 
+                        <a href="#" class="text-primary-600 hover:text-primary-700">Privacy Policy</a>
+                    </label>
+                </div>
+                
+                <!-- Submit Button -->
+                <div>
+                    {{ form.submit(class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors cursor-pointer") }}
+                </div>
+            </form>
+            
+            <!-- Sign in link -->
+            <p class="text-center text-sm text-gray-600">
+                Already have an account?
+                <a href="{{ url_for('auth.login') }}" class="font-medium text-primary-600 hover:text-primary-700">
+                    Sign in
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends "layouts/dashboard.html" %}
+
+{% block page_title %}Profile{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <!-- Profile Header -->
+        <div class="bg-gradient-to-r from-primary-600 to-primary-700 px-6 py-8">
+            <div class="flex items-center space-x-6">
+                <div class="w-24 h-24 rounded-full bg-white/20 flex items-center justify-center text-white text-3xl font-bold">
+                    {{ current_user.first_name[0] }}{{ current_user.last_name[0] }}
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-white">{{ current_user.full_name }}</h2>
+                    <p class="text-primary-100">{{ current_user.role.name if current_user.role else 'User' }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Profile Details -->
+        <div class="p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Account Information</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-500">Username</label>
+                    <p class="mt-1 text-gray-900">{{ current_user.username }}</p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-500">Email</label>
+                    <p class="mt-1 text-gray-900">{{ current_user.email }}</p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-500">Phone</label>
+                    <p class="mt-1 text-gray-900">{{ current_user.phone or 'Not set' }}</p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-500">Role</label>
+                    <p class="mt-1 text-gray-900">{{ current_user.role.name if current_user.role else 'N/A' }}</p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-500">Member Since</label>
+                    <p class="mt-1 text-gray-900">{{ current_user.created_at.strftime('%B %d, %Y') }}</p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-500">Last Login</label>
+                    <p class="mt-1 text-gray-900">
+                        {{ current_user.last_login_at.strftime('%B %d, %Y at %H:%M') if current_user.last_login_at else 'Never' }}
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Account Status -->
+            <div class="mt-8 pt-6 border-t border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Account Status</h3>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center">
+                        {% if current_user.is_active %}
+                        <span class="flex items-center text-green-600">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Account Active
+                        </span>
+                        {% else %}
+                        <span class="flex items-center text-red-600">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                            </svg>
+                            Account Inactive
+                        </span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="flex items-center">
+                        {% if current_user.is_verified %}
+                        <span class="flex items-center text-green-600">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Email Verified
+                        </span>
+                        {% else %}
+                        <span class="flex items-center text-yellow-600">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                            </svg>
+                            Email Not Verified
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            <div class="mt-8 pt-6 border-t border-gray-200 flex flex-wrap gap-4">
+                <a href="#" class="px-4 py-2 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors">
+                    Edit Profile
+                </a>
+                <a href="#" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors">
+                    Change Password
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
