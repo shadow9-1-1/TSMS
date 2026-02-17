@@ -9,7 +9,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request,
 from flask_login import login_required, current_user
 
 from app.extensions import db
-from app.models.user import Role
+from app.models import User, UserRole
 from app.models.student import Student
 from app.models.course import Course, Enrollment
 from app.blueprints.student.forms import StudentForm, EnrollmentForm
@@ -43,8 +43,7 @@ def index():
     if search:
         query = query.filter(
             db.or_(
-                Student.first_name.ilike(f'%{search}%'),
-                Student.last_name.ilike(f'%{search}%'),
+                Student.name.ilike(f'%{search}%'),
                 Student.student_id.ilike(f'%{search}%'),
                 Student.email.ilike(f'%{search}%')
             )
@@ -76,8 +75,7 @@ def create():
     if form.validate_on_submit():
         student = Student(
             student_id=Student.generate_student_id(),
-            first_name=form.first_name.data,
-            last_name=form.last_name.data,
+            name=form.name.data,
             email=form.email.data.lower(),
             phone=form.phone.data,
             date_of_birth=form.date_of_birth.data,
@@ -93,7 +91,7 @@ def create():
         db.session.add(student)
         db.session.commit()
         
-        flash(f'Student {student.full_name} has been created.', 'success')
+        flash(f'Student {student.name} has been created.', 'success')
         return redirect(url_for('student.detail', id=student.id))
     
     return render_template('student/create.html', form=form)
@@ -129,7 +127,7 @@ def edit(id):
         student.email = form.email.data.lower()
         db.session.commit()
         
-        flash(f'Student {student.full_name} has been updated.', 'success')
+        flash(f'Student {student.name} has been updated.', 'success')
         return redirect(url_for('student.detail', id=student.id))
     
     return render_template('student/edit.html', form=form, student=student)
@@ -143,7 +141,7 @@ def delete(id):
         abort(403)
     
     student = Student.query.get_or_404(id)
-    name = student.full_name
+    name = student.name
     
     db.session.delete(student)
     db.session.commit()
@@ -186,7 +184,7 @@ def enroll(id):
         db.session.add(enrollment)
         db.session.commit()
         
-        flash(f'{student.full_name} has been enrolled in {course.name}.', 'success')
+        flash(f'{student.name} has been enrolled in {course.name}.', 'success')
         return redirect(url_for('student.detail', id=student.id))
     
     return render_template('student/enroll.html', 

@@ -14,13 +14,9 @@ from app.models.student import Student
 class StudentForm(FlaskForm):
     """Student creation and editing form."""
     
-    first_name = StringField('First Name', validators=[
-        DataRequired(message='First name is required.'),
-        Length(max=64)
-    ])
-    last_name = StringField('Last Name', validators=[
-        DataRequired(message='Last name is required.'),
-        Length(max=64)
+    name = StringField('Full Name', validators=[
+        DataRequired(message='Name is required.'),
+        Length(max=128)
     ])
     email = StringField('Email', validators=[
         DataRequired(message='Email is required.'),

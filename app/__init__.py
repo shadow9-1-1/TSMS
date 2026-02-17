@@ -68,10 +68,11 @@ def _init_extensions(app):
     csrf.init_app(app)
     
     # User loader callback for Flask-Login
-    from app.models.user import User
+    from app.models import User
     
     @login_manager.user_loader
     def load_user(user_id):
+        """Load user by ID for Flask-Login session management."""
         return User.query.get(int(user_id))
 
 
@@ -84,7 +85,7 @@ def _register_blueprints(app):
     from app.blueprints.student import student_bp
     
     app.register_blueprint(main_bp)
-    app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(auth_bp)  # url_prefix already set in blueprint
     app.register_blueprint(admin_bp, url_prefix='/admin')
     app.register_blueprint(teacher_bp, url_prefix='/teacher')
     app.register_blueprint(student_bp, url_prefix='/student')
@@ -112,14 +113,17 @@ def _register_error_handlers(app):
 def _register_shell_context(app):
     """Register shell context for flask shell command."""
     from app.extensions import db
-    from app.models.user import User, Role
+    from app.models import User, UserRole, Teacher, Student, Supervisor
     
     @app.shell_context_processor
     def make_shell_context():
         return {
             'db': db,
             'User': User,
-            'Role': Role
+            'UserRole': UserRole,
+            'Teacher': Teacher,
+            'Student': Student,
+            'Supervisor': Supervisor
         }
 
 

@@ -135,12 +135,12 @@
             <div class="flex items-center">
                 <div class="flex-shrink-0">
                     <div class="w-10 h-10 rounded-full bg-primary-500 flex items-center justify-center text-white font-medium">
-                        {{ current_user.first_name[0] }}{{ current_user.last_name[0] }}
+                        {{ current_user.name[0] }}
                     </div>
                 </div>
                 <div x-show="sidebarOpen" class="ml-3 flex-1 min-w-0">
-                    <p class="text-sm font-medium text-white truncate">{{ current_user.full_name }}</p>
-                    <p class="text-xs text-gray-400 truncate">{{ current_user.role.name if current_user.role else 'User' }}</p>
+                    <p class="text-sm font-medium text-white truncate">{{ current_user.name }}</p>
+                    <p class="text-xs text-gray-400 truncate">{{ current_user.role.value|title if current_user.role else 'User' }}</p>
                 </div>
                 <a x-show="sidebarOpen" href="{{ url_for('auth.logout') }}" 
                    class="ml-2 p-2 text-gray-400 hover:text-white rounded-lg hover:bg-gray-700">
@@ -246,7 +246,7 @@
                     <div x-data="{ open: false }" class="relative">
                         <button @click="open = !open" class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100">
                             <div class="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center text-white text-sm font-medium">
-                                {{ current_user.first_name[0] }}{{ current_user.last_name[0] }}
+                                {{ current_user.name[0] }}
                             </div>
                             <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>

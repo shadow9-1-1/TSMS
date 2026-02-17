@@ -10,7 +10,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request,
 from flask_login import login_required, current_user
 
 from app.extensions import db
-from app.models.user import User, Role
+from app.models import User, UserRole, UserStatus
 from app.models.teacher import Teacher
 from app.models.student import Student
 from app.models.course import Course

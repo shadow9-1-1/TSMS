@@ -9,11 +9,11 @@
         <div class="bg-gradient-to-r from-primary-600 to-primary-700 px-6 py-8">
             <div class="flex items-center space-x-6">
                 <div class="w-24 h-24 rounded-full bg-white/20 flex items-center justify-center text-white text-3xl font-bold">
-                    {{ current_user.first_name[0] }}{{ current_user.last_name[0] }}
+                    {{ current_user.name[0] }}
                 </div>
                 <div>
-                    <h2 class="text-2xl font-bold text-white">{{ current_user.full_name }}</h2>
-                    <p class="text-primary-100">{{ current_user.role.name if current_user.role else 'User' }}</p>
+                    <h2 class="text-2xl font-bold text-white">{{ current_user.name }}</h2>
+                    <p class="text-primary-100">{{ current_user.role.value|title if current_user.role else 'User' }}</p>
                 </div>
             </div>
         </div>

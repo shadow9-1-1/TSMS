@@ -4,39 +4,46 @@
 
 {% block content %}
 <div class="min-h-screen flex">
-    <!-- Left Side - Form -->
-    <div class="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-white">
-        <div class="max-w-md w-full space-y-8">
-            <!-- Logo and Header -->
-            <div class="text-center">
-                <a href="{{ url_for('main.index') }}" class="inline-flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-primary-500 rounded-xl flex items-center justify-center">
-                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                        </svg>
-                    </div>
-                    <span class="text-2xl font-bold text-gray-900">TSMS</span>
-                </a>
-                <h2 class="mt-6 text-3xl font-bold text-gray-900">
-                    Welcome back
-                </h2>
-                <p class="mt-2 text-sm text-gray-600">
-                    Sign in to your account to continue
-                </p>
-            </div>
-            
-            <!-- Login Form -->
-            <form class="mt-8 space-y-6" method="POST" action="{{ url_for('auth.login') }}">
-                {{ form.hidden_tag() }}
+    <!-- Left Side - Login Form -->
+    <div class="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div class="max-w-md w-full">
+            <!-- Card Container -->
+            <div class="bg-white rounded-2xl shadow-xl p-8 sm:p-10">
+                <!-- Logo and Header -->
+                <div class="text-center mb-8">
+                    <a href="{{ url_for('main.index') }}" class="inline-flex items-center justify-center space-x-3 mb-6">
+                        <div class="w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center shadow-lg">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            </svg>
+                        </div>
+                    </a>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">
+                        Welcome back
+                    </h1>
+                    <p class="mt-2 text-gray-500">
+                        Sign in to your account to continue
+                    </p>
+                </div>
                 
-                <div class="space-y-4">
-                    <!-- Email -->
+                <!-- Login Form -->
+                <form method="POST" action="{{ url_for('auth.login') }}" class="space-y-6">
+                    {{ form.hidden_tag() }}
+                    
+                    <!-- Email/Username Field -->
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
-                        <div class="mt-1 relative">
-                            {{ form.email(class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors" + (" border-red-300" if form.email.errors else ""), placeholder="you@example.com") }}
+                        <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Email or Username
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+                                </svg>
+                            </div>
+                            {{ form.email(class="block w-full pl-12 pr-4 py-3.5 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white" + (" border-red-300 bg-red-50" if form.email.errors else ""), placeholder="you@example.com") }}
                             {% if form.email.errors %}
-                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-4">
                                 <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
                                 </svg>
@@ -44,85 +51,172 @@
                             {% endif %}
                         </div>
                         {% if form.email.errors %}
-                        <p class="mt-1 text-sm text-red-600">{{ form.email.errors[0] }}</p>
+                        <p class="mt-2 text-sm text-red-600 flex items-center">
+                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                            </svg>
+                            {{ form.email.errors[0] }}
+                        </p>
                         {% endif %}
                     </div>
                     
-                    <!-- Password -->
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                        <div class="mt-1 relative">
-                            {{ form.password(class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors" + (" border-red-300" if form.password.errors else ""), placeholder="Enter your password") }}
+                    <!-- Password Field -->
+                    <div x-data="{ showPassword: false }">
+                        <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Password
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                </svg>
+                            </div>
+                            <input 
+                                :type="showPassword ? 'text' : 'password'"
+                                name="password" 
+                                id="password"
+                                class="block w-full pl-12 pr-12 py-3.5 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white {% if form.password.errors %}border-red-300 bg-red-50{% endif %}"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+                            <button 
+                                type="button" 
+                                @click="showPassword = !showPassword"
+                                class="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400 hover:text-gray-600 transition-colors"
+                            >
+                                <svg x-show="!showPassword" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                </svg>
+                                <svg x-show="showPassword" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+                                </svg>
+                            </button>
                         </div>
                         {% if form.password.errors %}
-                        <p class="mt-1 text-sm text-red-600">{{ form.password.errors[0] }}</p>
+                        <p class="mt-2 text-sm text-red-600 flex items-center">
+                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                            </svg>
+                            {{ form.password.errors[0] }}
+                        </p>
                         {% endif %}
                     </div>
-                </div>
-                
-                <!-- Remember me and Forgot password -->
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        {{ form.remember_me(class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded") }}
-                        <label for="remember_me" class="ml-2 text-sm text-gray-600">Remember me</label>
+                    
+                    <!-- Remember Me & Forgot Password -->
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center cursor-pointer group">
+                            {{ form.remember_me(class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 focus:ring-2 cursor-pointer") }}
+                            <span class="ml-2.5 text-sm text-gray-600 group-hover:text-gray-900 transition-colors">Remember me</span>
+                        </label>
+                        <a href="#" class="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors">
+                            Forgot password?
+                        </a>
                     </div>
-                    <a href="#" class="text-sm font-medium text-primary-600 hover:text-primary-700">
-                        Forgot password?
-                    </a>
+                    
+                    <!-- Submit Button -->
+                    <button 
+                        type="submit"
+                        class="w-full py-3.5 px-4 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-xl shadow-lg hover:from-primary-700 hover:to-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transform hover:-translate-y-0.5 transition-all duration-200"
+                    >
+                        Sign In
+                    </button>
+                </form>
+                
+                <!-- Divider -->
+                <div class="relative my-8">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-200"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-4 bg-white text-gray-500">New to TSMS?</span>
+                    </div>
                 </div>
                 
-                <!-- Submit Button -->
-                <div>
-                    {{ form.submit(class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors cursor-pointer") }}
-                </div>
-            </form>
-            
-            <!-- Sign up link -->
-            <p class="text-center text-sm text-gray-600">
-                Don't have an account?
-                <a href="{{ url_for('auth.register') }}" class="font-medium text-primary-600 hover:text-primary-700">
-                    Sign up for free
+                <!-- Sign Up Link -->
+                <a 
+                    href="{{ url_for('auth.register') }}" 
+                    class="w-full flex justify-center py-3.5 px-4 border-2 border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-all duration-200"
+                >
+                    Create an account
                 </a>
+            </div>
+            
+            <!-- Footer -->
+            <p class="mt-8 text-center text-sm text-gray-500">
+                By signing in, you agree to our 
+                <a href="#" class="text-primary-600 hover:text-primary-700 font-medium">Terms of Service</a>
+                and
+                <a href="#" class="text-primary-600 hover:text-primary-700 font-medium">Privacy Policy</a>
             </p>
         </div>
     </div>
     
-    <!-- Right Side - Background -->
-    <div class="hidden lg:block lg:w-1/2 bg-gradient-to-br from-primary-600 to-primary-800">
-        <div class="flex items-center justify-center h-full px-12">
-            <div class="text-center">
-                <h2 class="text-4xl font-bold text-white">
-                    Manage Your Institution
+    <!-- Right Side - Hero Section -->
+    <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900 relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <defs>
+                    <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                        <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" stroke-width="0.5"/>
+                    </pattern>
+                </defs>
+                <rect width="100" height="100" fill="url(#grid)"/>
+            </svg>
+        </div>
+        
+        <!-- Floating Shapes -->
+        <div class="absolute top-20 left-20 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
+        <div class="absolute bottom-40 right-10 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
+        <div class="absolute top-1/2 left-1/4 w-24 h-24 bg-white/10 rounded-full blur-lg"></div>
+        
+        <!-- Content -->
+        <div class="relative flex items-center justify-center w-full px-12">
+            <div class="text-center max-w-lg">
+                <!-- Icon -->
+                <div class="w-20 h-20 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-8 backdrop-blur-sm">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                </div>
+                
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-6">
+                    Teachers & Students<br>Management System
                 </h2>
-                <p class="mt-4 text-lg text-primary-100 max-w-md">
-                    A comprehensive platform to manage teachers, students, courses, and academic records efficiently.
+                <p class="text-lg text-primary-100 mb-12">
+                    A comprehensive platform for managing teachers, students, and academic operations with ease and efficiency.
                 </p>
                 
-                <!-- Decorative elements -->
-                <div class="mt-12 grid grid-cols-3 gap-8 max-w-sm mx-auto">
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-white/10 rounded-xl flex items-center justify-center mx-auto">
-                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <!-- Feature Cards -->
+                <div class="grid grid-cols-3 gap-6">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-5 text-center">
+                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                             </svg>
                         </div>
-                        <p class="mt-2 text-sm text-white/80">Students</p>
+                        <p class="text-sm font-medium text-white">Students</p>
+                        <p class="text-xs text-primary-200 mt-1">Manage records</p>
                     </div>
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-white/10 rounded-xl flex items-center justify-center mx-auto">
-                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-5 text-center">
+                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                             </svg>
                         </div>
-                        <p class="mt-2 text-sm text-white/80">Teachers</p>
+                        <p class="text-sm font-medium text-white">Teachers</p>
+                        <p class="text-xs text-primary-200 mt-1">Track performance</p>
                     </div>
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-white/10 rounded-xl flex items-center justify-center mx-auto">
-                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-5 text-center">
+                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                             </svg>
                         </div>
-                        <p class="mt-2 text-sm text-white/80">Courses</p>
+                        <p class="text-sm font-medium text-white">Reports</p>
+                        <p class="text-xs text-primary-200 mt-1">Analytics</p>
                     </div>
                 </div>
             </div>

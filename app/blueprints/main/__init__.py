@@ -7,7 +7,7 @@ Handles main application routes including landing page and dashboard.
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
 
-from app.models.user import Role
+from app.models import User, UserRole
 from app.models.student import Student
 from app.models.teacher import Teacher
 from app.models.course import Course
