@@ -1,0 +1,230 @@
+{% extends "layouts/dashboard.html" %}
+
+{% block page_title %}Add Teacher{% endblock %}
+{% block page_subtitle %}Create a new teacher account{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <a href="{{ url_for('teacher.teacher_list') }}" 
+           class="inline-flex items-center text-sm text-slate-500 hover:text-slate-700 transition-colors mb-4">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Back to Teachers
+        </a>
+        <h2 class="text-2xl font-bold text-slate-900">Add New Teacher</h2>
+        <p class="text-slate-500 mt-1">Fill in the information below to create a new teacher account</p>
+    </div>
+    
+    <!-- Form -->
+    <form method="POST" action="{{ url_for('teacher.create') }}" class="space-y-6">
+        {{ form.hidden_tag() }}
+        
+        <!-- Account Information -->
+        <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
+            <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200">
+                <h3 class="text-lg font-semibold text-slate-900 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                    Account Information
+                </h3>
+            </div>
+            <div class="p-6 space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Name -->
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-slate-700 mb-2">
+                            Full Name <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.name(class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:bg-white transition-all", placeholder="Enter full name") }}
+                        {% if form.name.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.name.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-slate-700 mb-2">
+                            Email Address <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.email(class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:bg-white transition-all", placeholder="email@example.com") }}
+                        {% if form.email.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.email.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Username -->
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-slate-700 mb-2">
+                            Username <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.username(class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:bg-white transition-all", placeholder="username") }}
+                        {% if form.username.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.username.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Password -->
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-slate-700 mb-2">
+                            Password <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.password(class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:bg-white transition-all", placeholder="••••••••") }}
+                        {% if form.password.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.password.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Confirm Password -->
+                    <div>
+                        <label for="confirm_password" class="block text-sm font-medium text-slate-700 mb-2">
+                            Confirm Password <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.confirm_password(class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:bg-white transition-all", placeholder="••••••••") }}
+                        {% if form.confirm_password.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.confirm_password.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Professional Information -->
+        <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
+            <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200">
+                <h3 class="text-lg font-semibold text-slate-900 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                    </svg>
+                    Professional Information
+                </h3>
+            </div>
+            <div class="p-6 space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Department -->
+                    <div>
+                        <label for="department" class="block text-sm font-medium text-slate-700 mb-2">
+                            Department <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.department(class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:bg-white transition-all") }}
+                        {% if form.department.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.department.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Specialization -->
+                    <div>
+                        <label for="specialization" class="block text-sm font-medium text-slate-700 mb-2">
+                            Specialization
+                        </label>
+                        {{ form.specialization(class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:bg-white transition-all", placeholder="e.g., Algebra, Organic Chemistry") }}
+                        {% if form.specialization.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.specialization.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Qualification -->
+                    <div>
+                        <label for="qualification" class="block text-sm font-medium text-slate-700 mb-2">
+                            Qualification
+                        </label>
+                        {{ form.qualification(class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:bg-white transition-all", placeholder="e.g., M.Sc., Ph.D.") }}
+                        {% if form.qualification.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.qualification.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Experience Years -->
+                    <div>
+                        <label for="experience_years" class="block text-sm font-medium text-slate-700 mb-2">
+                            Years of Experience
+                        </label>
+                        {{ form.experience_years(class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:bg-white transition-all", placeholder="0", min="0", max="50") }}
+                        {% if form.experience_years.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.experience_years.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Hire Date -->
+                    <div>
+                        <label for="hire_date" class="block text-sm font-medium text-slate-700 mb-2">
+                            Hire Date
+                        </label>
+                        {{ form.hire_date(class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:bg-white transition-all") }}
+                        {% if form.hire_date.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.hire_date.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact & Additional Information -->
+        <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
+            <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200">
+                <h3 class="text-lg font-semibold text-slate-900 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                    Contact & Additional Information
+                </h3>
+            </div>
+            <div class="p-6 space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Phone -->
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-slate-700 mb-2">
+                            Phone Number
+                        </label>
+                        {{ form.phone(class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:bg-white transition-all", placeholder="+1 (555) 000-0000") }}
+                        {% if form.phone.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.phone.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Status -->
+                    <div>
+                        <label for="status" class="block text-sm font-medium text-slate-700 mb-2">
+                            Status
+                        </label>
+                        {{ form.status(class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:bg-white transition-all") }}
+                        {% if form.status.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.status.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Bio -->
+                <div>
+                    <label for="bio" class="block text-sm font-medium text-slate-700 mb-2">
+                        Bio / About
+                    </label>
+                    {{ form.bio(class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:bg-white transition-all resize-none", placeholder="A brief description about the teacher...", rows="4") }}
+                    {% if form.bio.errors %}
+                    <p class="mt-2 text-sm text-red-600">{{ form.bio.errors[0] }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="flex items-center justify-end space-x-4">
+            <a href="{{ url_for('teacher.teacher_list') }}" 
+               class="px-6 py-3 bg-slate-100 text-slate-700 rounded-xl font-medium hover:bg-slate-200 transition-colors">
+                Cancel
+            </a>
+            <button type="submit" 
+                    class="px-8 py-3 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-xl font-medium shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all">
+                Create Teacher
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

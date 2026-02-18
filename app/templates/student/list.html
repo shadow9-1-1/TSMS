@@ -1,0 +1,336 @@
+{% extends "layouts/dashboard.html" %}
+
+{% block page_title %}Students{% endblock %}
+{% block page_subtitle %}Manage student records{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h2 class="text-2xl font-bold text-slate-900">Students</h2>
+            <p class="text-slate-500 mt-1">
+                {% if can_manage %}
+                Manage and view all students in the system
+                {% else %}
+                View your assigned students
+                {% endif %}
+            </p>
+        </div>
+        {% if can_manage %}
+        <a href="{{ url_for('student.create_student') }}" 
+           class="inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-xl font-medium shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+            Add Student
+        </a>
+        {% endif %}
+    </div>
+    
+    <!-- Filters Card -->
+    <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 p-6">
+        <form method="GET" class="flex flex-col lg:flex-row gap-4">
+            <div class="flex-1">
+                <div class="relative">
+                    <input type="text" 
+                           name="search" 
+                           value="{{ search }}"
+                           placeholder="Search by name, email, or student ID..." 
+                           class="w-full pl-11 pr-4 py-3 bg-slate-50 border-0 rounded-xl focus:ring-2 focus:ring-primary-500 focus:bg-white transition-all text-sm">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            {% if can_manage %}
+            <div class="sm:w-48">
+                <select name="teacher_id" 
+                        class="w-full px-4 py-3 bg-slate-50 border-0 rounded-xl focus:ring-2 focus:ring-primary-500 focus:bg-white transition-all text-sm">
+                    <option value="">All Teachers</option>
+                    <option value="unassigned" {% if teacher_id == 'unassigned' %}selected{% endif %}>Unassigned</option>
+                    {% for teacher in teachers %}
+                    <option value="{{ teacher.id }}" {% if teacher_id == teacher.id|string %}selected{% endif %}>
+                        {{ teacher.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+            <div class="sm:w-40">
+                <select name="status" 
+                        class="w-full px-4 py-3 bg-slate-50 border-0 rounded-xl focus:ring-2 focus:ring-primary-500 focus:bg-white transition-all text-sm">
+                    <option value="">All Status</option>
+                    <option value="active" {% if status == 'active' %}selected{% endif %}>Active</option>
+                    <option value="inactive" {% if status == 'inactive' %}selected{% endif %}>Inactive</option>
+                    <option value="graduated" {% if status == 'graduated' %}selected{% endif %}>Graduated</option>
+                    <option value="transferred" {% if status == 'transferred' %}selected{% endif %}>Transferred</option>
+                    <option value="dropped" {% if status == 'dropped' %}selected{% endif %}>Dropped</option>
+                </select>
+            </div>
+            <button type="submit" 
+                    class="px-6 py-3 bg-slate-100 text-slate-700 rounded-xl font-medium hover:bg-slate-200 transition-colors">
+                <svg class="w-5 h-5 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                </svg>
+                Filter
+            </button>
+        </form>
+    </div>
+    
+    <!-- Students Table -->
+    <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
+        {% if students.items %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-slate-200">
+                <thead class="bg-slate-50/80">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Student</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Student ID</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Grade</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Assigned Teacher</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-slate-100">
+                    {% for student in students.items %}
+                    <tr class="hover:bg-slate-50/50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 w-11 h-11 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/25">
+                                    <span class="text-white font-semibold text-sm">{{ student.name[0]|upper }}</span>
+                                </div>
+                                <div class="ml-4">
+                                    <a href="{{ url_for('student.student_detail', id=student.id) }}" 
+                                       class="text-sm font-semibold text-slate-900 hover:text-primary-600 transition-colors">
+                                        {{ student.name }}
+                                    </a>
+                                    <div class="text-sm text-slate-500">{{ student.email }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="text-sm font-mono text-slate-600 bg-slate-100 px-2 py-1 rounded">
+                                {{ student.student_id or 'N/A' }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-slate-900">{{ student.grade_level or 'Not set' }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% if student.assigned_teacher %}
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center mr-2">
+                                    <span class="text-white font-semibold text-xs">{{ student.assigned_teacher.name[0]|upper }}</span>
+                                </div>
+                                <span class="text-sm text-slate-700">{{ student.assigned_teacher.name }}</span>
+                            </div>
+                            {% else %}
+                            <span class="text-sm text-slate-400 italic">Unassigned</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% if student.status.value == 'active' %}
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">
+                                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-1.5"></span>
+                                Active
+                            </span>
+                            {% elif student.status.value == 'inactive' %}
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">
+                                <span class="w-1.5 h-1.5 bg-slate-400 rounded-full mr-1.5"></span>
+                                Inactive
+                            </span>
+                            {% elif student.status.value == 'graduated' %}
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
+                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-1.5"></span>
+                                Graduated
+                            </span>
+                            {% elif student.status.value == 'transferred' %}
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">
+                                <span class="w-1.5 h-1.5 bg-amber-500 rounded-full mr-1.5"></span>
+                                Transferred
+                            </span>
+                            {% else %}
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
+                                <span class="w-1.5 h-1.5 bg-red-500 rounded-full mr-1.5"></span>
+                                {{ student.status.value|capitalize }}
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right">
+                            <div class="flex items-center justify-end space-x-2">
+                                <a href="{{ url_for('student.student_detail', id=student.id) }}" 
+                                   class="p-2 text-slate-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                                   title="View Details">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                </a>
+                                {% if can_manage %}
+                                <a href="{{ url_for('student.edit_student', id=student.id) }}" 
+                                   class="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-all"
+                                   title="Edit">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                    </svg>
+                                </a>
+                                <button type="button" 
+                                        onclick="confirmDelete({{ student.id }}, '{{ student.name }}')"
+                                        class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                                        title="Delete">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                    </svg>
+                                </button>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination -->
+        {% if students.pages > 1 %}
+        <div class="px-6 py-4 bg-slate-50/50 border-t border-slate-100">
+            <div class="flex items-center justify-between">
+                <div class="text-sm text-slate-500">
+                    Showing <span class="font-semibold text-slate-700">{{ students.items|length }}</span> of 
+                    <span class="font-semibold text-slate-700">{{ students.total }}</span> students
+                </div>
+                <nav class="flex items-center space-x-1">
+                    {% if students.has_prev %}
+                    <a href="{{ url_for('student.student_list', page=students.prev_num, search=search, status=status, teacher_id=teacher_id) }}" 
+                       class="px-3 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
+                        Previous
+                    </a>
+                    {% endif %}
+                    
+                    {% for page_num in students.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                        {% if page_num %}
+                            {% if page_num == students.page %}
+                            <span class="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg">
+                                {{ page_num }}
+                            </span>
+                            {% else %}
+                            <a href="{{ url_for('student.student_list', page=page_num, search=search, status=status, teacher_id=teacher_id) }}" 
+                               class="px-4 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
+                                {{ page_num }}
+                            </a>
+                            {% endif %}
+                        {% else %}
+                            <span class="px-2 text-slate-400">...</span>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if students.has_next %}
+                    <a href="{{ url_for('student.student_list', page=students.next_num, search=search, status=status, teacher_id=teacher_id) }}" 
+                       class="px-3 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
+                        Next
+                    </a>
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% else %}
+        <!-- Empty State -->
+        <div class="p-12 text-center">
+            <div class="w-16 h-16 mx-auto bg-slate-100 rounded-2xl flex items-center justify-center mb-4">
+                <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-slate-900 mb-1">No students found</h3>
+            <p class="text-slate-500 mb-6">
+                {% if search or status or teacher_id %}
+                No students match your search criteria. Try adjusting your filters.
+                {% else %}
+                Get started by adding your first student.
+                {% endif %}
+            </p>
+            {% if can_manage and not (search or status or teacher_id) %}
+            <a href="{{ url_for('student.create_student') }}" 
+               class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-xl font-medium hover:bg-primary-700 transition-colors">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+                Add Your First Student
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if can_manage %}
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" 
+     x-data="{ open: false, studentId: null, studentName: '' }"
+     x-show="open"
+     x-cloak
+     @open-delete-modal.window="open = true; studentId = $event.detail.id; studentName = $event.detail.name"
+     class="fixed inset-0 z-50 overflow-y-auto">
+    <div class="min-h-screen px-4 text-center flex items-center justify-center">
+        <!-- Backdrop -->
+        <div x-show="open" 
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @click="open = false"
+             class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        
+        <!-- Modal -->
+        <div x-show="open"
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="relative bg-white rounded-2xl max-w-md w-full p-6 text-left shadow-xl">
+            <div class="w-12 h-12 mx-auto bg-red-100 rounded-xl flex items-center justify-center mb-4">
+                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-slate-900 text-center mb-2">Delete Student</h3>
+            <p class="text-slate-500 text-center mb-6">
+                Are you sure you want to delete <span class="font-semibold text-slate-900" x-text="studentName"></span>? 
+                This action cannot be undone.
+            </p>
+            <div class="flex space-x-3">
+                <button @click="open = false" 
+                        class="flex-1 px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl font-medium hover:bg-slate-200 transition-colors">
+                    Cancel
+                </button>
+                <form :action="'/student/' + studentId + '/delete'" method="POST" class="flex-1">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" 
+                            class="w-full px-4 py-2.5 bg-red-600 text-white rounded-xl font-medium hover:bg-red-700 transition-colors">
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function confirmDelete(id, name) {
+    window.dispatchEvent(new CustomEvent('open-delete-modal', { 
+        detail: { id: id, name: name } 
+    }));
+}
+</script>
+{% endif %}
+{% endblock %}

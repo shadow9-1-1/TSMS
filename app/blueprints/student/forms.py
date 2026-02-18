@@ -44,6 +44,13 @@ class StudentForm(FlaskForm):
         Optional(),
         Length(max=20)
     ])
+    status = SelectField('Status', choices=[
+        ('active', 'Active'),
+        ('inactive', 'Inactive'),
+        ('graduated', 'Graduated'),
+        ('transferred', 'Transferred'),
+        ('dropped', 'Dropped')
+    ], validators=[DataRequired()])
     
     # Guardian information
     guardian_name = StringField('Guardian Name', validators=[
@@ -67,6 +74,11 @@ class StudentForm(FlaskForm):
         ('other', 'Other')
     ], validators=[Optional()])
     
+    notes = TextAreaField('Notes', validators=[
+        Optional(),
+        Length(max=1000)
+    ])
+    
     submit = SubmitField('Save Student')
     
     def __init__(self, *args, original_email=None, **kwargs):
@@ -78,6 +90,31 @@ class StudentForm(FlaskForm):
         if field.data.lower() != self.original_email:
             if Student.query.filter_by(email=field.data.lower()).first():
                 raise ValidationError('This email is already registered.')
+
+
+class StudentSearchForm(FlaskForm):
+    """Form for searching/filtering students."""
+    
+    search = StringField('Search', validators=[Optional()])
+    status = SelectField('Status', choices=[
+        ('', 'All Status'),
+        ('active', 'Active'),
+        ('inactive', 'Inactive'),
+        ('graduated', 'Graduated'),
+        ('transferred', 'Transferred'),
+        ('dropped', 'Dropped')
+    ], validators=[Optional()])
+    teacher_id = SelectField('Assigned Teacher', coerce=int, validators=[Optional()])
+    grade_level = StringField('Grade Level', validators=[Optional()])
+
+
+class AssignTeacherForm(FlaskForm):
+    """Form for assigning a student to a teacher."""
+    
+    teacher_id = SelectField('Teacher', coerce=int, validators=[
+        DataRequired(message='Please select a teacher.')
+    ])
+    submit = SubmitField('Assign Teacher')
 
 
 class EnrollmentForm(FlaskForm):

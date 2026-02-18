@@ -1,0 +1,331 @@
+{% extends "layouts/dashboard.html" %}
+
+{% block page_title %}Teacher Profile{% endblock %}
+{% block page_subtitle %}{{ teacher.name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-2">
+        <a href="{{ url_for('teacher.teacher_list') }}" 
+           class="inline-flex items-center text-sm text-slate-500 hover:text-slate-700 transition-colors">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Back to Teachers
+        </a>
+        <div class="flex items-center space-x-3">
+            <a href="{{ url_for('teacher.edit', id=teacher.id) }}" 
+               class="inline-flex items-center px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-xl font-medium hover:bg-slate-50 shadow-sm transition-all">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+                Edit Profile
+            </a>
+            <a href="{{ url_for('teacher.assign_student', id=teacher.id) }}" 
+               class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-xl font-medium shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                </svg>
+                Assign Students
+            </a>
+        </div>
+    </div>
+    
+    <!-- Profile Card -->
+    <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
+        <!-- Banner -->
+        <div class="h-32 bg-gradient-to-r from-emerald-500 to-teal-500 relative">
+            <div class="absolute inset-0 bg-black/10"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+        </div>
+        
+        <!-- Profile Info -->
+        <div class="px-6 pb-6 -mt-16 relative">
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between">
+                <div class="flex items-end space-x-4">
+                    <div class="w-28 h-28 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center ring-4 ring-white shadow-xl">
+                        <span class="text-white font-bold text-4xl">{{ teacher.name[0]|upper }}</span>
+                    </div>
+                    <div class="pb-2">
+                        <h1 class="text-2xl font-bold text-slate-900 mb-1">{{ teacher.name }}</h1>
+                        <p class="text-slate-500">{{ teacher.department or 'No department' }}{% if teacher.specialization %} • {{ teacher.specialization }}{% endif %}</p>
+                    </div>
+                </div>
+                <div class="mt-4 sm:mt-0 sm:pb-2">
+                    {% if teacher.status == 'active' %}
+                    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold bg-emerald-100 text-emerald-700">
+                        <span class="w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>
+                        Active
+                    </span>
+                    {% elif teacher.status == 'inactive' %}
+                    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold bg-slate-100 text-slate-600">
+                        <span class="w-2 h-2 bg-slate-400 rounded-full mr-2"></span>
+                        Inactive
+                    </span>
+                    {% elif teacher.status == 'on_leave' %}
+                    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold bg-amber-100 text-amber-700">
+                        <span class="w-2 h-2 bg-amber-500 rounded-full mr-2"></span>
+                        On Leave
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left Column - Details -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Contact Information -->
+            <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
+                <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200">
+                    <h3 class="text-lg font-semibold text-slate-900">Contact Information</h3>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-500">Email</p>
+                                <p class="font-medium text-slate-900">{{ teacher.email }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-500">Phone</p>
+                                <p class="font-medium text-slate-900">{{ teacher.phone or 'Not provided' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Professional Details -->
+            <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
+                <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200">
+                    <h3 class="text-lg font-semibold text-slate-900">Professional Details</h3>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <p class="text-sm text-slate-500 mb-1">Employee ID</p>
+                            <p class="font-mono font-medium text-slate-900 bg-slate-100 px-3 py-1.5 rounded-lg inline-block">
+                                {{ teacher.employee_id or 'Not assigned' }}
+                            </p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500 mb-1">Department</p>
+                            <p class="font-medium text-slate-900">{{ teacher.department or 'Not assigned' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500 mb-1">Specialization</p>
+                            <p class="font-medium text-slate-900">{{ teacher.specialization or 'Not specified' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500 mb-1">Qualification</p>
+                            <p class="font-medium text-slate-900">{{ teacher.qualification or 'Not specified' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500 mb-1">Experience</p>
+                            <p class="font-medium text-slate-900">
+                                {% if teacher.experience_years %}
+                                    {{ teacher.experience_years }} year{% if teacher.experience_years != 1 %}s{% endif %}
+                                {% else %}
+                                    Not specified
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500 mb-1">Hire Date</p>
+                            <p class="font-medium text-slate-900">
+                                {% if teacher.hire_date %}
+                                    {{ teacher.hire_date.strftime('%B %d, %Y') }}
+                                {% else %}
+                                    Not specified
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    {% if teacher.bio %}
+                    <div class="mt-6 pt-6 border-t border-slate-100">
+                        <p class="text-sm text-slate-500 mb-2">Bio</p>
+                        <p class="text-slate-700 leading-relaxed">{{ teacher.bio }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Assigned Students -->
+            <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
+                <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200 flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-slate-900">Assigned Students</h3>
+                    <a href="{{ url_for('teacher.assign_student', id=teacher.id) }}" 
+                       class="text-sm text-primary-600 hover:text-primary-700 font-medium">
+                        Manage Students
+                    </a>
+                </div>
+                <div class="p-6">
+                    {% if students %}
+                    <div class="space-y-3">
+                        {% for student in students %}
+                        <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                                    <span class="text-white font-semibold text-sm">{{ student.name[0]|upper }}</span>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-slate-900">{{ student.name }}</p>
+                                    <p class="text-sm text-slate-500">{{ student.email }}</p>
+                                </div>
+                            </div>
+                            <form action="{{ url_for('teacher.unassign_student', id=teacher.id, student_id=student.id) }}" 
+                                  method="POST"
+                                  onsubmit="return confirm('Remove this student from {{ teacher.name }}?');">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" 
+                                        class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                                        title="Unassign Student">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-8">
+                        <div class="w-12 h-12 mx-auto bg-slate-100 rounded-xl flex items-center justify-center mb-3">
+                            <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                            </svg>
+                        </div>
+                        <p class="text-slate-500 mb-4">No students assigned yet</p>
+                        <a href="{{ url_for('teacher.assign_student', id=teacher.id) }}" 
+                           class="inline-flex items-center text-sm text-primary-600 hover:text-primary-700 font-medium">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                            Assign Students
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Column - Stats & Quick Actions -->
+        <div class="space-y-6">
+            <!-- Stats -->
+            <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 p-6">
+                <h3 class="text-lg font-semibold text-slate-900 mb-4">Overview</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 bg-blue-50 rounded-xl">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                                </svg>
+                            </div>
+                            <span class="font-medium text-slate-700">Students</span>
+                        </div>
+                        <span class="text-2xl font-bold text-blue-600">{{ teacher.get_student_count() }}</span>
+                    </div>
+                    <div class="flex items-center justify-between p-4 bg-purple-50 rounded-xl">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                </svg>
+                            </div>
+                            <span class="font-medium text-slate-700">Courses</span>
+                        </div>
+                        <span class="text-2xl font-bold text-purple-600">{{ teacher.get_active_courses()|length }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 p-6">
+                <h3 class="text-lg font-semibold text-slate-900 mb-4">Quick Actions</h3>
+                <div class="space-y-3">
+                    <a href="{{ url_for('teacher.edit', id=teacher.id) }}" 
+                       class="flex items-center p-3 rounded-xl hover:bg-slate-50 transition-colors group">
+                        <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-amber-200 transition-colors">
+                            <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                        </div>
+                        <span class="font-medium text-slate-700">Edit Profile</span>
+                    </a>
+                    <a href="{{ url_for('teacher.assign_student', id=teacher.id) }}" 
+                       class="flex items-center p-3 rounded-xl hover:bg-slate-50 transition-colors group">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-blue-200 transition-colors">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                            </svg>
+                        </div>
+                        <span class="font-medium text-slate-700">Assign Students</span>
+                    </a>
+                    <form action="{{ url_for('teacher.toggle_status', id=teacher.id) }}" method="POST" class="w-full">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" 
+                                class="w-full flex items-center p-3 rounded-xl hover:bg-slate-50 transition-colors group text-left">
+                            <div class="w-10 h-10 bg-{{ 'slate' if teacher.status == 'active' else 'emerald' }}-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-{{ 'slate' if teacher.status == 'active' else 'emerald' }}-200 transition-colors">
+                                <svg class="w-5 h-5 text-{{ 'slate' if teacher.status == 'active' else 'emerald' }}-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    {% if teacher.status == 'active' %}
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                                    {% else %}
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    {% endif %}
+                                </svg>
+                            </div>
+                            <span class="font-medium text-slate-700">
+                                {% if teacher.status == 'active' %}Deactivate{% else %}Activate{% endif %} Teacher
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Timestamps -->
+            <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 p-6">
+                <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Record Info</h3>
+                <div class="space-y-3 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Created</span>
+                        <span class="text-slate-900">
+                            {% if teacher.created_at %}
+                                {{ teacher.created_at.strftime('%b %d, %Y') }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Last Updated</span>
+                        <span class="text-slate-900">
+                            {% if teacher.updated_at %}
+                                {{ teacher.updated_at.strftime('%b %d, %Y') }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

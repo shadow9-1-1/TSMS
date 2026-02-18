@@ -146,3 +146,7 @@ def grades(course_id):
     return render_template('teacher/grades.html', 
                          course=course, 
                          enrollments=enrollments)
+
+
+# Import admin management routes (CRUD operations for teachers)
+from app.blueprints.teacher import routes  # noqa: F401, E402

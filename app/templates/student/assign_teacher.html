@@ -1,0 +1,120 @@
+{% extends "layouts/dashboard.html" %}
+
+{% block page_title %}Assign Teacher{% endblock %}
+{% block page_subtitle %}Assign a teacher to {{ student.name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <a href="{{ url_for('student.student_detail', id=student.id) }}" 
+           class="inline-flex items-center text-sm text-slate-500 hover:text-slate-700 transition-colors mb-4">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Back to Profile
+        </a>
+    </div>
+    
+    <!-- Student Info Card -->
+    <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden mb-6">
+        <div class="p-6 flex items-center space-x-4">
+            <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+                <span class="text-white font-bold text-xl">{{ student.name[0]|upper }}</span>
+            </div>
+            <div>
+                <h2 class="text-xl font-bold text-slate-900">{{ student.name }}</h2>
+                <p class="text-slate-500">{{ student.student_id or 'No ID' }} • {{ student.grade_level or 'No grade' }}</p>
+                {% if student.assigned_teacher %}
+                <div class="flex items-center mt-2 text-sm">
+                    <span class="text-slate-500">Currently assigned to:</span>
+                    <span class="ml-2 px-2.5 py-0.5 bg-violet-100 text-violet-700 rounded-full font-medium">
+                        {{ student.assigned_teacher.user.name }}
+                    </span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Assignment Form -->
+    <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
+        <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200">
+            <h3 class="text-lg font-semibold text-slate-900 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                </svg>
+                {% if student.assigned_teacher %}
+                Change Assigned Teacher
+                {% else %}
+                Assign Teacher
+                {% endif %}
+            </h3>
+        </div>
+        <div class="p-6">
+            <form method="POST" action="{{ url_for('student.assign_teacher', id=student.id) }}">
+                {{ form.hidden_tag() }}
+                
+                <div class="mb-6">
+                    <label for="teacher_id" class="block text-sm font-medium text-slate-700 mb-2">
+                        Select Teacher <span class="text-red-500">*</span>
+                    </label>
+                    {{ form.teacher_id(class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:bg-white transition-all") }}
+                    {% if form.teacher_id.errors %}
+                    <p class="mt-2 text-sm text-red-600">{{ form.teacher_id.errors[0] }}</p>
+                    {% endif %}
+                    <p class="mt-2 text-sm text-slate-500">
+                        Choose a teacher to oversee this student's academic progress.
+                    </p>
+                </div>
+                
+                <!-- Teacher Preview Area -->
+                <div id="teacherPreview" class="hidden mb-6 p-4 bg-slate-50 rounded-xl border border-slate-200">
+                    <p class="text-sm text-slate-500 mb-2">Selected teacher:</p>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-violet-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <span id="teacherInitial" class="text-white font-bold">T</span>
+                        </div>
+                        <div>
+                            <p id="teacherName" class="font-semibold text-slate-900">Teacher Name</p>
+                            <p id="teacherSubject" class="text-sm text-slate-500">Subject</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Actions -->
+                <div class="flex items-center justify-end space-x-4">
+                    <a href="{{ url_for('student.student_detail', id=student.id) }}" 
+                       class="px-6 py-3 bg-slate-100 text-slate-700 rounded-xl font-medium hover:bg-slate-200 transition-colors">
+                        Cancel
+                    </a>
+                    <button type="submit" 
+                            class="px-8 py-3 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-xl font-medium shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all">
+                        {% if student.assigned_teacher %}
+                        Update Assignment
+                        {% else %}
+                        Assign Teacher
+                        {% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Help Text -->
+    <div class="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-100">
+        <div class="flex">
+            <svg class="w-5 h-5 text-blue-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <div class="ml-3">
+                <h4 class="text-sm font-semibold text-blue-900">About Teacher Assignment</h4>
+                <p class="text-sm text-blue-700 mt-1">
+                    Assigning a teacher allows them to view and monitor this student's progress. 
+                    Teachers can only see students assigned to them, while administrators and supervisors can see all students.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
