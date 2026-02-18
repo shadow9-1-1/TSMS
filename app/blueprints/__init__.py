@@ -9,5 +9,15 @@ from app.blueprints.auth import auth_bp
 from app.blueprints.admin import admin_bp
 from app.blueprints.teacher import teacher_bp
 from app.blueprints.student import student_bp
+from app.blueprints.supervisor import supervisor_bp
+from app.blueprints.planning import planning_bp
 
-__all__ = ['main_bp', 'auth_bp', 'admin_bp', 'teacher_bp', 'student_bp']
+__all__ = [
+    'main_bp', 
+    'auth_bp', 
+    'admin_bp', 
+    'teacher_bp', 
+    'student_bp',
+    'supervisor_bp',
+    'planning_bp'
+]

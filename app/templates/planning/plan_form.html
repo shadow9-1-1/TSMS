@@ -1,0 +1,147 @@
+{% extends "layouts/dashboard.html" %}
+
+{% block page_title %}{{ 'Edit Plan' if plan else 'Create Plan' }}{% endblock %}
+{% block page_subtitle %}{{ 'Update plan details' if plan else 'Create a new plan for a student' }}{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Back Link -->
+    <a href="{{ url_for('planning.index') }}" class="inline-flex items-center text-slate-600 hover:text-slate-900">
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        Back to Plans
+    </a>
+    
+    <div class="max-w-3xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
+            <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200">
+                <h3 class="text-lg font-semibold text-slate-900">{{ 'Edit Plan' if plan else 'New Plan' }}</h3>
+            </div>
+            
+            <form method="post" class="p-6 space-y-6">
+                {{ form.hidden_tag() }}
+                
+                <!-- Basic Info -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2">
+                        <label for="title" class="block text-sm font-medium text-slate-700 mb-2">
+                            Plan Title <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.title(class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500", placeholder="e.g., Fall 2024 Academic Plan") }}
+                        {% if form.title.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.title.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="student_id" class="block text-sm font-medium text-slate-700 mb-2">
+                            Student <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.student_id(class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500") }}
+                        {% if form.student_id.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.student_id.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="plan_type" class="block text-sm font-medium text-slate-700 mb-2">
+                            Plan Type <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.plan_type(class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500") }}
+                        {% if form.plan_type.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.plan_type.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Description -->
+                <div>
+                    <label for="description" class="block text-sm font-medium text-slate-700 mb-2">
+                        Description
+                    </label>
+                    {{ form.description(class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500", rows="4", placeholder="Describe the plan objectives and goals...") }}
+                    {% if form.description.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.description.errors[0] }}</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Objectives -->
+                <div>
+                    <label for="objectives" class="block text-sm font-medium text-slate-700 mb-2">
+                        Objectives
+                    </label>
+                    {{ form.objectives(class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500", rows="3", placeholder="List key objectives, one per line...") }}
+                    <p class="mt-1 text-sm text-slate-500">List key objectives or milestones for this plan.</p>
+                    {% if form.objectives.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.objectives.errors[0] }}</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Dates -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="start_date" class="block text-sm font-medium text-slate-700 mb-2">
+                            Start Date
+                        </label>
+                        {{ form.start_date(class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500", type="date") }}
+                        {% if form.start_date.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.start_date.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="end_date" class="block text-sm font-medium text-slate-700 mb-2">
+                            End Date
+                        </label>
+                        {{ form.end_date(class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500", type="date") }}
+                        {% if form.end_date.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.end_date.errors[0] }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                {% if plan %}
+                <!-- Status (only for edit) -->
+                <div>
+                    <label for="status" class="block text-sm font-medium text-slate-700 mb-2">
+                        Status
+                    </label>
+                    {{ form.status(class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500") }}
+                    {% if form.status.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.status.errors[0] }}</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+                
+                <!-- Help Text -->
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <div class="flex items-start">
+                        <svg class="w-5 h-5 text-blue-500 mt-0.5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <div>
+                            <p class="font-medium text-blue-800">Tips for creating effective plans</p>
+                            <ul class="text-sm text-blue-700 mt-1 list-disc list-inside space-y-1">
+                                <li>Set clear, achievable objectives</li>
+                                <li>Include realistic start and end dates</li>
+                                <li>After creating the plan, add specific tasks with deadlines</li>
+                                <li>Review and update progress regularly</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Actions -->
+                <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
+                    <a href="{{ url_for('planning.index') }}" 
+                       class="px-6 py-2.5 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors font-medium">
+                        Cancel
+                    </a>
+                    {{ form.submit(class="px-6 py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium cursor-pointer") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

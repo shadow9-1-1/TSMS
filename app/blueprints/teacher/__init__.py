@@ -18,12 +18,13 @@ teacher_bp = Blueprint('teacher', __name__, template_folder='templates')
 
 
 def teacher_required(f):
-    """Decorator to require teacher role or higher."""
+    """Decorator to require teacher role or higher (admin/supervisor can also access)."""
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
             abort(401)
-        if not current_user.teacher_profile and not current_user.is_supervisor():
+        # Allow admin, supervisor, or users with teacher profile
+        if not (current_user.is_admin() or current_user.is_supervisor() or current_user.teacher_profile):
             abort(403)
         return f(*args, **kwargs)
     return decorated_function

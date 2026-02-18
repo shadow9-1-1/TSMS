@@ -82,6 +82,65 @@
             <span x-show="sidebarOpen" x-transition class="ml-3">Students</span>
         </a>
         
+        <!-- Supervision Section -->
+        {% if current_user.is_supervisor() or current_user.is_admin() %}
+        <div x-show="sidebarOpen" class="pt-6 mt-6 border-t border-slate-700/50">
+            <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Supervision</p>
+        </div>
+        <div :class="sidebarOpen ? '' : 'pt-6 mt-6 border-t border-slate-700/50'"></div>
+        
+        <!-- Supervisor Dashboard -->
+        <a href="{{ url_for('supervisor.index') }}" 
+           class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200
+                  {% if 'supervisor' in request.endpoint and 'supervisor.index' in request.endpoint %}
+                  bg-gradient-to-r from-primary-600 to-primary-500 text-white shadow-lg shadow-primary-500/25
+                  {% else %}
+                  text-slate-300 hover:bg-slate-800/50 hover:text-white
+                  {% endif %}">
+            <div class="flex items-center justify-center w-9 h-9 rounded-lg 
+                        {% if 'supervisor.index' in request.endpoint %}bg-white/20{% else %}bg-slate-800 group-hover:bg-slate-700{% endif %}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+            </div>
+            <span x-show="sidebarOpen" x-transition class="ml-3">Supervision</span>
+        </a>
+        
+        <!-- My Students (Supervisor) -->
+        <a href="{{ url_for('supervisor.student_list') }}" 
+           class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200
+                  {% if 'supervisor.student' in request.endpoint %}
+                  bg-gradient-to-r from-primary-600 to-primary-500 text-white shadow-lg shadow-primary-500/25
+                  {% else %}
+                  text-slate-300 hover:bg-slate-800/50 hover:text-white
+                  {% endif %}">
+            <div class="flex items-center justify-center w-9 h-9 rounded-lg 
+                        {% if 'supervisor.student' in request.endpoint %}bg-white/20{% else %}bg-slate-800 group-hover:bg-slate-700{% endif %}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+            </div>
+            <span x-show="sidebarOpen" x-transition class="ml-3">My Students</span>
+        </a>
+        
+        <!-- Planning -->
+        <a href="{{ url_for('planning.index') }}" 
+           class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200
+                  {% if 'planning' in request.endpoint %}
+                  bg-gradient-to-r from-primary-600 to-primary-500 text-white shadow-lg shadow-primary-500/25
+                  {% else %}
+                  text-slate-300 hover:bg-slate-800/50 hover:text-white
+                  {% endif %}">
+            <div class="flex items-center justify-center w-9 h-9 rounded-lg 
+                        {% if 'planning' in request.endpoint %}bg-white/20{% else %}bg-slate-800 group-hover:bg-slate-700{% endif %}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                </svg>
+            </div>
+            <span x-show="sidebarOpen" x-transition class="ml-3">Planning</span>
+        </a>
+        {% endif %}
+        
         <!-- Admin Section -->
         {% if current_user.is_admin() %}
         <div x-show="sidebarOpen" class="pt-6 mt-6 border-t border-slate-700/50">

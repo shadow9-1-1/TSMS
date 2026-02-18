@@ -83,12 +83,16 @@ def _register_blueprints(app):
     from app.blueprints.admin import admin_bp
     from app.blueprints.teacher import teacher_bp
     from app.blueprints.student import student_bp
+    from app.blueprints.supervisor import supervisor_bp
+    from app.blueprints.planning import planning_bp
     
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)  # url_prefix already set in blueprint
     app.register_blueprint(admin_bp, url_prefix='/admin')
     app.register_blueprint(teacher_bp, url_prefix='/teacher')
     app.register_blueprint(student_bp, url_prefix='/student')
+    app.register_blueprint(supervisor_bp, url_prefix='/supervisor')
+    app.register_blueprint(planning_bp, url_prefix='/planning')
 
 
 def _register_error_handlers(app):

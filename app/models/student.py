@@ -63,6 +63,14 @@ class Student(db.Model):
         index=True
     )
     
+    # Supervisor assignment (for project/academic supervision)
+    supervisor_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id', ondelete='SET NULL'),
+        nullable=True,
+        index=True
+    )
+    
     # Guardian information
     guardian_name = db.Column(db.String(128))
     guardian_phone = db.Column(db.String(20))
@@ -77,6 +85,7 @@ class Student(db.Model):
     # Relationships
     enrollments = db.relationship('Enrollment', backref='student', lazy='dynamic',
                                   cascade='all, delete-orphan')
+    supervisor = db.relationship('User', foreign_keys=[supervisor_id], backref='supervised_students')
     
     def __repr__(self):
         return f'<Student {self.name} ({self.status.value})>'
@@ -130,6 +139,39 @@ class Student(db.Model):
         """Get assigned teacher's name."""
         return self.assigned_teacher.name if self.assigned_teacher else None
     
+    # Supervisor assignment
+    def assign_supervisor(self, supervisor):
+        """
+        Assign a supervisor to this student.
+        
+        Args:
+            supervisor: User instance or user ID (must be supervisor role)
+        """
+        from app.models.user import User
+        if isinstance(supervisor, User):
+            self.supervisor_id = supervisor.id
+        elif isinstance(supervisor, int):
+            self.supervisor_id = supervisor
+        else:
+            raise ValueError("Supervisor must be a User instance or integer ID")
+    
+    def unassign_supervisor(self):
+        """Remove supervisor assignment."""
+        self.supervisor_id = None
+    
+    def get_supervisor_name(self):
+        """Get assigned supervisor's name."""
+        return self.supervisor.name if self.supervisor else None
+    
+    def get_active_plan(self):
+        """Get the currently active plan for this student."""
+        from app.models.planning import PlanStatus
+        return self.plans.filter_by(status=PlanStatus.ACTIVE).first()
+    
+    def get_all_plans(self):
+        """Get all plans for this student."""
+        return self.plans.order_by(db.desc('created_at')).all()
+    
     def get_enrolled_courses(self):
         """Get all courses the student is enrolled in."""
         return [e.course for e in self.enrollments.filter_by(status='active').all()]
@@ -149,6 +191,8 @@ class Student(db.Model):
             'status': self.status.value,
             'assigned_teacher_id': self.assigned_teacher_id,
             'assigned_teacher_name': self.get_teacher_name(),
+            'supervisor_id': self.supervisor_id,
+            'supervisor_name': self.get_supervisor_name(),
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
     

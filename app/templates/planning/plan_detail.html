@@ -1,0 +1,250 @@
+{% extends "layouts/dashboard.html" %}
+
+{% block page_title %}{{ plan.title }}{% endblock %}
+{% block page_subtitle %}Plan Details{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Back Link -->
+    <a href="{{ url_for('planning.index') }}" class="inline-flex items-center text-slate-600 hover:text-slate-900">
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        Back to Plans
+    </a>
+    
+    <!-- Plan Header -->
+    <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
+        <div class="px-6 py-4 bg-gradient-to-r from-primary-500 to-primary-700">
+            <div class="flex items-center justify-between">
+                <div class="text-white">
+                    <h2 class="text-2xl font-bold">{{ plan.title }}</h2>
+                    <p class="text-primary-100 mt-1">{{ plan.plan_type.value|title }} Plan</p>
+                </div>
+                <span class="px-3 py-1.5 rounded-full text-sm font-medium
+                    {% if plan.status.value == 'active' %}bg-white/20 text-white
+                    {% elif plan.status.value == 'completed' %}bg-emerald-400/30 text-white
+                    {% elif plan.status.value == 'draft' %}bg-white/10 text-white
+                    {% elif plan.status.value == 'cancelled' %}bg-red-400/30 text-white
+                    {% else %}bg-amber-400/30 text-white{% endif %}">
+                    {{ plan.status.value|title }}
+                </span>
+            </div>
+        </div>
+        
+        <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <div class="bg-slate-50 rounded-xl p-4">
+                    <p class="text-xs text-slate-500 uppercase tracking-wide mb-1">Student</p>
+                    <p class="font-semibold text-slate-900">{{ plan.student.name }}</p>
+                </div>
+                <div class="bg-slate-50 rounded-xl p-4">
+                    <p class="text-xs text-slate-500 uppercase tracking-wide mb-1">Start Date</p>
+                    <p class="font-semibold text-slate-900">{{ plan.start_date.strftime('%b %d, %Y') if plan.start_date else 'Not set' }}</p>
+                </div>
+                <div class="bg-slate-50 rounded-xl p-4">
+                    <p class="text-xs text-slate-500 uppercase tracking-wide mb-1">End Date</p>
+                    <p class="font-semibold text-slate-900">{{ plan.end_date.strftime('%b %d, %Y') if plan.end_date else 'Not set' }}</p>
+                </div>
+                <div class="bg-slate-50 rounded-xl p-4">
+                    <p class="text-xs text-slate-500 uppercase tracking-wide mb-1">Progress</p>
+                    <div class="flex items-center">
+                        <span class="text-2xl font-bold text-slate-900 mr-2">{{ plan.progress_percentage }}%</span>
+                        <div class="flex-1 bg-slate-200 rounded-full h-2">
+                            <div class="h-2 rounded-full transition-all duration-300
+                                {% if plan.progress_percentage == 100 %}bg-emerald-500
+                                {% elif plan.progress_percentage >= 50 %}bg-primary-500
+                                {% else %}bg-amber-500{% endif %}" 
+                                style="width: {{ plan.progress_percentage }}%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            {% if plan.description %}
+            <div class="mb-6">
+                <h4 class="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-2">Description</h4>
+                <p class="text-slate-600">{{ plan.description }}</p>
+            </div>
+            {% endif %}
+            
+            {% if plan.objectives %}
+            <div class="mb-6">
+                <h4 class="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-2">Objectives</h4>
+                <p class="text-slate-600 whitespace-pre-line">{{ plan.objectives }}</p>
+            </div>
+            {% endif %}
+            
+            <!-- Actions -->
+            <div class="flex flex-wrap items-center gap-3 pt-4 border-t border-slate-200">
+                <a href="{{ url_for('planning.edit_plan', id=plan.id) }}" 
+                   class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium text-sm">
+                    Edit Plan
+                </a>
+                
+                {% if plan.status.value == 'draft' %}
+                <form action="{{ url_for('planning.activate_plan', id=plan.id) }}" method="post" class="inline">
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-medium text-sm">
+                        Activate Plan
+                    </button>
+                </form>
+                {% endif %}
+                
+                {% if plan.status.value == 'active' %}
+                <form action="{{ url_for('planning.complete_plan', id=plan.id) }}" method="post" class="inline">
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm"
+                            onclick="return confirm('Mark this plan as completed?')">
+                        Complete Plan
+                    </button>
+                </form>
+                {% endif %}
+                
+                <form action="{{ url_for('planning.delete_plan', id=plan.id) }}" method="post" class="inline ml-auto">
+                    <button type="submit" class="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors font-medium text-sm"
+                            onclick="return confirm('Are you sure you want to delete this plan?')">
+                        Delete Plan
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tasks Section -->
+    <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
+        <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200 flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-slate-900">Tasks ({{ plan.tasks|length }})</h3>
+            <a href="{{ url_for('planning.create_task', plan_id=plan.id) }}" 
+               class="px-4 py-2 bg-primary-600 text-white text-sm rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                + Add Task
+            </a>
+        </div>
+        
+        {% if plan.tasks %}
+        <div class="divide-y divide-slate-200">
+            {% for task in plan.tasks|sort(attribute='order') %}
+            <div class="p-4 hover:bg-slate-50/50 transition-colors">
+                <div class="flex items-start">
+                    <!-- Task Checkbox -->
+                    <div class="mr-4 mt-1">
+                        {% if task.status.value == 'completed' %}
+                        <div class="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                        {% elif task.is_overdue %}
+                        <div class="w-6 h-6 bg-red-100 border-2 border-red-300 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01"/>
+                            </svg>
+                        </div>
+                        {% elif task.status.value == 'in_progress' %}
+                        <div class="w-6 h-6 bg-amber-100 border-2 border-amber-300 rounded-full"></div>
+                        {% else %}
+                        <div class="w-6 h-6 bg-slate-100 border-2 border-slate-300 rounded-full"></div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Task Content -->
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1">
+                            <h4 class="font-medium {{ 'text-slate-400 line-through' if task.status.value == 'completed' else 'text-slate-900' }}">
+                                {{ task.title }}
+                            </h4>
+                            {% if task.is_overdue and task.status.value != 'completed' %}
+                            <span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs font-medium rounded">Overdue</span>
+                            {% endif %}
+                            <span class="px-2 py-0.5 rounded text-xs font-medium
+                                {% if task.priority.value == 'urgent' %}bg-red-100 text-red-700
+                                {% elif task.priority.value == 'high' %}bg-orange-100 text-orange-700
+                                {% elif task.priority.value == 'medium' %}bg-amber-100 text-amber-700
+                                {% else %}bg-slate-100 text-slate-700{% endif %}">
+                                {{ task.priority.value|title }}
+                            </span>
+                        </div>
+                        
+                        {% if task.description %}
+                        <p class="text-sm text-slate-500 mb-2">{{ task.description|truncate(100) }}</p>
+                        {% endif %}
+                        
+                        <div class="flex items-center gap-4 text-xs text-slate-500">
+                            {% if task.start_date %}
+                            <span>Start: {{ task.start_date.strftime('%b %d') }}</span>
+                            {% endif %}
+                            {% if task.due_date %}
+                            <span class="{{ 'text-red-500 font-medium' if task.is_overdue and task.status.value != 'completed' }}">
+                                Due: {{ task.due_date.strftime('%b %d, %Y') }}
+                            </span>
+                            {% endif %}
+                            <span class="px-2 py-0.5 rounded-full
+                                {% if task.status.value == 'completed' %}bg-emerald-100 text-emerald-700
+                                {% elif task.status.value == 'in_progress' %}bg-amber-100 text-amber-700
+                                {% elif task.status.value == 'overdue' %}bg-red-100 text-red-700
+                                {% elif task.status.value == 'cancelled' %}bg-slate-100 text-slate-500
+                                {% else %}bg-slate-100 text-slate-700{% endif %}">
+                                {{ task.status.value|replace('_', ' ')|title }}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Task Actions -->
+                    <div class="flex items-center gap-2 ml-4">
+                        {% if task.status.value == 'pending' %}
+                        <form action="{{ url_for('planning.start_task', id=task.id) }}" method="post" class="inline">
+                            <button type="submit" title="Start Task" class="p-2 text-amber-600 hover:bg-amber-50 rounded-lg transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </button>
+                        </form>
+                        {% endif %}
+                        
+                        {% if task.status.value in ['pending', 'in_progress'] %}
+                        <form action="{{ url_for('planning.complete_task', id=task.id) }}" method="post" class="inline">
+                            <button type="submit" title="Complete Task" class="p-2 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </button>
+                        </form>
+                        {% endif %}
+                        
+                        <a href="{{ url_for('planning.edit_task', id=task.id) }}" title="Edit Task"
+                           class="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                        </a>
+                        
+                        <form action="{{ url_for('planning.delete_task', id=task.id) }}" method="post" class="inline">
+                            <button type="submit" title="Delete Task" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                    onclick="return confirm('Delete this task?')">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="p-12 text-center">
+            <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                </svg>
+            </div>
+            <p class="text-slate-600 font-medium">No tasks yet</p>
+            <p class="text-sm text-slate-500 mt-1">Add tasks to track progress on this plan.</p>
+            <a href="{{ url_for('planning.create_task', plan_id=plan.id) }}" 
+               class="mt-4 inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                Add First Task
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
