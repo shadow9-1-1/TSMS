@@ -6,7 +6,7 @@ Forms for plan and task management.
 
 from datetime import date
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SelectField, DateField, SubmitField
+from wtforms import StringField, TextAreaField, SelectField, DateField, SubmitField, IntegerField
 from wtforms.validators import DataRequired, Optional, Length, ValidationError
 
 from app.models.planning import PlanStatus, PlanType, TaskStatus, TaskPriority
