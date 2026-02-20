@@ -174,7 +174,7 @@
                 <!-- Action Buttons -->
                 <div class="flex items-center space-x-3">
                     {% if data.active_plan %}
-                    <a href="{{ url_for('planning.plan_detail', plan_id=data.active_plan.id) }}" 
+                    <a href="{{ url_for('planning.plan_detail', id=data.active_plan.id) }}" 
                        class="flex-1 px-4 py-2 bg-primary-600 text-white text-center rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium">
                         View Active Plan
                     </a>
