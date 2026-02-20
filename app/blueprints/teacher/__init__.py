@@ -261,6 +261,8 @@ def planning():
 @teacher_required
 def student_progress():
     """View all students with their progress bars."""
+    from app.models.planning import ObjectiveStatus
+    
     teacher = current_user.teacher_profile
     
     if teacher:
@@ -279,6 +281,9 @@ def student_progress():
         pending_tasks = 0
         overdue_tasks = 0
         
+        total_objectives = 0
+        completed_objectives = 0
+        
         for plan in plans:
             for task in plan.tasks.all():
                 total_tasks += 1
@@ -288,10 +293,16 @@ def student_progress():
                     overdue_tasks += 1
                 elif task.status in [TaskStatus.PENDING, TaskStatus.IN_PROGRESS]:
                     pending_tasks += 1
+            
+            # Count objectives
+            for obj in plan.plan_objectives.all():
+                total_objectives += 1
+                if obj.status == ObjectiveStatus.COMPLETED:
+                    completed_objectives += 1
         
-        # Calculate overall progress percentage
-        if total_tasks > 0:
-            progress_percentage = int((completed_tasks / total_tasks) * 100)
+        # Calculate overall progress based on objectives
+        if total_objectives > 0:
+            progress_percentage = int((completed_objectives / total_objectives) * 100)
         else:
             progress_percentage = 0
         
@@ -303,6 +314,8 @@ def student_progress():
             'completed_tasks': completed_tasks,
             'pending_tasks': pending_tasks,
             'overdue_tasks': overdue_tasks,
+            'total_objectives': total_objectives,
+            'completed_objectives': completed_objectives,
             'progress_percentage': progress_percentage
         })
     

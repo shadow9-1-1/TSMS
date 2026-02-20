@@ -16,7 +16,7 @@
 {% block content %}
 <div class="space-y-6">
     <!-- Summary Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
         <div class="bg-white rounded-xl shadow-soft border border-slate-200/60 p-4 text-center">
             <p class="text-3xl font-bold text-slate-900">{{ students_data|length }}</p>
             <p class="text-xs font-medium text-slate-500 uppercase tracking-wide mt-1">Total Students</p>
@@ -28,13 +28,18 @@
         </div>
         
         <div class="bg-white rounded-xl shadow-soft border border-slate-200/60 p-4 text-center">
-            <p class="text-3xl font-bold text-slate-900">{{ students_data|sum(attribute='total_tasks') }}</p>
-            <p class="text-xs font-medium text-slate-500 uppercase tracking-wide mt-1">Total Tasks</p>
+            <p class="text-3xl font-bold text-primary-600">{{ students_data|sum(attribute='total_objectives') }}</p>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wide mt-1">Objectives</p>
         </div>
         
         <div class="bg-white rounded-xl shadow-soft border border-slate-200/60 p-4 text-center">
-            <p class="text-3xl font-bold text-emerald-600">{{ students_data|sum(attribute='completed_tasks') }}</p>
+            <p class="text-3xl font-bold text-emerald-600">{{ students_data|sum(attribute='completed_objectives') }}</p>
             <p class="text-xs font-medium text-slate-500 uppercase tracking-wide mt-1">Completed</p>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-soft border border-slate-200/60 p-4 text-center">
+            <p class="text-3xl font-bold text-slate-900">{{ students_data|sum(attribute='total_tasks') }}</p>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wide mt-1">Total Tasks</p>
         </div>
         
         <div class="bg-white rounded-xl shadow-soft border border-slate-200/60 p-4 text-center">
@@ -94,6 +99,18 @@
                             style="width: {{ data.progress_percentage }}%">
                             <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
                         </div>
+                    </div>
+                </div>
+                
+                <!-- Objectives & Task Stats -->
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <div class="bg-primary-50 rounded-lg p-3 text-center">
+                        <p class="text-xl font-bold text-primary-600">{{ data.completed_objectives }}/{{ data.total_objectives }}</p>
+                        <p class="text-xs text-primary-600 mt-1">Objectives</p>
+                    </div>
+                    <div class="bg-emerald-50 rounded-lg p-3 text-center">
+                        <p class="text-xl font-bold text-emerald-600">{{ data.completed_tasks }}/{{ data.total_tasks }}</p>
+                        <p class="text-xs text-emerald-600 mt-1">Tasks Done</p>
                     </div>
                 </div>
                 

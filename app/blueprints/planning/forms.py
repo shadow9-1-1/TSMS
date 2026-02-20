@@ -83,6 +83,8 @@ class TaskForm(FlaskForm):
     
     notes = TextAreaField('Notes', validators=[Optional()])
     
+    order = IntegerField('Order', validators=[Optional()], default=0)
+    
     submit = SubmitField('Save Task')
     
     def validate_due_date(self, field):
