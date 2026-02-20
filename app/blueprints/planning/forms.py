@@ -29,11 +29,13 @@ class PlanForm(FlaskForm):
     supervisor_id = SelectField('Supervisor', validators=[Optional()])
     
     plan_type = SelectField('Plan Type', validators=[DataRequired()],
-        choices=[(t.value, t.value.replace('_', ' ').title()) for t in PlanType]
+        choices=[(t.value, t.value.replace('_', ' ').title()) for t in PlanType],
+        default=PlanType.ACADEMIC.value
     )
     
     status = SelectField('Status', validators=[DataRequired()],
-        choices=[(s.value, s.value.replace('_', ' ').title()) for s in PlanStatus]
+        choices=[(s.value, s.value.replace('_', ' ').title()) for s in PlanStatus],
+        default=PlanStatus.DRAFT.value
     )
     
     start_date = DateField('Start Date', validators=[DataRequired()], default=date.today)
@@ -64,11 +66,13 @@ class TaskForm(FlaskForm):
     description = TextAreaField('Description', validators=[Optional()])
     
     status = SelectField('Status', validators=[DataRequired()],
-        choices=[(s.value, s.value.replace('_', ' ').title()) for s in TaskStatus]
+        choices=[(s.value, s.value.replace('_', ' ').title()) for s in TaskStatus],
+        default=TaskStatus.PENDING.value
     )
     
     priority = SelectField('Priority', validators=[DataRequired()],
-        choices=[(p.value, p.value.title()) for p in TaskPriority]
+        choices=[(p.value, p.value.title()) for p in TaskPriority],
+        default=TaskPriority.MEDIUM.value
     )
     
     start_date = DateField('Start Date', validators=[Optional()], default=date.today)

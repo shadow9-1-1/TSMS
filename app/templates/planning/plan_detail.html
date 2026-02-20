@@ -84,6 +84,7 @@
                 
                 {% if plan.status.value == 'draft' %}
                 <form action="{{ url_for('planning.activate_plan', id=plan.id) }}" method="post" class="inline">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                     <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-medium text-sm">
                         Activate Plan
                     </button>
@@ -92,6 +93,7 @@
                 
                 {% if plan.status.value == 'active' %}
                 <form action="{{ url_for('planning.complete_plan', id=plan.id) }}" method="post" class="inline">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm"
                             onclick="return confirm('Mark this plan as completed?')">
                         Complete Plan
@@ -112,16 +114,16 @@
     <!-- Tasks Section -->
     <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
         <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200 flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-slate-900">Tasks ({{ plan.tasks|length }})</h3>
+            <h3 class="text-lg font-semibold text-slate-900">Tasks ({{ plan.tasks.all()|length }})</h3>
             <a href="{{ url_for('planning.create_task', plan_id=plan.id) }}" 
                class="px-4 py-2 bg-primary-600 text-white text-sm rounded-lg hover:bg-primary-700 transition-colors font-medium">
                 + Add Task
             </a>
         </div>
         
-        {% if plan.tasks %}
+        {% if plan.tasks.all() %}
         <div class="divide-y divide-slate-200">
-            {% for task in plan.tasks|sort(attribute='order') %}
+            {% for task in plan.tasks.all()|sort(attribute='order') %}
             <div class="p-4 hover:bg-slate-50/50 transition-colors">
                 <div class="flex items-start">
                     <!-- Task Checkbox -->
@@ -191,6 +193,7 @@
                     <div class="flex items-center gap-2 ml-4">
                         {% if task.status.value == 'pending' %}
                         <form action="{{ url_for('planning.start_task', id=task.id) }}" method="post" class="inline">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                             <button type="submit" title="Start Task" class="p-2 text-amber-600 hover:bg-amber-50 rounded-lg transition-colors">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
@@ -202,6 +205,7 @@
                         
                         {% if task.status.value in ['pending', 'in_progress'] %}
                         <form action="{{ url_for('planning.complete_task', id=task.id) }}" method="post" class="inline">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                             <button type="submit" title="Complete Task" class="p-2 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -218,6 +222,7 @@
                         </a>
                         
                         <form action="{{ url_for('planning.delete_task', id=task.id) }}" method="post" class="inline">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                             <button type="submit" title="Delete Task" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                                     onclick="return confirm('Delete this task?')">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

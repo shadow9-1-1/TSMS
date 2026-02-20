@@ -15,7 +15,7 @@ from flask_login import login_required, current_user
 from functools import wraps
 
 from app.extensions import db
-from app.models import User, UserRole, Student, StudentStatus
+from app.models import User, UserRole, UserStatus, Student, StudentStatus
 from app.models.planning import Plan, Task, PlanStatus, PlanType, TaskStatus, TaskPriority
 
 from . import planning_bp
@@ -168,13 +168,29 @@ def create_plan(student_id=None):
             User.role == UserRole.SUPERVISOR,
             User.role == UserRole.ADMIN
         ),
-        User.status == 'active'
+        User.status == UserStatus.ACTIVE
     ).order_by(User.name).all()
     form.supervisor_id.choices = [('', 'No Supervisor')] + [
         (str(s.id), s.name) for s in supervisors
     ]
     
     if form.validate_on_submit():
+        # Verify user can manage this student
+        student = Student.query.get(int(form.student_id.data))
+        if not student:
+            flash('Invalid student selected.', 'error')
+            return render_template('planning/plan_form.html',
+                                 form=form,
+                                 plan=None,
+                                 title='Create Plan')
+        
+        if not current_user.is_admin() and not can_manage_student(student):
+            flash('You do not have permission to create plans for this student.', 'error')
+            return render_template('planning/plan_form.html',
+                                 form=form,
+                                 plan=None,
+                                 title='Create Plan')
+        
         plan = Plan(
             title=form.title.data,
             description=form.description.data,
@@ -195,9 +211,11 @@ def create_plan(student_id=None):
         flash(f'Plan "{plan.title}" created successfully.', 'success')
         return redirect(url_for('planning.plan_detail', id=plan.id))
     
-    # Pre-fill student if provided
+    # Pre-fill student if provided (from URL path or query param)
     if student_id:
         form.student_id.data = str(student_id)
+    elif request.args.get('student_id'):
+        form.student_id.data = request.args.get('student_id')
     
     return render_template('planning/plan_form.html',
                          form=form,

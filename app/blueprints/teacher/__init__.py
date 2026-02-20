@@ -229,8 +229,9 @@ def planning():
         total_tasks = 0
         completed_tasks = 0
         for plan in student_plans:
-            total_tasks += len(plan.tasks)
-            completed_tasks += sum(1 for t in plan.tasks if t.status == TaskStatus.COMPLETED)
+            tasks = plan.tasks.all()
+            total_tasks += len(tasks)
+            completed_tasks += sum(1 for t in tasks if t.status == TaskStatus.COMPLETED)
         
         students_with_progress.append({
             'student': student,
@@ -279,7 +280,7 @@ def student_progress():
         overdue_tasks = 0
         
         for plan in plans:
-            for task in plan.tasks:
+            for task in plan.tasks.all():
                 total_tasks += 1
                 if task.status == TaskStatus.COMPLETED:
                     completed_tasks += 1
