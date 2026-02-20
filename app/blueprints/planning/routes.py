@@ -208,6 +208,21 @@ def create_plan(student_id=None):
         db.session.add(plan)
         db.session.commit()
         
+        # Create Objective records from objectives text
+        if form.objectives.data:
+            from app.models.planning import Objective
+            objectives_text = form.objectives.data.strip()
+            for i, line in enumerate(objectives_text.split('\n')):
+                line = line.strip()
+                if line:
+                    objective = Objective(
+                        plan_id=plan.id,
+                        text=line,
+                        order=i
+                    )
+                    db.session.add(objective)
+            db.session.commit()
+        
         flash(f'Plan "{plan.title}" created successfully.', 'success')
         return redirect(url_for('planning.plan_detail', id=plan.id))
     
@@ -299,10 +314,36 @@ def edit_plan(id):
         plan.status = PlanStatus(form.status.data)
         plan.start_date = form.start_date.data
         plan.end_date = form.end_date.data
-        plan.objectives = form.objectives.data
         plan.notes = form.notes.data
         
+        # Handle objectives - sync text to Objective records
+        new_objectives_text = form.objectives.data.strip() if form.objectives.data else ''
+        old_objectives_text = plan.objectives.strip() if plan.objectives else ''
+        
+        # Only recreate objectives if text changed
+        if new_objectives_text != old_objectives_text:
+            from app.models.planning import Objective
+            # Clear existing objectives
+            for obj in plan.plan_objectives.all():
+                db.session.delete(obj)
+            
+            # Create new objectives
+            if new_objectives_text:
+                for i, line in enumerate(new_objectives_text.split('\n')):
+                    line = line.strip()
+                    if line:
+                        objective = Objective(
+                            plan_id=plan.id,
+                            text=line,
+                            order=i
+                        )
+                        db.session.add(objective)
+        
+        plan.objectives = form.objectives.data
         db.session.commit()
+        
+        # Update progress
+        plan.update_progress()
         
         flash(f'Plan "{plan.title}" updated successfully.', 'success')
         return redirect(url_for('planning.plan_detail', id=plan.id))
@@ -532,6 +573,39 @@ def start_task(id):
     
     flash(f'Task "{task.title}" started.', 'success')
     return redirect(url_for('planning.plan_detail', id=task.plan_id))
+
+
+# =============================================================================
+# OBJECTIVE ROUTES
+# =============================================================================
+
+@planning_bp.route('/objectives/<int:id>/toggle', methods=['POST'])
+@login_required
+@planning_access_required
+def toggle_objective(id):
+    """Toggle an objective's completion status."""
+    from app.models.planning import Objective
+    
+    objective = Objective.query.get_or_404(id)
+    
+    if not current_user.is_admin() and not can_manage_student(objective.plan.student):
+        abort(403)
+    
+    objective.toggle()
+    
+    status_text = 'completed' if objective.is_completed else 'pending'
+    flash(f'Objective marked as {status_text}.', 'success')
+    
+    # Check if request is AJAX
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return jsonify({
+            'success': True,
+            'objective_status': objective.status.value,
+            'plan_progress': objective.plan.progress_percentage,
+            'plan_completed': objective.plan.status.value == 'completed'
+        })
+    
+    return redirect(url_for('planning.plan_detail', id=objective.plan_id))
 
 
 # =============================================================================

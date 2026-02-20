@@ -45,6 +45,12 @@ class TaskPriority(Enum):
     URGENT = 'urgent'
 
 
+class ObjectiveStatus(Enum):
+    """Enumeration for objective status."""
+    PENDING = 'pending'
+    COMPLETED = 'completed'
+
+
 class Plan(db.Model):
     """
     Academic or Project Plan for a student.
@@ -125,6 +131,7 @@ class Plan(db.Model):
     created_by = db.relationship('User', foreign_keys=[created_by_id], backref='created_plans')
     supervisor = db.relationship('User', foreign_keys=[supervisor_id], backref='supervised_plans')
     tasks = db.relationship('Task', backref='plan', lazy='dynamic', cascade='all, delete-orphan')
+    plan_objectives = db.relationship('Objective', backref='plan', lazy='dynamic', cascade='all, delete-orphan')
     
     def __repr__(self):
         return f'<Plan {self.title} for Student {self.student_id}>'
@@ -159,16 +166,26 @@ class Plan(db.Model):
         """Get number of completed tasks."""
         return self.tasks.filter_by(status=TaskStatus.COMPLETED).count()
     
+    @property
+    def objective_count(self):
+        """Get total number of objectives."""
+        return self.plan_objectives.count()
+    
+    @property
+    def completed_objective_count(self):
+        """Get number of completed objectives."""
+        return self.plan_objectives.filter_by(status=ObjectiveStatus.COMPLETED).count()
+    
     def calculate_progress(self):
-        """Calculate progress based on completed tasks."""
-        total = self.task_count
+        """Calculate progress based on completed objectives."""
+        total = self.objective_count
         if total == 0:
             return 0
-        completed = self.completed_task_count
+        completed = self.completed_objective_count
         return int((completed / total) * 100)
     
     def update_progress(self):
-        """Update progress percentage based on tasks."""
+        """Update progress percentage based on objectives."""
         self.progress_percentage = self.calculate_progress()
         if self.progress_percentage == 100 and self.status == PlanStatus.ACTIVE:
             self.status = PlanStatus.COMPLETED
@@ -337,5 +354,94 @@ class Task(db.Model):
             'due_date': self.due_date.isoformat() if self.due_date else None,
             'is_overdue': self.is_overdue,
             'days_until_due': self.days_until_due,
+            'created_at': self.created_at.isoformat() if self.created_at else None
+        }
+
+
+class Objective(db.Model):
+    """
+    Individual objective within a student plan.
+    
+    Objectives are trackable items that can be marked as complete.
+    Plan progress is calculated based on completed objectives.
+    
+    Attributes:
+        id: Primary key
+        plan_id: Parent plan
+        text: Objective description
+        status: Objective status (pending/completed)
+        order: Display order
+        completed_at: When objective was completed
+    """
+    __tablename__ = 'objectives'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    plan_id = db.Column(
+        db.Integer,
+        db.ForeignKey('plans.id', ondelete='CASCADE'),
+        nullable=False,
+        index=True
+    )
+    
+    # Objective details
+    text = db.Column(db.String(500), nullable=False)
+    status = db.Column(
+        db.Enum(ObjectiveStatus),
+        nullable=False,
+        default=ObjectiveStatus.PENDING
+    )
+    order = db.Column(db.Integer, default=0)
+    
+    # Timestamps
+    completed_at = db.Column(db.DateTime)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<Objective {self.id}: {self.text[:30]}...>'
+    
+    @property
+    def is_completed(self):
+        """Check if objective is completed."""
+        return self.status == ObjectiveStatus.COMPLETED
+    
+    def toggle(self):
+        """Toggle objective completion status."""
+        if self.status == ObjectiveStatus.COMPLETED:
+            self.status = ObjectiveStatus.PENDING
+            self.completed_at = None
+        else:
+            self.status = ObjectiveStatus.COMPLETED
+            self.completed_at = datetime.utcnow()
+        db.session.commit()
+        # Update parent plan progress
+        if self.plan:
+            self.plan.update_progress()
+    
+    def complete(self):
+        """Mark objective as completed."""
+        self.status = ObjectiveStatus.COMPLETED
+        self.completed_at = datetime.utcnow()
+        db.session.commit()
+        if self.plan:
+            self.plan.update_progress()
+    
+    def uncomplete(self):
+        """Mark objective as pending."""
+        self.status = ObjectiveStatus.PENDING
+        self.completed_at = None
+        db.session.commit()
+        if self.plan:
+            self.plan.update_progress()
+    
+    def to_dict(self):
+        """Convert objective to dictionary."""
+        return {
+            'id': self.id,
+            'plan_id': self.plan_id,
+            'text': self.text,
+            'status': self.status.value,
+            'is_completed': self.is_completed,
+            'completed_at': self.completed_at.isoformat() if self.completed_at else None,
             'created_at': self.created_at.isoformat() if self.created_at else None
         }

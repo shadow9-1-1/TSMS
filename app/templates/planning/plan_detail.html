@@ -68,9 +68,48 @@
             </div>
             {% endif %}
             
-            {% if plan.objectives %}
+            <!-- Objectives Section -->
+            {% set objectives_list = plan.plan_objectives.all() %}
+            {% if objectives_list %}
             <div class="mb-6">
-                <h4 class="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-2">Objectives</h4>
+                <h4 class="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-3">
+                    Objectives ({{ plan.completed_objective_count }}/{{ plan.objective_count }})
+                </h4>
+                <div class="space-y-2">
+                    {% for objective in objectives_list|sort(attribute='order') %}
+                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors group">
+                        <div class="flex items-center flex-1">
+                            <form action="{{ url_for('planning.toggle_objective', id=objective.id) }}" method="post" class="inline">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                <button type="submit" class="mr-3 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded">
+                                    {% if objective.is_completed %}
+                                    <svg class="w-6 h-6 text-emerald-500" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                                    </svg>
+                                    {% else %}
+                                    <svg class="w-6 h-6 text-slate-300 group-hover:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                                    </svg>
+                                    {% endif %}
+                                </button>
+                            </form>
+                            <span class="{% if objective.is_completed %}line-through text-slate-400{% else %}text-slate-700{% endif %}">
+                                {{ objective.text }}
+                            </span>
+                        </div>
+                        {% if objective.is_completed and objective.completed_at %}
+                        <span class="text-xs text-slate-400 ml-2">
+                            {{ objective.completed_at.strftime('%b %d') }}
+                        </span>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% elif plan.objectives %}
+            <!-- Fallback for old text-based objectives -->
+            <div class="mb-6">
+                <h4 class="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-2">Objectives (Legacy)</h4>
                 <p class="text-slate-600 whitespace-pre-line">{{ plan.objectives }}</p>
             </div>
             {% endif %}
