@@ -53,23 +53,23 @@ class ObjectiveStatus(Enum):
 
 class Plan(db.Model):
     """
-    Academic or Project Plan for a student.
+    Academic or Project Plan that can be assigned to multiple students.
     
-    Plans are created by teachers/supervisors for individual students
-    to track academic progress, project milestones, or research goals.
+    Plans are created by teachers/supervisors and can be assigned to one
+    or multiple students. Each student has their own progress tracking.
     
     Attributes:
         id: Primary key
         title: Plan title
         description: Detailed description
-        student_id: Student this plan belongs to
+        student_id: (Legacy) Single student - nullable for multi-student plans
         created_by_id: User who created the plan
         supervisor_id: Assigned supervisor for oversight
         plan_type: Type of plan (academic, project, etc.)
         status: Current plan status
         start_date: Plan start date
         end_date: Expected completion date
-        objectives: Plan objectives/goals
+        objectives: Plan objectives/goals (template text)
         notes: Additional notes
     """
     __tablename__ = 'plans'
@@ -78,11 +78,11 @@ class Plan(db.Model):
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text)
     
-    # Relationships
+    # Relationships - student_id is now nullable for multi-student plans
     student_id = db.Column(
         db.Integer,
         db.ForeignKey('students.id', ondelete='CASCADE'),
-        nullable=False,
+        nullable=True,  # Changed to nullable for multi-student support
         index=True
     )
     created_by_id = db.Column(
@@ -132,9 +132,26 @@ class Plan(db.Model):
     supervisor = db.relationship('User', foreign_keys=[supervisor_id], backref='supervised_plans')
     tasks = db.relationship('Task', backref='plan', lazy='dynamic', cascade='all, delete-orphan')
     plan_objectives = db.relationship('Objective', backref='plan', lazy='dynamic', cascade='all, delete-orphan')
+    student_plans = db.relationship('StudentPlan', backref='plan', lazy='dynamic', cascade='all, delete-orphan')
     
     def __repr__(self):
-        return f'<Plan {self.title} for Student {self.student_id}>'
+        return f'<Plan {self.title}>'
+    
+    @property
+    def assigned_students(self):
+        """Get all students assigned to this plan via StudentPlan."""
+        from app.models.student import Student
+        return [sp.student for sp in self.student_plans.all()]
+    
+    @property
+    def student_count(self):
+        """Get number of students assigned to this plan."""
+        return self.student_plans.count()
+    
+    @property
+    def is_multi_student(self):
+        """Check if this plan has multiple students."""
+        return self.student_plans.count() > 0
     
     @property
     def is_active(self):
@@ -439,6 +456,197 @@ class Objective(db.Model):
         return {
             'id': self.id,
             'plan_id': self.plan_id,
+            'text': self.text,
+            'status': self.status.value,
+            'is_completed': self.is_completed,
+            'completed_at': self.completed_at.isoformat() if self.completed_at else None,
+            'created_at': self.created_at.isoformat() if self.created_at else None
+        }
+
+
+class StudentPlan(db.Model):
+    """
+    Junction table linking students to plans with individual progress.
+    
+    Each student assigned to a plan has their own status and progress tracking.
+    
+    Attributes:
+        id: Primary key
+        student_id: Student assigned to the plan
+        plan_id: The plan template
+        status: Individual student's status for this plan
+        progress_percentage: Individual progress
+    """
+    __tablename__ = 'student_plans'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(
+        db.Integer,
+        db.ForeignKey('students.id', ondelete='CASCADE'),
+        nullable=False,
+        index=True
+    )
+    plan_id = db.Column(
+        db.Integer,
+        db.ForeignKey('plans.id', ondelete='CASCADE'),
+        nullable=False,
+        index=True
+    )
+    
+    # Individual status and progress
+    status = db.Column(
+        db.Enum(PlanStatus),
+        nullable=False,
+        default=PlanStatus.DRAFT
+    )
+    progress_percentage = db.Column(db.Integer, default=0)
+    
+    # Timestamps
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationships
+    student = db.relationship('Student', backref=db.backref('student_plans', lazy='dynamic'))
+    objectives = db.relationship('StudentObjective', backref='student_plan', lazy='dynamic', cascade='all, delete-orphan')
+    
+    # Unique constraint - a student can only be assigned to a plan once
+    __table_args__ = (
+        db.UniqueConstraint('student_id', 'plan_id', name='unique_student_plan'),
+    )
+    
+    def __repr__(self):
+        return f'<StudentPlan student={self.student_id} plan={self.plan_id}>'
+    
+    @property
+    def objective_count(self):
+        """Get total number of objectives."""
+        return self.objectives.count()
+    
+    @property
+    def completed_objective_count(self):
+        """Get number of completed objectives."""
+        return self.objectives.filter_by(status=ObjectiveStatus.COMPLETED).count()
+    
+    def calculate_progress(self):
+        """Calculate progress based on completed objectives."""
+        total = self.objective_count
+        if total == 0:
+            return 0
+        completed = self.completed_objective_count
+        return int((completed / total) * 100)
+    
+    def update_progress(self):
+        """Update progress percentage based on objectives."""
+        self.progress_percentage = self.calculate_progress()
+        if self.progress_percentage == 100 and self.status == PlanStatus.ACTIVE:
+            self.status = PlanStatus.COMPLETED
+        db.session.commit()
+    
+    def activate(self):
+        """Activate the plan for this student."""
+        self.status = PlanStatus.ACTIVE
+        db.session.commit()
+    
+    def complete(self):
+        """Mark plan as completed for this student."""
+        self.status = PlanStatus.COMPLETED
+        self.progress_percentage = 100
+        db.session.commit()
+    
+    def to_dict(self):
+        """Convert to dictionary."""
+        return {
+            'id': self.id,
+            'student_id': self.student_id,
+            'plan_id': self.plan_id,
+            'status': self.status.value,
+            'progress_percentage': self.progress_percentage,
+            'objective_count': self.objective_count,
+            'completed_objective_count': self.completed_objective_count
+        }
+
+
+class StudentObjective(db.Model):
+    """
+    Individual objective for a student within a plan.
+    
+    Each student has their own set of objectives that can be
+    tracked and completed independently.
+    
+    Attributes:
+        id: Primary key
+        student_plan_id: Link to StudentPlan
+        text: Objective description
+        status: Completion status
+        order: Display order
+        completed_at: When completed
+    """
+    __tablename__ = 'student_objectives'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    student_plan_id = db.Column(
+        db.Integer,
+        db.ForeignKey('student_plans.id', ondelete='CASCADE'),
+        nullable=False,
+        index=True
+    )
+    
+    # Objective details
+    text = db.Column(db.String(500), nullable=False)
+    status = db.Column(
+        db.Enum(ObjectiveStatus),
+        nullable=False,
+        default=ObjectiveStatus.PENDING
+    )
+    order = db.Column(db.Integer, default=0)
+    
+    # Timestamps
+    completed_at = db.Column(db.DateTime)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<StudentObjective {self.id}: {self.text[:30]}...>'
+    
+    @property
+    def is_completed(self):
+        """Check if objective is completed."""
+        return self.status == ObjectiveStatus.COMPLETED
+    
+    def toggle(self):
+        """Toggle objective completion status."""
+        if self.status == ObjectiveStatus.COMPLETED:
+            self.status = ObjectiveStatus.PENDING
+            self.completed_at = None
+        else:
+            self.status = ObjectiveStatus.COMPLETED
+            self.completed_at = datetime.utcnow()
+        db.session.commit()
+        # Update parent student plan progress
+        if self.student_plan:
+            self.student_plan.update_progress()
+    
+    def complete(self):
+        """Mark objective as completed."""
+        self.status = ObjectiveStatus.COMPLETED
+        self.completed_at = datetime.utcnow()
+        db.session.commit()
+        if self.student_plan:
+            self.student_plan.update_progress()
+    
+    def uncomplete(self):
+        """Mark objective as pending."""
+        self.status = ObjectiveStatus.PENDING
+        self.completed_at = None
+        db.session.commit()
+        if self.student_plan:
+            self.student_plan.update_progress()
+    
+    def to_dict(self):
+        """Convert to dictionary."""
+        return {
+            'id': self.id,
+            'student_plan_id': self.student_plan_id,
             'text': self.text,
             'status': self.status.value,
             'is_completed': self.is_completed,

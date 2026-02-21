@@ -198,7 +198,15 @@
                             {{ plan.status.value|title }}
                         </span>
                     </div>
-                    <p class="text-sm text-slate-500 mb-2">{{ plan.student.name }}</p>
+                    <p class="text-sm text-slate-500 mb-2">
+                        {% if plan.student %}
+                        {{ plan.student.name }}
+                        {% elif plan.student_plans.count() > 0 %}
+                        {{ plan.student_plans.count() }} student{{ 's' if plan.student_plans.count() > 1 else '' }}
+                        {% else %}
+                        No students
+                        {% endif %}
+                    </p>
                     <div class="flex items-center space-x-4">
                         <div class="flex-1 bg-slate-200 rounded-full h-2">
                             <div class="bg-primary-500 h-2 rounded-full" style="width: {{ plan.progress_percentage }}%"></div>
@@ -238,7 +246,16 @@
                     <div class="flex items-center justify-between bg-white rounded-lg px-4 py-2">
                         <div>
                             <p class="font-medium text-slate-900">{{ task.title }}</p>
-                            <p class="text-sm text-slate-500">{{ task.plan.student.name }} - Due: {{ task.due_date.strftime('%b %d, %Y') }}</p>
+                            <p class="text-sm text-slate-500">
+                                {% if task.plan.student %}
+                                {{ task.plan.student.name }}
+                                {% elif task.plan.student_plans.count() > 0 %}
+                                {{ task.plan.student_plans.count() }} student{{ 's' if task.plan.student_plans.count() > 1 else '' }}
+                                {% else %}
+                                No students
+                                {% endif %}
+                                - Due: {{ task.due_date.strftime('%b %d, %Y') }}
+                            </p>
                         </div>
                         <a href="{{ url_for('planning.plan_detail', id=task.plan_id) }}" 
                            class="text-sm text-primary-600 hover:text-primary-700 font-medium">View</a>

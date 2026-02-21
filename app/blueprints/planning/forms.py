@@ -6,7 +6,7 @@ Forms for plan and task management.
 
 from datetime import date
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SelectField, DateField, SubmitField, IntegerField
+from wtforms import StringField, TextAreaField, SelectField, SelectMultipleField, DateField, SubmitField, IntegerField
 from wtforms.validators import DataRequired, Optional, Length, ValidationError
 
 from app.models.planning import PlanStatus, PlanType, TaskStatus, TaskPriority
@@ -22,8 +22,9 @@ class PlanForm(FlaskForm):
     
     description = TextAreaField('Description', validators=[Optional()])
     
-    student_id = SelectField('Student', validators=[
-        DataRequired(message='Please select a student.')
+    # Changed to SelectMultipleField for multi-student support
+    student_ids = SelectMultipleField('Students', validators=[
+        DataRequired(message='Please select at least one student.')
     ])
     
     supervisor_id = SelectField('Supervisor', validators=[Optional()])

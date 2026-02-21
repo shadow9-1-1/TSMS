@@ -33,10 +33,17 @@
         </div>
         
         <div class="p-6">
+            {% set student_plans_list = plan.student_plans.all() %}
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
                 <div class="bg-slate-50 rounded-xl p-4">
-                    <p class="text-xs text-slate-500 uppercase tracking-wide mb-1">Student</p>
+                    <p class="text-xs text-slate-500 uppercase tracking-wide mb-1">Students</p>
+                    {% if student_plans_list %}
+                    <p class="font-semibold text-slate-900">{{ student_plans_list|length }} Student{{ 's' if student_plans_list|length > 1 else '' }}</p>
+                    {% elif plan.student %}
                     <p class="font-semibold text-slate-900">{{ plan.student.name }}</p>
+                    {% else %}
+                    <p class="font-semibold text-slate-500">No students</p>
+                    {% endif %}
                 </div>
                 <div class="bg-slate-50 rounded-xl p-4">
                     <p class="text-xs text-slate-500 uppercase tracking-wide mb-1">Start Date</p>
@@ -47,17 +54,8 @@
                     <p class="font-semibold text-slate-900">{{ plan.end_date.strftime('%b %d, %Y') if plan.end_date else 'Not set' }}</p>
                 </div>
                 <div class="bg-slate-50 rounded-xl p-4">
-                    <p class="text-xs text-slate-500 uppercase tracking-wide mb-1">Progress</p>
-                    <div class="flex items-center">
-                        <span class="text-2xl font-bold text-slate-900 mr-2">{{ plan.progress_percentage }}%</span>
-                        <div class="flex-1 bg-slate-200 rounded-full h-2">
-                            <div class="h-2 rounded-full transition-all duration-300
-                                {% if plan.progress_percentage == 100 %}bg-emerald-500
-                                {% elif plan.progress_percentage >= 50 %}bg-primary-500
-                                {% else %}bg-amber-500{% endif %}" 
-                                style="width: {{ plan.progress_percentage }}%"></div>
-                        </div>
-                    </div>
+                    <p class="text-xs text-slate-500 uppercase tracking-wide mb-1">Created By</p>
+                    <p class="font-semibold text-slate-900">{{ plan.created_by.name if plan.created_by else 'Unknown' }}</p>
                 </div>
             </div>
             
@@ -68,49 +66,10 @@
             </div>
             {% endif %}
             
-            <!-- Objectives Section -->
-            {% set objectives_list = plan.plan_objectives.all() %}
-            {% if objectives_list %}
+            {% if plan.objectives %}
             <div class="mb-6">
-                <h4 class="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-3">
-                    Objectives ({{ plan.completed_objective_count }}/{{ plan.objective_count }})
-                </h4>
-                <div class="space-y-2">
-                    {% for objective in objectives_list|sort(attribute='order') %}
-                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors group">
-                        <div class="flex items-center flex-1">
-                            <form action="{{ url_for('planning.toggle_objective', id=objective.id) }}" method="post" class="inline">
-                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                                <button type="submit" class="mr-3 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded">
-                                    {% if objective.is_completed %}
-                                    <svg class="w-6 h-6 text-emerald-500" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
-                                    </svg>
-                                    {% else %}
-                                    <svg class="w-6 h-6 text-slate-300 group-hover:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <circle cx="12" cy="12" r="10" stroke-width="2"/>
-                                    </svg>
-                                    {% endif %}
-                                </button>
-                            </form>
-                            <span class="{% if objective.is_completed %}line-through text-slate-400{% else %}text-slate-700{% endif %}">
-                                {{ objective.text }}
-                            </span>
-                        </div>
-                        {% if objective.is_completed and objective.completed_at %}
-                        <span class="text-xs text-slate-400 ml-2">
-                            {{ objective.completed_at.strftime('%b %d') }}
-                        </span>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% elif plan.objectives %}
-            <!-- Fallback for old text-based objectives -->
-            <div class="mb-6">
-                <h4 class="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-2">Objectives (Legacy)</h4>
-                <p class="text-slate-600 whitespace-pre-line">{{ plan.objectives }}</p>
+                <h4 class="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-2">Objectives Template</h4>
+                <p class="text-slate-600 whitespace-pre-line text-sm bg-slate-50 p-3 rounded-lg">{{ plan.objectives }}</p>
             </div>
             {% endif %}
             
@@ -130,16 +89,6 @@
                 </form>
                 {% endif %}
                 
-                {% if plan.status.value == 'active' %}
-                <form action="{{ url_for('planning.complete_plan', id=plan.id) }}" method="post" class="inline">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm"
-                            onclick="return confirm('Mark this plan as completed?')">
-                        Complete Plan
-                    </button>
-                </form>
-                {% endif %}
-                
                 <form action="{{ url_for('planning.delete_plan', id=plan.id) }}" method="post" class="inline ml-auto">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                     <button type="submit" class="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors font-medium text-sm"
@@ -150,6 +99,164 @@
             </div>
         </div>
     </div>
+    
+    <!-- Student Progress Section -->
+    {% if student_plans_list %}
+    <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
+        <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200">
+            <h3 class="text-lg font-semibold text-slate-900">Student Progress</h3>
+        </div>
+        
+        <div class="divide-y divide-slate-200">
+            {% for sp in student_plans_list %}
+            <div class="p-6" x-data="{ expanded: false }">
+                <!-- Student Header -->
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">{{ sp.student.name[:2]|upper }}</span>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-900">{{ sp.student.name }}</h4>
+                            <p class="text-sm text-slate-500">{{ sp.student.student_id }}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-right">
+                            <span class="text-2xl font-bold {% if sp.progress_percentage == 100 %}text-emerald-600{% elif sp.progress_percentage >= 50 %}text-primary-600{% else %}text-amber-600{% endif %}">
+                                {{ sp.progress_percentage }}%
+                            </span>
+                            <p class="text-xs text-slate-500">{{ sp.completed_objective_count }}/{{ sp.objective_count }} objectives</p>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full text-xs font-medium
+                            {% if sp.status.value == 'active' %}bg-emerald-100 text-emerald-700
+                            {% elif sp.status.value == 'completed' %}bg-blue-100 text-blue-700
+                            {% elif sp.status.value == 'draft' %}bg-slate-100 text-slate-700
+                            {% else %}bg-amber-100 text-amber-700{% endif %}">
+                            {{ sp.status.value|title }}
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Progress Bar -->
+                <div class="w-full bg-slate-200 rounded-full h-3 mb-4">
+                    <div class="h-3 rounded-full transition-all duration-500
+                        {% if sp.progress_percentage == 100 %}bg-gradient-to-r from-emerald-400 to-emerald-500
+                        {% elif sp.progress_percentage >= 50 %}bg-gradient-to-r from-primary-400 to-primary-500
+                        {% else %}bg-gradient-to-r from-amber-400 to-amber-500{% endif %}" 
+                        style="width: {{ sp.progress_percentage }}%"></div>
+                </div>
+                
+                <!-- Toggle Objectives -->
+                <button @click="expanded = !expanded" class="text-sm text-primary-600 hover:text-primary-700 font-medium flex items-center">
+                    <svg class="w-4 h-4 mr-1 transition-transform" :class="{ 'rotate-90': expanded }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                    <span x-text="expanded ? 'Hide Objectives' : 'Show Objectives'">Show Objectives</span>
+                </button>
+                
+                <!-- Objectives List -->
+                <div x-show="expanded" x-collapse class="mt-4 space-y-2">
+                    {% for obj in sp.objectives.all()|sort(attribute='order') %}
+                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors group">
+                        <div class="flex items-center flex-1">
+                            <form action="{{ url_for('planning.toggle_student_objective', id=obj.id) }}" method="post" class="inline">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                <button type="submit" class="mr-3 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded">
+                                    {% if obj.is_completed %}
+                                    <svg class="w-6 h-6 text-emerald-500" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                                    </svg>
+                                    {% else %}
+                                    <svg class="w-6 h-6 text-slate-300 group-hover:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                                    </svg>
+                                    {% endif %}
+                                </button>
+                            </form>
+                            <span class="{% if obj.is_completed %}line-through text-slate-400{% else %}text-slate-700{% endif %}">
+                                {{ obj.text }}
+                            </span>
+                        </div>
+                        {% if obj.is_completed and obj.completed_at %}
+                        <span class="text-xs text-slate-400 ml-2">
+                            {{ obj.completed_at.strftime('%b %d') }}
+                        </span>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <p class="text-sm text-slate-500 italic">No objectives for this student.</p>
+                    {% endfor %}
+                </div>
+                
+                <!-- Student Actions -->
+                <div class="mt-4 flex items-center gap-2">
+                    {% if sp.status.value == 'draft' %}
+                    <form action="{{ url_for('planning.activate_student_plan', id=sp.id) }}" method="post" class="inline">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <button type="submit" class="px-3 py-1.5 text-sm bg-emerald-100 text-emerald-700 rounded-lg hover:bg-emerald-200 transition-colors font-medium">
+                            Activate
+                        </button>
+                    </form>
+                    {% endif %}
+                    
+                    {% if sp.status.value == 'active' and sp.progress_percentage == 100 %}
+                    <form action="{{ url_for('planning.complete_student_plan', id=sp.id) }}" method="post" class="inline">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <button type="submit" class="px-3 py-1.5 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors font-medium">
+                            Mark Complete
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <!-- Legacy single-student objectives (backward compatibility) -->
+    {% set objectives_list = plan.plan_objectives.all() %}
+    {% if objectives_list %}
+    <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
+        <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200">
+            <h3 class="text-lg font-semibold text-slate-900">
+                Objectives ({{ plan.completed_objective_count }}/{{ plan.objective_count }})
+            </h3>
+        </div>
+        
+        <div class="p-6 space-y-2">
+            {% for objective in objectives_list|sort(attribute='order') %}
+            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors group">
+                <div class="flex items-center flex-1">
+                    <form action="{{ url_for('planning.toggle_objective', id=objective.id) }}" method="post" class="inline">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <button type="submit" class="mr-3 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded">
+                            {% if objective.is_completed %}
+                            <svg class="w-6 h-6 text-emerald-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                            {% else %}
+                            <svg class="w-6 h-6 text-slate-300 group-hover:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                            </svg>
+                            {% endif %}
+                        </button>
+                    </form>
+                    <span class="{% if objective.is_completed %}line-through text-slate-400{% else %}text-slate-700{% endif %}">
+                        {{ objective.text }}
+                    </span>
+                </div>
+                {% if objective.is_completed and objective.completed_at %}
+                <span class="text-xs text-slate-400 ml-2">
+                    {{ objective.completed_at.strftime('%b %d') }}
+                </span>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
     
     <!-- Tasks Section -->
     <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
@@ -210,9 +317,6 @@
                         {% endif %}
                         
                         <div class="flex items-center gap-4 text-xs text-slate-500">
-                            {% if task.start_date %}
-                            <span>Start: {{ task.start_date.strftime('%b %d') }}</span>
-                            {% endif %}
                             {% if task.due_date %}
                             <span class="{{ 'text-red-500 font-medium' if task.is_overdue and task.status.value != 'completed' }}">
                                 Due: {{ task.due_date.strftime('%b %d, %Y') }}
@@ -222,7 +326,6 @@
                                 {% if task.status.value == 'completed' %}bg-emerald-100 text-emerald-700
                                 {% elif task.status.value == 'in_progress' %}bg-amber-100 text-amber-700
                                 {% elif task.status.value == 'overdue' %}bg-red-100 text-red-700
-                                {% elif task.status.value == 'cancelled' %}bg-slate-100 text-slate-500
                                 {% else %}bg-slate-100 text-slate-700{% endif %}">
                                 {{ task.status.value|replace('_', ' ')|title }}
                             </span>

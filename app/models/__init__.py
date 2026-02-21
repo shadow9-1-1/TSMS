@@ -17,7 +17,10 @@ from app.models.teacher import Teacher
 from app.models.supervisor import Supervisor
 from app.models.student import Student, StudentStatus
 from app.models.course import Course, Enrollment
-from app.models.planning import Plan, Task, Objective, PlanStatus, PlanType, TaskStatus, TaskPriority, ObjectiveStatus
+from app.models.planning import (
+    Plan, Task, Objective, StudentPlan, StudentObjective,
+    PlanStatus, PlanType, TaskStatus, TaskPriority, ObjectiveStatus
+)
 
 __all__ = [
     'User', 
@@ -32,6 +35,8 @@ __all__ = [
     'Plan',
     'Task',
     'Objective',
+    'StudentPlan',
+    'StudentObjective',
     'PlanStatus',
     'PlanType',
     'TaskStatus',

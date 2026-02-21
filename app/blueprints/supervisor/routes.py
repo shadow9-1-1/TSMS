@@ -264,7 +264,18 @@ def plan_detail(id):
     
     # Check access
     if not current_user.is_admin():
-        if plan.student.supervisor_id != current_user.id:
+        has_access = False
+        # For single-student plans
+        if plan.student and plan.student.supervisor_id == current_user.id:
+            has_access = True
+        # For multi-student plans
+        elif plan.is_multi_student:
+            for sp in plan.student_plans:
+                if sp.student.supervisor_id == current_user.id:
+                    has_access = True
+                    break
+        
+        if not has_access:
             flash('You do not have permission to view this plan.', 'error')
             abort(403)
     
