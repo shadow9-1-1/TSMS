@@ -17,7 +17,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-slate-500">Total Plans</p>
-                    <p class="text-3xl font-bold text-slate-900 mt-1">{{ plans|length }}</p>
+                    <p class="text-3xl font-bold text-slate-900 mt-1">{{ plans_data|length }}</p>
                 </div>
                 <div class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
                     <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -31,7 +31,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-slate-500">Active Plans</p>
-                    <p class="text-3xl font-bold text-emerald-600 mt-1">{{ plans|selectattr('status.value', 'equalto', 'active')|list|length }}</p>
+                    <p class="text-3xl font-bold text-emerald-600 mt-1">{{ plans_data|selectattr('status.value', 'equalto', 'active')|list|length }}</p>
                 </div>
                 <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
                     <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,7 +59,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-slate-500">Completed</p>
-                    <p class="text-3xl font-bold text-blue-600 mt-1">{{ plans|selectattr('status.value', 'equalto', 'completed')|list|length }}</p>
+                    <p class="text-3xl font-bold text-blue-600 mt-1">{{ plans_data|selectattr('status.value', 'equalto', 'completed')|list|length }}</p>
                 </div>
                 <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
                     <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -92,25 +92,31 @@
             <h3 class="text-lg font-semibold text-slate-900">My Plans</h3>
         </div>
         
-        {% if plans %}
+        {% if plans_data %}
         <div class="divide-y divide-slate-200">
-            {% for plan in plans %}
+            {% for pd in plans_data %}
+            {% set plan = pd.plan %}
             <div class="p-6 hover:bg-slate-50/50 transition-colors">
                 <div class="flex items-start justify-between">
                     <div class="flex-1">
                         <div class="flex items-center gap-3 mb-2">
                             <h4 class="text-lg font-semibold text-slate-900">{{ plan.title }}</h4>
                             <span class="px-2.5 py-0.5 rounded-full text-xs font-medium
-                                {% if plan.status.value == 'active' %}bg-emerald-100 text-emerald-700
-                                {% elif plan.status.value == 'completed' %}bg-blue-100 text-blue-700
-                                {% elif plan.status.value == 'draft' %}bg-slate-100 text-slate-700
-                                {% elif plan.status.value == 'cancelled' %}bg-red-100 text-red-700
+                                {% if pd.status.value == 'active' %}bg-emerald-100 text-emerald-700
+                                {% elif pd.status.value == 'completed' %}bg-blue-100 text-blue-700
+                                {% elif pd.status.value == 'draft' %}bg-slate-100 text-slate-700
+                                {% elif pd.status.value == 'cancelled' %}bg-red-100 text-red-700
                                 {% else %}bg-amber-100 text-amber-700{% endif %}">
-                                {{ plan.status.value|title }}
+                                {{ pd.status.value|title }}
                             </span>
                             <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-xs font-medium">
                                 {{ plan.plan_type.value|title }}
                             </span>
+                            {% if pd.is_multi_student %}
+                            <span class="px-2 py-0.5 bg-purple-100 text-purple-600 rounded text-xs font-medium">
+                                Group Plan
+                            </span>
+                            {% endif %}
                         </div>
                         
                         {% if plan.description %}
@@ -128,13 +134,13 @@
                     
                     <div class="flex items-center gap-4 ml-6">
                         <div class="text-right">
-                            <p class="text-2xl font-bold text-slate-900">{{ plan.progress_percentage }}%</p>
+                            <p class="text-2xl font-bold text-slate-900">{{ pd.progress_percentage }}%</p>
                             <div class="w-24 bg-slate-200 rounded-full h-2 mt-1">
                                 <div class="h-2 rounded-full transition-all duration-300
-                                    {% if plan.progress_percentage == 100 %}bg-emerald-500
-                                    {% elif plan.progress_percentage >= 50 %}bg-primary-500
+                                    {% if pd.progress_percentage == 100 %}bg-emerald-500
+                                    {% elif pd.progress_percentage >= 50 %}bg-primary-500
                                     {% else %}bg-amber-500{% endif %}" 
-                                    style="width: {{ plan.progress_percentage }}%"></div>
+                                    style="width: {{ pd.progress_percentage }}%"></div>
                             </div>
                         </div>
                         <a href="{{ url_for('planning.plan_detail', id=plan.id) }}" 

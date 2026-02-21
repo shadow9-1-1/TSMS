@@ -747,16 +747,68 @@ def complete_student_plan(id):
 @planning_access_required
 def student_plans(student_id):
     """View all plans for a specific student."""
+    from app.models.planning import StudentPlan
+    
     student = Student.query.get_or_404(student_id)
     
     if not current_user.is_admin() and not can_manage_student(student):
         flash('You do not have permission to view this student\'s plans.', 'error')
         abort(403)
     
-    plans = student.plans.order_by(Plan.created_at.desc()).all()
-    active_plan = student.get_active_plan()
+    # Get single-student plans (legacy)
+    single_plans = student.plans.order_by(Plan.created_at.desc()).all()
+    
+    # Get multi-student plans where this student is enrolled
+    student_plan_entries = StudentPlan.query.filter_by(student_id=student_id).all()
+    
+    # Create a unified list of plan data
+    # Each entry contains the plan and student-specific progress info
+    plans_data = []
+    
+    # Add single-student plans
+    for plan in single_plans:
+        plans_data.append({
+            'plan': plan,
+            'student_plan': None,  # Not a multi-student plan
+            'status': plan.status,
+            'progress_percentage': plan.progress_percentage,
+            'is_multi_student': False
+        })
+    
+    # Add multi-student plans (with student-specific progress)
+    for sp in student_plan_entries:
+        # Check if this plan isn't already in the list (shouldn't happen, but safe)
+        if sp.plan_id not in [pd['plan'].id for pd in plans_data]:
+            plans_data.append({
+                'plan': sp.plan,
+                'student_plan': sp,
+                'status': sp.status,  # Student-specific status
+                'progress_percentage': sp.progress_percentage,  # Student-specific progress
+                'is_multi_student': True
+            })
+    
+    # Sort by created date descending
+    plans_data.sort(key=lambda x: x['plan'].created_at, reverse=True)
+    
+    # Find active plan for this student
+    active_plan = None
+    for pd in plans_data:
+        if pd['status'] == PlanStatus.ACTIVE:
+            active_plan = pd['plan']
+            break
+    
+    # Calculate upcoming tasks
+    upcoming_tasks = 0
+    from datetime import datetime, timedelta
+    next_week = datetime.utcnow() + timedelta(days=7)
+    for pd in plans_data:
+        for task in pd['plan'].tasks.all():
+            if task.due_date and task.due_date <= next_week and task.status not in [TaskStatus.COMPLETED, TaskStatus.CANCELLED]:
+                upcoming_tasks += 1
     
     return render_template('planning/student_plans.html',
                          student=student,
-                         plans=plans,
-                         active_plan=active_plan)
+                         plans_data=plans_data,
+                         plans=[pd['plan'] for pd in plans_data],  # For backward compatibility
+                         active_plan=active_plan,
+                         upcoming_tasks=upcoming_tasks)

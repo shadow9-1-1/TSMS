@@ -36,6 +36,8 @@ def teacher_required(f):
 @teacher_required
 def index():
     """Teacher dashboard."""
+    from app.models.planning import StudentPlan
+    
     teacher = current_user.teacher_profile
     
     if teacher:
@@ -52,22 +54,35 @@ def index():
     
     # Planning stats for teacher
     if student_ids:
-        plans_query = Plan.query.filter(Plan.student_id.in_(student_ids))
-        active_plans = plans_query.filter(Plan.status == PlanStatus.ACTIVE).count()
-        total_plans = plans_query.count()
+        # Get single-student plans
+        single_plans_query = Plan.query.filter(Plan.student_id.in_(student_ids))
+        single_plan_ids = [p.id for p in single_plans_query.all()]
         
-        # Get tasks for these plans
-        plan_ids = [p.id for p in plans_query.all()]
-        if plan_ids:
+        # Get multi-student plans where teacher's students are enrolled
+        multi_plan_ids = db.session.query(StudentPlan.plan_id).filter(
+            StudentPlan.student_id.in_(student_ids)
+        ).distinct().all()
+        multi_plan_ids = [p[0] for p in multi_plan_ids]
+        
+        # Combine plan IDs (unique)
+        all_plan_ids = list(set(single_plan_ids + multi_plan_ids))
+        
+        if all_plan_ids:
+            all_plans = Plan.query.filter(Plan.id.in_(all_plan_ids)).all()
+            active_plans = sum(1 for p in all_plans if p.status == PlanStatus.ACTIVE)
+            total_plans = len(all_plans)
+            
             pending_tasks = Task.query.filter(
-                Task.plan_id.in_(plan_ids),
+                Task.plan_id.in_(all_plan_ids),
                 Task.status.in_([TaskStatus.PENDING, TaskStatus.IN_PROGRESS])
             ).count()
             overdue_tasks = Task.query.filter(
-                Task.plan_id.in_(plan_ids),
+                Task.plan_id.in_(all_plan_ids),
                 Task.status == TaskStatus.OVERDUE
             ).count()
         else:
+            active_plans = 0
+            total_plans = 0
             pending_tasks = 0
             overdue_tasks = 0
     else:
@@ -193,6 +208,8 @@ def grades(course_id):
 @teacher_required
 def planning():
     """Teacher planning dashboard - view and manage student plans."""
+    from app.models.planning import StudentPlan, StudentObjective, ObjectiveStatus
+    
     teacher = current_user.teacher_profile
     
     if teacher:
@@ -204,31 +221,85 @@ def planning():
         students = Student.query.all()
         student_ids = [s.id for s in students]
     
-    # Get plans for these students
+    # Get plans for these students (both single-student and multi-student)
+    all_plans = []
+    all_plan_ids = set()
+    
     if student_ids:
-        plans = Plan.query.filter(
+        # Get single-student plans
+        single_plans = Plan.query.filter(
             Plan.student_id.in_(student_ids)
         ).order_by(Plan.created_at.desc()).all()
-    else:
-        plans = []
+        
+        for plan in single_plans:
+            if plan.id not in all_plan_ids:
+                all_plan_ids.add(plan.id)
+                all_plans.append(plan)
+        
+        # Get multi-student plans where any of the teacher's students are enrolled
+        student_plan_entries = StudentPlan.query.filter(
+            StudentPlan.student_id.in_(student_ids)
+        ).all()
+        
+        for sp in student_plan_entries:
+            if sp.plan_id not in all_plan_ids:
+                all_plan_ids.add(sp.plan_id)
+                all_plans.append(sp.plan)
+    
+    # Sort by created_at descending
+    all_plans.sort(key=lambda p: p.created_at, reverse=True)
     
     # Calculate student progress data
     students_with_progress = []
     for student in students:
-        student_plans = [p for p in plans if p.student_id == student.id]
-        active_plan = next((p for p in student_plans if p.status == PlanStatus.ACTIVE), None)
+        # Get single-student plans for this student
+        single_student_plans = [p for p in all_plans if p.student_id == student.id]
         
-        # Calculate overall progress
-        if student_plans:
-            total_progress = sum(p.progress_percentage or 0 for p in student_plans)
-            overall_progress = total_progress // len(student_plans)
+        # Get multi-student plan entries for this student
+        student_plan_entries = StudentPlan.query.filter_by(student_id=student.id).all()
+        multi_student_plans = [sp.plan for sp in student_plan_entries if sp.plan not in single_student_plans]
+        
+        all_student_plans = single_student_plans + multi_student_plans
+        
+        # Find active plan (check both single and multi)
+        active_plan = None
+        for plan in single_student_plans:
+            if plan.status == PlanStatus.ACTIVE:
+                active_plan = plan
+                break
+        if not active_plan:
+            for sp in student_plan_entries:
+                if sp.status == PlanStatus.ACTIVE:
+                    active_plan = sp.plan
+                    break
+        
+        # Calculate overall progress based on objectives
+        total_objectives = 0
+        completed_objectives = 0
+        
+        # From single-student plans
+        for plan in single_student_plans:
+            for obj in plan.plan_objectives.all():
+                total_objectives += 1
+                if obj.status == ObjectiveStatus.COMPLETED:
+                    completed_objectives += 1
+        
+        # From multi-student plans (student-specific objectives)
+        for sp in student_plan_entries:
+            for obj in sp.objectives.all():
+                total_objectives += 1
+                if obj.status == ObjectiveStatus.COMPLETED:
+                    completed_objectives += 1
+        
+        if total_objectives > 0:
+            overall_progress = int((completed_objectives / total_objectives) * 100)
         else:
             overall_progress = 0
         
         # Count tasks
         total_tasks = 0
         completed_tasks = 0
-        for plan in student_plans:
+        for plan in all_student_plans:
             tasks = plan.tasks.all()
             total_tasks += len(tasks)
             completed_tasks += sum(1 for t in tasks if t.status == TaskStatus.COMPLETED)
@@ -236,7 +307,7 @@ def planning():
         students_with_progress.append({
             'student': student,
             'active_plan': active_plan,
-            'total_plans': len(student_plans),
+            'total_plans': len(all_student_plans),
             'overall_progress': overall_progress,
             'total_tasks': total_tasks,
             'completed_tasks': completed_tasks
@@ -245,14 +316,14 @@ def planning():
     # Stats
     stats = {
         'total_students': len(students),
-        'total_plans': len(plans),
-        'active_plans': sum(1 for p in plans if p.status == PlanStatus.ACTIVE),
-        'completed_plans': sum(1 for p in plans if p.status == PlanStatus.COMPLETED)
+        'total_plans': len(all_plans),
+        'active_plans': sum(1 for p in all_plans if p.status == PlanStatus.ACTIVE),
+        'completed_plans': sum(1 for p in all_plans if p.status == PlanStatus.COMPLETED)
     }
     
     return render_template('teacher/planning.html',
                          students_with_progress=students_with_progress,
-                         plans=plans,
+                         plans=all_plans,
                          stats=stats)
 
 
@@ -261,7 +332,7 @@ def planning():
 @teacher_required
 def student_progress():
     """View all students with their progress bars."""
-    from app.models.planning import ObjectiveStatus
+    from app.models.planning import ObjectiveStatus, StudentPlan, StudentObjective
     
     teacher = current_user.teacher_profile
     
@@ -273,8 +344,32 @@ def student_progress():
     # Calculate progress for each student
     students_data = []
     for student in students:
-        plans = Plan.query.filter_by(student_id=student.id).all()
-        active_plan = next((p for p in plans if p.status == PlanStatus.ACTIVE), None)
+        # Get single-student plans (legacy)
+        single_plans = Plan.query.filter_by(student_id=student.id).all()
+        
+        # Get multi-student plans where student is enrolled
+        student_plan_entries = StudentPlan.query.filter_by(student_id=student.id).all()
+        multi_plans = [sp.plan for sp in student_plan_entries]
+        
+        # Combine all plans (avoid duplicates)
+        all_plan_ids = set()
+        all_plans = []
+        for plan in single_plans + multi_plans:
+            if plan.id not in all_plan_ids:
+                all_plan_ids.add(plan.id)
+                all_plans.append(plan)
+        
+        # Find the active plan (check both single-student and multi-student)
+        active_plan = None
+        for plan in single_plans:
+            if plan.status == PlanStatus.ACTIVE:
+                active_plan = plan
+                break
+        if not active_plan:
+            for sp in student_plan_entries:
+                if sp.status == PlanStatus.ACTIVE:
+                    active_plan = sp.plan
+                    break
         
         total_tasks = 0
         completed_tasks = 0
@@ -284,7 +379,8 @@ def student_progress():
         total_objectives = 0
         completed_objectives = 0
         
-        for plan in plans:
+        # Count from single-student plans
+        for plan in single_plans:
             for task in plan.tasks.all():
                 total_tasks += 1
                 if task.status == TaskStatus.COMPLETED:
@@ -294,8 +390,26 @@ def student_progress():
                 elif task.status in [TaskStatus.PENDING, TaskStatus.IN_PROGRESS]:
                     pending_tasks += 1
             
-            # Count objectives
+            # Count objectives from single-student plans
             for obj in plan.plan_objectives.all():
+                total_objectives += 1
+                if obj.status == ObjectiveStatus.COMPLETED:
+                    completed_objectives += 1
+        
+        # Count from multi-student plans (StudentObjective)
+        for sp in student_plan_entries:
+            # Tasks are shared across all students in a plan
+            for task in sp.plan.tasks.all():
+                total_tasks += 1
+                if task.status == TaskStatus.COMPLETED:
+                    completed_tasks += 1
+                elif task.status == TaskStatus.OVERDUE:
+                    overdue_tasks += 1
+                elif task.status in [TaskStatus.PENDING, TaskStatus.IN_PROGRESS]:
+                    pending_tasks += 1
+            
+            # Count student-specific objectives
+            for obj in sp.objectives.all():
                 total_objectives += 1
                 if obj.status == ObjectiveStatus.COMPLETED:
                     completed_objectives += 1
@@ -309,7 +423,7 @@ def student_progress():
         students_data.append({
             'student': student,
             'active_plan': active_plan,
-            'total_plans': len(plans),
+            'total_plans': len(all_plans),
             'total_tasks': total_tasks,
             'completed_tasks': completed_tasks,
             'pending_tasks': pending_tasks,
