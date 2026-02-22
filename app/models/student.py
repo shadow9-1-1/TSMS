@@ -1,8 +1,4 @@
-"""
-Student model for managing student records.
-
-Students can be assigned to a teacher and enrolled in courses.
-"""
+"""Student model for managing student records."""
 
 from datetime import datetime
 from enum import Enum
@@ -83,8 +79,6 @@ class Student(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
     # Relationships
-    enrollments = db.relationship('Enrollment', backref='student', lazy='dynamic',
-                                  cascade='all, delete-orphan')
     supervisor = db.relationship('User', foreign_keys=[supervisor_id], backref='supervised_students')
     
     def __repr__(self):
@@ -136,7 +130,7 @@ class Student(db.Model):
         self.assigned_teacher_id = None
     
     def get_teacher_name(self):
-        """Get assigned teacher's name."""
+        """Get assigned teacher name."""
         return self.assigned_teacher.name if self.assigned_teacher else None
     
     # Supervisor assignment
@@ -160,7 +154,7 @@ class Student(db.Model):
         self.supervisor_id = None
     
     def get_supervisor_name(self):
-        """Get assigned supervisor's name."""
+        """Get assigned supervisor name."""
         return self.supervisor.name if self.supervisor else None
     
     def get_active_plan(self):
@@ -171,14 +165,6 @@ class Student(db.Model):
     def get_all_plans(self):
         """Get all plans for this student."""
         return self.plans.order_by(db.desc('created_at')).all()
-    
-    def get_enrolled_courses(self):
-        """Get all courses the student is enrolled in."""
-        return [e.course for e in self.enrollments.filter_by(status='active').all()]
-    
-    def get_course_count(self):
-        """Get number of active course enrollments."""
-        return self.enrollments.filter_by(status='active').count()
     
     def to_dict(self):
         """Convert student to dictionary representation."""
@@ -209,18 +195,7 @@ class Student(db.Model):
     
     @staticmethod
     def create_student(name, email, phone=None, teacher=None):
-        """
-        Factory method to create a new student.
-        
-        Args:
-            name: Student's full name
-            email: Email address
-            phone: Contact phone (optional)
-            teacher: Teacher instance or ID to assign (optional)
-            
-        Returns:
-            Student: New student instance (committed to database)
-        """
+        """Factory method to create a new student."""
         student = Student(
             name=name,
             email=email.lower(),

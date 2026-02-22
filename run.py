@@ -22,7 +22,6 @@ from app.extensions import db
 from app.models import User, UserRole, UserStatus
 from app.models.teacher import Teacher
 from app.models.student import Student, StudentStatus
-from app.models.course import Course, Enrollment
 
 # Create application instance
 app = create_app(os.getenv('FLASK_CONFIG', 'development'))
@@ -119,24 +118,6 @@ def seed_demo():
     
     db.session.commit()
     click.echo('Demo students created.')
-    
-    # Create demo course
-    teacher = Teacher.query.first()
-    if teacher and not Course.query.filter_by(code='MATH101').first():
-        course = Course(
-            code='MATH101',
-            name='Introduction to Mathematics',
-            description='A foundational mathematics course covering basic algebra and geometry.',
-            credits=3,
-            teacher_id=teacher.id,
-            schedule='Mon, Wed, Fri 9:00-10:30',
-            room='Room 101',
-            semester='Fall',
-            academic_year='2025-2026'
-        )
-        db.session.add(course)
-        db.session.commit()
-        click.echo('Demo course created.')
     
     click.echo('Demo data seeding complete!')
 

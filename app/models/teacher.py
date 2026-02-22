@@ -1,7 +1,7 @@
 """
 Teacher model for managing teacher profiles and assignments.
 
-Teachers are linked to User accounts and can manage courses and students.
+Teachers are linked to User accounts and can manage students.
 """
 
 from datetime import datetime
@@ -49,8 +49,6 @@ class Teacher(db.Model):
     )
     
     # Relationships
-    courses = db.relationship('Course', backref='teacher', lazy='dynamic',
-                              cascade='all, delete-orphan')
     assigned_students = db.relationship(
         'Student', 
         backref='assigned_teacher', 
@@ -70,11 +68,6 @@ class Teacher(db.Model):
     def email(self):
         """Get teacher's email from user profile."""
         return self.user.email if self.user else None
-    
-    def get_active_courses(self):
-        """Get all active courses for this teacher."""
-        from app.models.course import Course
-        return self.courses.filter_by(status='active').all()
     
     def get_student_count(self):
         """Get total number of students assigned to this teacher."""

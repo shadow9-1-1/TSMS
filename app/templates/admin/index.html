@@ -75,24 +75,6 @@
                 </a>
             </div>
         </div>
-        
-        <!-- Courses Card -->
-        <div class="group bg-white rounded-2xl shadow-soft border border-slate-200/60 p-6 card-hover">
-            <div class="flex items-center justify-between">
-                <div class="p-3 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl shadow-lg shadow-amber-500/30">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                    </svg>
-                </div>
-            </div>
-            <div class="mt-4">
-                <h3 class="text-3xl font-bold text-slate-900">{{ stats.total_courses }}</h3>
-                <p class="text-sm text-slate-500 mt-1">Total Courses</p>
-            </div>
-            <div class="mt-4 pt-4 border-t border-slate-100">
-                <span class="text-sm text-slate-400">Course management</span>
-            </div>
-        </div>
     </div>
     
     <!-- Quick Actions -->
@@ -166,10 +148,6 @@
                     <div class="flex justify-between">
                         <dt class="text-sm text-slate-500">Student Records</dt>
                         <dd class="text-sm font-semibold text-slate-900">{{ stats.total_students }}</dd>
-                    </div>
-                    <div class="flex justify-between">
-                        <dt class="text-sm text-slate-500">Registered Courses</dt>
-                        <dd class="text-sm font-semibold text-slate-900">{{ stats.total_courses }}</dd>
                     </div>
                 </dl>
             </div>

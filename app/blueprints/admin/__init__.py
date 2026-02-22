@@ -13,7 +13,6 @@ from app.extensions import db
 from app.models import User, UserRole, UserStatus
 from app.models.teacher import Teacher
 from app.models.student import Student
-from app.models.course import Course
 from .forms import CreateUserForm, EditUserForm, ChangePasswordForm, UserSearchForm
 
 admin_bp = Blueprint('admin', __name__, template_folder='templates')
@@ -38,7 +37,6 @@ def index():
         'total_users': User.query.count(),
         'total_teachers': Teacher.query.count(),
         'total_students': Student.query.count(),
-        'total_courses': Course.query.count(),
         'active_users': User.query.filter_by(status=UserStatus.ACTIVE).count()
     }
     
@@ -253,15 +251,3 @@ def students():
         page=page, per_page=20, error_out=False
     )
     return render_template('student/list.html', students=students)
-
-
-@admin_bp.route('/courses')
-@login_required
-@admin_required
-def courses():
-    """List all courses."""
-    page = request.args.get('page', 1, type=int)
-    courses = Course.query.order_by(Course.created_at.desc()).paginate(
-        page=page, per_page=20, error_out=False
-    )
-    return render_template('admin/courses.html', courses=courses)

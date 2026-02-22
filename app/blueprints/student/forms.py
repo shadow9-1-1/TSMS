@@ -1,8 +1,4 @@
-"""
-Student management forms.
-
-WTForms for student CRUD operations and enrollment.
-"""
+"""Student management forms."""
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SelectField, DateField, SubmitField
@@ -115,12 +111,3 @@ class AssignTeacherForm(FlaskForm):
         DataRequired(message='Please select a teacher.')
     ])
     submit = SubmitField('Assign Teacher')
-
-
-class EnrollmentForm(FlaskForm):
-    """Course enrollment form."""
-    
-    course_id = SelectField('Course', coerce=int, validators=[
-        DataRequired(message='Please select a course.')
-    ])
-    submit = SubmitField('Enroll')

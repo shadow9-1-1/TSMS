@@ -10,7 +10,6 @@ from flask_login import login_required, current_user
 from app.models import User, UserRole
 from app.models.student import Student
 from app.models.teacher import Teacher
-from app.models.course import Course
 
 main_bp = Blueprint('main', __name__, template_folder='templates')
 
@@ -30,9 +29,7 @@ def dashboard():
     # Get dashboard statistics
     stats = {
         'total_students': Student.query.count(),
-        'total_teachers': Teacher.query.count(),
-        'total_courses': Course.query.filter_by(status='active').count(),
-        'active_enrollments': 0
+        'total_teachers': Teacher.query.count()
     }
     
     # Role-specific dashboard data
@@ -48,7 +45,6 @@ def dashboard():
         # Teacher dashboard
         teacher = current_user.teacher_profile
         if teacher:
-            stats['my_courses'] = teacher.courses.count()
             stats['my_students'] = teacher.get_student_count()
         return render_template('main/dashboard.html', 
                              stats=stats, 

@@ -7,24 +7,6 @@
 <div class="space-y-6">
     <!-- Stats Overview -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Courses Card -->
-        <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 p-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm font-medium text-slate-500">My Courses</p>
-                    <p class="text-3xl font-bold text-slate-900 mt-1">{{ courses|length }}</p>
-                </div>
-                <div class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
-                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                    </svg>
-                </div>
-            </div>
-            <a href="{{ url_for('teacher.courses') }}" class="mt-4 inline-flex items-center text-sm text-primary-600 hover:text-primary-700 font-medium">
-                View courses →
-            </a>
-        </div>
-        
         <!-- Students Card -->
         <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 p-6">
             <div class="flex items-center justify-between">
@@ -126,65 +108,20 @@
                     </div>
                 </a>
                 
-                <a href="{{ url_for('teacher.courses') }}" 
+                <a href="{{ url_for('teacher.students') }}" 
                    class="flex items-center p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors group">
                     <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-purple-200 transition-colors">
                         <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                         </svg>
                     </div>
                     <div>
-                        <p class="font-medium text-slate-900">My Courses</p>
-                        <p class="text-sm text-slate-500">Manage courses</p>
+                        <p class="font-medium text-slate-900">My Students</p>
+                        <p class="text-sm text-slate-500">View all students</p>
                     </div>
                 </a>
             </div>
         </div>
     </div>
-    
-    {% if teacher %}
-    {% if courses %}
-    <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
-        <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200 flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-slate-900">My Courses</h3>
-            <a href="{{ url_for('teacher.courses') }}" class="text-sm text-primary-600 hover:text-primary-700 font-medium">
-                View all →
-            </a>
-        </div>
-        <div class="divide-y divide-slate-200">
-            {% for course in courses[:5] %}
-            <div class="px-6 py-4 hover:bg-slate-50/50 transition-colors">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
-                            <span class="text-white font-semibold text-sm">{{ course.code[:2]|upper if course.code else 'C' }}</span>
-                        </div>
-                        <div>
-                            <h4 class="font-medium text-slate-900">{{ course.name }}</h4>
-                            <p class="text-sm text-slate-500">{{ course.code }}</p>
-                        </div>
-                    </div>
-                    <a href="{{ url_for('teacher.course_detail', id=course.id) }}" 
-                       class="px-3 py-1.5 text-sm text-primary-600 hover:bg-primary-50 rounded-lg transition-colors">
-                        View
-                    </a>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-    {% else %}
-    <!-- Empty State -->
-    <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 p-12 text-center">
-        <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-            </svg>
-        </div>
-        <h3 class="text-lg font-medium text-slate-900 mb-2">No courses yet</h3>
-        <p class="text-slate-500 mb-6">You haven't been assigned to any courses.</p>
-    </div>
-    {% endif %}
-    {% endif %}
 </div>
 {% endblock %}
