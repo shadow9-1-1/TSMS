@@ -100,8 +100,8 @@ ehthumbs.db
 Desktop.ini
 
 # Project specific
-*.sqlite
-*.db
+# *.sqlite
+# *.db
 # data-dev.sqlite
 # data-test.sqlite
 logs/
