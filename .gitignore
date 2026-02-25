@@ -102,8 +102,8 @@ Desktop.ini
 # Project specific
 *.sqlite
 *.db
-data-dev.sqlite
-data-test.sqlite
+# data-dev.sqlite
+# data-test.sqlite
 logs/
 uploads/
 *.log

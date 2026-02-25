@@ -41,7 +41,6 @@ class Config:
     
     @staticmethod
     def init_app(app):
-        """Initialize application-specific settings."""
         pass
 
 
