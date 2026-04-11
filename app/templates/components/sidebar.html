@@ -5,7 +5,7 @@
     
     <!-- Logo Section -->
     <div class="flex items-center justify-between h-16 px-4 bg-slate-800/50 border-b border-slate-700/50">
-        <a href="{{ url_for('main.dashboard') }}" class="flex items-center space-x-3">
+        <a href="{{ url_for('teacher.index') if current_user.is_teacher() and not current_user.is_supervisor() and not current_user.is_admin() else url_for('main.dashboard') }}" class="flex items-center space-x-3">
             <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/25">
                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
@@ -29,6 +29,7 @@
             <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Main</p>
         </div>
         
+        {% if not (current_user.is_teacher() and not current_user.is_supervisor() and not current_user.is_admin()) %}
         <!-- Dashboard -->
         <a href="{{ url_for('main.dashboard') }}" 
            class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200
@@ -45,6 +46,7 @@
             </div>
             <span x-show="sidebarOpen" x-transition class="ml-3">Dashboard</span>
         </a>
+        {% endif %}
         
         <!-- Teachers -->
         {% if current_user.is_supervisor() or current_user.is_admin() %}
@@ -65,6 +67,7 @@
         </a>
         {% endif %}
         
+        {% if not (current_user.is_teacher() and not current_user.is_supervisor() and not current_user.is_admin()) %}
         <!-- Students -->
         <a href="{{ url_for('student.student_list') }}" 
            class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200
@@ -81,6 +84,7 @@
             </div>
             <span x-show="sidebarOpen" x-transition class="ml-3">Students</span>
         </a>
+        {% endif %}
         
         <!-- Teaching Section (for teachers) -->
         {% if current_user.is_teacher() and not current_user.is_supervisor() and not current_user.is_admin() %}
@@ -107,6 +111,23 @@
         </a>
         
         <!-- My Students (Teacher) -->
+        <a href="{{ url_for('teacher.students') }}" 
+           class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200
+                  {% if request.endpoint == 'teacher.students' or request.endpoint == 'teacher.student_detail' %}
+                  bg-gradient-to-r from-primary-600 to-primary-500 text-white shadow-lg shadow-primary-500/25
+                  {% else %}
+                  text-slate-300 hover:bg-slate-800/50 hover:text-white
+                  {% endif %}">
+            <div class="flex items-center justify-center w-9 h-9 rounded-lg 
+                        {% if request.endpoint == 'teacher.students' or request.endpoint == 'teacher.student_detail' %}bg-white/20{% else %}bg-slate-800 group-hover:bg-slate-700{% endif %}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                </svg>
+            </div>
+            <span x-show="sidebarOpen" x-transition class="ml-3">My Students</span>
+        </a>
+
+        <!-- Student Progress (Teacher) -->
         <a href="{{ url_for('teacher.student_progress') }}" 
            class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200
                   {% if request.endpoint == 'teacher.student_progress' %}
@@ -280,7 +301,7 @@
     
     <!-- Mobile Logo -->
     <div class="flex items-center justify-between h-16 px-4 bg-slate-800/50 border-b border-slate-700/50">
-        <a href="{{ url_for('main.dashboard') }}" class="flex items-center space-x-3">
+        <a href="{{ url_for('teacher.index') if current_user.is_teacher() and not current_user.is_supervisor() and not current_user.is_admin() else url_for('main.dashboard') }}" class="flex items-center space-x-3">
             <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg">
                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
@@ -299,6 +320,7 @@
     <nav class="flex-1 mt-6 px-3 space-y-1 overflow-y-auto">
         <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Main</p>
         
+        {% if not (current_user.is_teacher() and not current_user.is_supervisor() and not current_user.is_admin()) %}
         <a href="{{ url_for('main.dashboard') }}" @click="mobileMenuOpen = false"
            class="flex items-center px-3 py-3 text-sm font-medium rounded-xl text-slate-300 hover:bg-slate-800/50 hover:text-white transition-colors">
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -306,6 +328,7 @@
             </svg>
             Dashboard
         </a>
+        {% endif %}
         
         {% if current_user.is_supervisor() or current_user.is_admin() %}
         <a href="{{ url_for('teacher.index') }}" @click="mobileMenuOpen = false"
@@ -317,6 +340,7 @@
         </a>
         {% endif %}
         
+        {% if not (current_user.is_teacher() and not current_user.is_supervisor() and not current_user.is_admin()) %}
         <a href="{{ url_for('student.student_list') }}" @click="mobileMenuOpen = false"
            class="flex items-center px-3 py-3 text-sm font-medium rounded-xl text-slate-300 hover:bg-slate-800/50 hover:text-white transition-colors">
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -324,6 +348,7 @@
             </svg>
             Students
         </a>
+        {% endif %}
         
         <!-- Teaching Section (for teachers) - Mobile -->
         {% if current_user.is_teacher() and not current_user.is_supervisor() and not current_user.is_admin() %}
@@ -339,6 +364,14 @@
             My Dashboard
         </a>
         
+        <a href="{{ url_for('teacher.students') }}" @click="mobileMenuOpen = false"
+           class="flex items-center px-3 py-3 text-sm font-medium rounded-xl text-slate-300 hover:bg-slate-800/50 hover:text-white transition-colors">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+            My Students
+        </a>
+
         <a href="{{ url_for('teacher.student_progress') }}" @click="mobileMenuOpen = false"
            class="flex items-center px-3 py-3 text-sm font-medium rounded-xl text-slate-300 hover:bg-slate-800/50 hover:text-white transition-colors">
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -26,6 +26,9 @@ def index():
 @login_required
 def dashboard():
     """Main dashboard - redirects based on user role."""
+    if current_user.is_teacher():
+        return redirect(url_for('teacher.index'))
+
     # Get dashboard statistics
     stats = {
         'total_students': Student.query.count(),
@@ -42,13 +45,7 @@ def dashboard():
                              stats=stats, 
                              role='supervisor')
     else:
-        # Teacher dashboard
-        teacher = current_user.teacher_profile
-        if teacher:
-            stats['my_students'] = teacher.get_student_count()
-        return render_template('main/dashboard.html', 
-                             stats=stats, 
-                             role='teacher')
+        return redirect(url_for('main.index'))
 
 
 @main_bp.route('/about')

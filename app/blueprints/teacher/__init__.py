@@ -22,8 +22,8 @@ def teacher_required(f):
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
             abort(401)
-        # Allow admin, supervisor, or users with teacher profile
-        if not (current_user.is_admin() or current_user.is_supervisor() or current_user.teacher_profile):
+        # Restrict to teacher users only for teacher workspace pages
+        if not current_user.is_teacher() or not current_user.teacher_profile:
             abort(403)
         return f(*args, **kwargs)
     return decorated_function
@@ -37,16 +37,13 @@ def index():
     from app.models.planning import StudentPlan
     
     teacher = current_user.teacher_profile
-    
-    if teacher:
-        student_count = teacher.get_student_count()
-        # Get students assigned to this teacher
-        assigned_students = Student.query.filter_by(assigned_teacher_id=teacher.id).all()
-        student_ids = [s.id for s in assigned_students]
-    else:
-        # Supervisor viewing teacher section
-        student_count = 0
-        student_ids = []
+    if not teacher:
+        abort(403)
+
+    student_count = teacher.get_student_count()
+    # Get students assigned to this teacher
+    assigned_students = Student.query.filter_by(assigned_teacher_id=teacher.id).all()
+    student_ids = [s.id for s in assigned_students]
     
     # Planning stats for teacher
     if student_ids:
@@ -107,10 +104,10 @@ def students():
     """List students assigned to this teacher."""
     teacher = current_user.teacher_profile
     
-    if teacher:
-        students = teacher.assigned_students.all()
-    else:
-        students = Student.query.all()
+    if not teacher:
+        abort(403)
+
+    students = teacher.assigned_students.all()
     
     return render_template('teacher/students.html', students=students)
 
@@ -121,6 +118,11 @@ def students():
 def student_detail(id):
     """View student details."""
     student = Student.query.get_or_404(id)
+
+    teacher = current_user.teacher_profile
+    if not teacher or student.assigned_teacher_id != teacher.id:
+        abort(403)
+
     return render_template('teacher/student_detail.html', student=student)
 
 
@@ -132,15 +134,12 @@ def planning():
     from app.models.planning import StudentPlan, StudentObjective, ObjectiveStatus
     
     teacher = current_user.teacher_profile
-    
-    if teacher:
-        # Get students assigned to this teacher
-        students = Student.query.filter_by(assigned_teacher_id=teacher.id).all()
-        student_ids = [s.id for s in students]
-    else:
-        # Admin/supervisor viewing - show all students
-        students = Student.query.all()
-        student_ids = [s.id for s in students]
+    if not teacher:
+        abort(403)
+
+    # Get students assigned to this teacher
+    students = Student.query.filter_by(assigned_teacher_id=teacher.id).all()
+    student_ids = [s.id for s in students]
     
     # Get plans for these students (both single-student and multi-student)
     all_plans = []
@@ -256,11 +255,10 @@ def student_progress():
     from app.models.planning import ObjectiveStatus, StudentPlan, StudentObjective
     
     teacher = current_user.teacher_profile
-    
-    if teacher:
-        students = Student.query.filter_by(assigned_teacher_id=teacher.id).all()
-    else:
-        students = Student.query.all()
+    if not teacher:
+        abort(403)
+
+    students = Student.query.filter_by(assigned_teacher_id=teacher.id).all()
     
     # Calculate progress for each student
     students_data = []
