@@ -98,10 +98,12 @@
             <button type="submit" class="px-6 py-2.5 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors font-medium">
                 Apply Filters
             </button>
+            {% if not current_user.is_supervisor() %}
             <a href="{{ url_for('planning.create_plan') }}" 
                class="px-6 py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium">
                 + New Plan
             </a>
+            {% endif %}
         </form>
     </div>
     
@@ -111,7 +113,7 @@
             <h3 class="text-lg font-semibold text-slate-900">Plans ({{ plans.total }})</h3>
         </div>
         
-        {% if plans %}
+        {% if plans.items %}
         <div class="divide-y divide-slate-200">
             {% for plan in plans %}
             <div class="p-6 hover:bg-slate-50/50 transition-colors">
@@ -195,10 +197,12 @@
             </div>
             <p class="text-slate-600 font-medium">No plans found</p>
             <p class="text-sm text-slate-500 mt-1">No plans match your filter criteria.</p>
+            {% if not current_user.is_supervisor() %}
             <a href="{{ url_for('planning.create_plan') }}" 
                class="mt-4 inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium">
                 Create First Plan
             </a>
+            {% endif %}
         </div>
         {% endif %}
     </div>

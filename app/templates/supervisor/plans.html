@@ -43,13 +43,10 @@
     <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
         <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200 flex items-center justify-between">
             <h3 class="text-lg font-semibold text-slate-900">Plans ({{ plans.total }})</h3>
-            <a href="{{ url_for('planning.create_plan') }}" 
-               class="px-4 py-2 bg-primary-600 text-white text-sm rounded-lg hover:bg-primary-700 transition-colors font-medium">
-                + New Plan
-            </a>
+            <span class="text-sm text-slate-500">View-only access</span>
         </div>
         
-        {% if plans %}
+        {% if plans.items %}
         <div class="divide-y divide-slate-200">
             {% for plan in plans %}
             <div class="p-6 hover:bg-slate-50/50 transition-colors">
@@ -129,10 +126,6 @@
             </div>
             <p class="text-slate-600 font-medium">No plans found</p>
             <p class="text-sm text-slate-500 mt-1">No plans match your filter criteria.</p>
-            <a href="{{ url_for('planning.create_plan') }}" 
-               class="mt-4 inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium">
-                Create First Plan
-            </a>
         </div>
         {% endif %}
     </div>

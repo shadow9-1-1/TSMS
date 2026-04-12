@@ -16,7 +16,7 @@ from functools import wraps
 
 from app.extensions import db
 from app.models import User, UserRole, UserStatus, Student, StudentStatus
-from app.models.planning import Plan, Task, PlanStatus, PlanType, TaskStatus, TaskPriority
+from app.models.planning import Plan, Task, StudentPlan, PlanStatus, PlanType, TaskStatus, TaskPriority
 
 from . import planning_bp
 from .forms import PlanForm, TaskForm, PlanFilterForm
@@ -78,6 +78,7 @@ def planning_access_required(f):
 def index():
     """Planning dashboard - list all accessible plans."""
     page = request.args.get('page', 1, type=int)
+    search = request.args.get('search', '').strip()
     status_filter = request.args.get('status', '').strip()
     type_filter = request.args.get('type', '').strip()
     
@@ -88,18 +89,22 @@ def index():
         student_ids = [s.id for s in Student.query.filter_by(
             supervisor_id=current_user.id
         ).all()]
-        query = Plan.query.filter(
-            db.or_(
-                Plan.student_id.in_(student_ids),
-                Plan.supervisor_id == current_user.id,
-                Plan.created_by_id == current_user.id
+        if student_ids:
+            query = Plan.query.filter(
+                db.or_(
+                    Plan.student_id.in_(student_ids),
+                    Plan.student_plans.any(StudentPlan.student_id.in_(student_ids)),
+                    Plan.supervisor_id == current_user.id,
+                    Plan.created_by_id == current_user.id
+                )
             )
-        ) if student_ids else Plan.query.filter(
-            db.or_(
-                Plan.supervisor_id == current_user.id,
-                Plan.created_by_id == current_user.id
+        else:
+            query = Plan.query.filter(
+                db.or_(
+                    Plan.supervisor_id == current_user.id,
+                    Plan.created_by_id == current_user.id
+                )
             )
-        )
     else:
         # Teacher - show plans for their students
         teacher = current_user.teacher_profile
@@ -107,14 +112,21 @@ def index():
             student_ids = [s.id for s in Student.query.filter_by(
                 assigned_teacher_id=teacher.id
             ).all()]
-            query = Plan.query.filter(
-                db.or_(
-                    Plan.student_id.in_(student_ids),
-                    Plan.created_by_id == current_user.id
+            if student_ids:
+                query = Plan.query.filter(
+                    db.or_(
+                        Plan.student_id.in_(student_ids),
+                        Plan.student_plans.any(StudentPlan.student_id.in_(student_ids)),
+                        Plan.created_by_id == current_user.id
+                    )
                 )
-            ) if student_ids else Plan.query.filter_by(created_by_id=current_user.id)
+            else:
+                query = Plan.query.filter_by(created_by_id=current_user.id)
         else:
             query = Plan.query.filter_by(created_by_id=current_user.id)
+
+    if search:
+        query = query.filter(Plan.title.ilike(f'%{search}%'))
     
     # Apply filters
     if status_filter:
@@ -139,10 +151,10 @@ def index():
     
     # Statistics
     stats = {
-        'total': query.count(),
-        'active': query.filter(Plan.status == PlanStatus.ACTIVE).count(),
-        'draft': query.filter(Plan.status == PlanStatus.DRAFT).count(),
-        'completed': query.filter(Plan.status == PlanStatus.COMPLETED).count()
+        'total_plans': query.count(),
+        'active_plans': query.filter(Plan.status == PlanStatus.ACTIVE).count(),
+        'draft_plans': query.filter(Plan.status == PlanStatus.DRAFT).count(),
+        'completed_plans': query.filter(Plan.status == PlanStatus.COMPLETED).count()
     }
     
     return render_template('planning/index.html',
@@ -158,6 +170,10 @@ def index():
 def create_plan(student_id=None):
     """Create a new plan for one or more students."""
     from app.models.planning import Objective, StudentPlan, StudentObjective
+
+    if current_user.is_supervisor() and not current_user.is_admin():
+        flash('Supervisors can only view plans and progress.', 'warning')
+        return redirect(url_for('supervisor.plan_list'))
     
     form = PlanForm()
     
