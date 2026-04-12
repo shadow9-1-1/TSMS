@@ -25,14 +25,8 @@ def managed_students_query():
     if current_user.is_admin():
         return Student.query
 
-    # Supervisors manage teachers and their students.
-    # Also include students directly assigned to this supervisor.
-    return Student.query.filter(
-        db.or_(
-            Student.assigned_teacher_id.isnot(None),
-            Student.supervisor_id == current_user.id
-        )
-    )
+    # Supervisors only manage students directly assigned to them.
+    return Student.query.filter_by(supervisor_id=current_user.id)
 
 
 def managed_plans_query():
@@ -159,10 +153,8 @@ def student_detail(id):
     """View detailed student profile with plans."""
     student = Student.query.get_or_404(id)
     
-    # Check access (admin can view all; supervisors can view teachers' students and directly supervised students)
-    if not current_user.is_admin() and not (
-        student.assigned_teacher_id is not None or student.supervisor_id == current_user.id
-    ):
+    # Check access (admin can view all; supervisors can view only directly assigned students)
+    if not current_user.is_admin() and student.supervisor_id != current_user.id:
         flash('You do not have permission to view this student.', 'error')
         abort(403)
     

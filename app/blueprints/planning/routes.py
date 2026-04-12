@@ -28,13 +28,8 @@ def can_manage_student(student):
         return False
     if current_user.is_admin():
         return True
-    if current_user.is_supervisor():
-        # Supervisors can manage directly supervised students and
-        # students assigned to any teacher in supervisor scope.
-        if student.supervisor_id == current_user.id:
-            return True
-        if student.assigned_teacher_id is not None:
-            return True
+    if current_user.is_supervisor() and student.supervisor_id == current_user.id:
+        return True
     if current_user.teacher_profile and student.assigned_teacher_id == current_user.teacher_profile.id:
         return True
     return False
@@ -75,12 +70,7 @@ def planning_access_required(f):
 
 def _managed_student_ids_for_supervisor():
     """Get student IDs in supervisor management scope."""
-    return [s.id for s in Student.query.filter(
-        db.or_(
-            Student.assigned_teacher_id.isnot(None),
-            Student.supervisor_id == current_user.id
-        )
-    ).all()]
+    return [s.id for s in Student.query.filter_by(supervisor_id=current_user.id).all()]
 
 
 # =============================================================================
@@ -106,18 +96,11 @@ def index():
             query = Plan.query.filter(
                 db.or_(
                     Plan.student_id.in_(student_ids),
-                    Plan.student_plans.any(StudentPlan.student_id.in_(student_ids)),
-                    Plan.supervisor_id == current_user.id,
-                    Plan.created_by_id == current_user.id
+                    Plan.student_plans.any(StudentPlan.student_id.in_(student_ids))
                 )
             )
         else:
-            query = Plan.query.filter(
-                db.or_(
-                    Plan.supervisor_id == current_user.id,
-                    Plan.created_by_id == current_user.id
-                )
-            )
+            query = Plan.query.filter(False)
     else:
         # Teacher - show plans for their students
         teacher = current_user.teacher_profile
