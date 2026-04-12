@@ -28,8 +28,13 @@ def can_manage_student(student):
         return False
     if current_user.is_admin():
         return True
-    if current_user.is_supervisor() and student.supervisor_id == current_user.id:
-        return True
+    if current_user.is_supervisor():
+        # Supervisors can manage directly supervised students and
+        # students assigned to any teacher in supervisor scope.
+        if student.supervisor_id == current_user.id:
+            return True
+        if student.assigned_teacher_id is not None:
+            return True
     if current_user.teacher_profile and student.assigned_teacher_id == current_user.teacher_profile.id:
         return True
     return False
