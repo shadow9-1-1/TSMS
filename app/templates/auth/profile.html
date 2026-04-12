@@ -101,11 +101,11 @@
             
             <!-- Actions -->
             <div class="mt-8 pt-6 border-t border-gray-200 flex flex-wrap gap-4">
-                <a href="#" class="px-4 py-2 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors">
+                <a href="{{ url_for('auth.edit_profile') }}" class="px-4 py-2 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors">
                     Edit Profile
                 </a>
-                <a href="#" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors">
-                    Change Password
+                <a href="{{ url_for('auth.change_password') }}" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors">
+                    Account Settings
                 </a>
             </div>
         </div>
