@@ -6,8 +6,9 @@ It handles loading environment variables and provides
 CLI commands for database management.
 
 Usage:
-    Development: python run.py
-    Production:  gunicorn -w 4 -b 0.0.0.0:8000 "run:app"
+    Development (Windows/macOS/Linux): python run.py
+    Local WSGI test on Windows:        python -m waitress --listen=127.0.0.1:5000 run:app
+    Production (Linux/Render):         gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120 wsgi:app
 """
 
 import os

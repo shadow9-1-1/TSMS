@@ -30,5 +30,8 @@ coverage==7.3.2
 # Production server
 gunicorn==21.2.0
 
+# Local WSGI testing (Windows-friendly)
+waitress==3.0.0
+
 # Utilities
 click==8.1.7
