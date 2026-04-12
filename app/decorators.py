@@ -21,6 +21,7 @@ Usage:
 from functools import wraps
 from flask import redirect, url_for, flash, abort, render_template, request
 from flask_login import current_user
+from flask_babel import gettext as _
 
 from app.models.user import UserRole
 
@@ -62,14 +63,14 @@ def role_required(*roles):
         def decorated_function(*args, **kwargs):
             # Check if user is authenticated
             if not current_user.is_authenticated:
-                flash('Please log in to access this page.', 'warning')
+                flash(_('Please log in to access this page.'), 'warning')
                 return redirect(url_for('auth.login', next=request.url))
             
             # Check if user account is active
             if hasattr(current_user, 'status'):
                 from app.models.user import UserStatus
                 if current_user.status != UserStatus.ACTIVE:
-                    flash('Your account is not active. Please contact an administrator.', 'error')
+                    flash(_('Your account is not active. Please contact an administrator.'), 'error')
                     return redirect(url_for('auth.login'))
             
             # Normalize roles to lowercase strings for comparison
@@ -87,7 +88,7 @@ def role_required(*roles):
                 # Log unauthorized access attempt (optional)
                 # app.logger.warning(f'Unauthorized access attempt by {current_user.email} to {request.url}')
                 
-                flash('You do not have permission to access this page.', 'error')
+                flash(_('You do not have permission to access this page.'), 'error')
                 abort(403)
             
             return f(*args, **kwargs)
@@ -109,11 +110,11 @@ def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
-            flash('Please log in to access this page.', 'warning')
+            flash(_('Please log in to access this page.'), 'warning')
             return redirect(url_for('auth.login', next=request.url))
         
         if not current_user.is_admin():
-            flash('You do not have permission to access this page.', 'error')
+            flash(_('You do not have permission to access this page.'), 'error')
             abort(403)
         
         return f(*args, **kwargs)
@@ -134,11 +135,11 @@ def supervisor_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
-            flash('Please log in to access this page.', 'warning')
+            flash(_('Please log in to access this page.'), 'warning')
             return redirect(url_for('auth.login', next=request.url))
         
         if not current_user.is_supervisor():
-            flash('You do not have permission to access this page.', 'error')
+            flash(_('You do not have permission to access this page.'), 'error')
             abort(403)
         
         return f(*args, **kwargs)
@@ -159,11 +160,11 @@ def teacher_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
-            flash('Please log in to access this page.', 'warning')
+            flash(_('Please log in to access this page.'), 'warning')
             return redirect(url_for('auth.login', next=request.url))
         
         if not current_user.is_teacher():
-            flash('You do not have permission to access this page.', 'error')
+            flash(_('You do not have permission to access this page.'), 'error')
             abort(403)
         
         return f(*args, **kwargs)
@@ -184,11 +185,11 @@ def admin_or_supervisor_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
-            flash('Please log in to access this page.', 'warning')
+            flash(_('Please log in to access this page.'), 'warning')
             return redirect(url_for('auth.login', next=request.url))
         
         if not (current_user.is_admin() or current_user.is_supervisor()):
-            flash('You do not have permission to access this page.', 'error')
+            flash(_('You do not have permission to access this page.'), 'error')
             abort(403)
         
         return f(*args, **kwargs)
@@ -211,13 +212,13 @@ def active_user_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
-            flash('Please log in to access this page.', 'warning')
+            flash(_('Please log in to access this page.'), 'warning')
             return redirect(url_for('auth.login', next=request.url))
         
         if hasattr(current_user, 'status'):
             from app.models.user import UserStatus
             if current_user.status != UserStatus.ACTIVE:
-                flash('Your account is not active. Please contact an administrator.', 'error')
+                flash(_('Your account is not active. Please contact an administrator.'), 'error')
                 return redirect(url_for('auth.login'))
         
         return f(*args, **kwargs)
@@ -242,18 +243,18 @@ def permission_required(permission):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             if not current_user.is_authenticated:
-                flash('Please log in to access this page.', 'warning')
+                flash(_('Please log in to access this page.'), 'warning')
                 return redirect(url_for('auth.login', next=request.url))
             
             # Check for permission method on user model
             permission_method = f'can_{permission}'
             if hasattr(current_user, permission_method):
                 if not getattr(current_user, permission_method)():
-                    flash('You do not have permission to perform this action.', 'error')
+                    flash(_('You do not have permission to perform this action.'), 'error')
                     abort(403)
             else:
                 # If permission method doesn't exist, deny by default
-                flash('You do not have permission to perform this action.', 'error')
+                flash(_('You do not have permission to perform this action.'), 'error')
                 abort(403)
             
             return f(*args, **kwargs)

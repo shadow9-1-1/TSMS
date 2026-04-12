@@ -11,6 +11,7 @@ Access:
 
 from flask import render_template, redirect, url_for, flash, request, abort
 from flask_login import login_required, current_user
+from flask_babel import gettext as _
 
 from app.extensions import db
 from app.models.student import Student, StudentStatus
@@ -30,7 +31,7 @@ def admin_or_supervisor_required(f):
             abort(401)
         
         if not (current_user.is_admin() or current_user.is_supervisor()):
-            flash('You do not have permission to access this page.', 'error')
+            flash(_('You do not have permission to access this page.'), 'error')
             abort(403)
         
         return f(*args, **kwargs)
@@ -156,7 +157,7 @@ def create_student():
         db.session.add(student)
         db.session.commit()
         
-        flash(f'Student {student.name} has been created successfully.', 'success')
+        flash(_('Student %(name)s has been created successfully.', name=student.name), 'success')
         return redirect(url_for('student.student_detail', id=student.id))
     
     return render_template('student/create.html', form=form)
@@ -170,7 +171,7 @@ def student_detail(id):
     
     # Check access permission
     if not can_view_student(student):
-        flash('You do not have permission to view this student.', 'error')
+        flash(_('You do not have permission to view this student.'), 'error')
         abort(403)
     
     # Get available teachers for assignment
@@ -217,7 +218,7 @@ def edit_student(id):
         
         db.session.commit()
         
-        flash(f'Student {student.name} has been updated successfully.', 'success')
+        flash(_('Student %(name)s has been updated successfully.', name=student.name), 'success')
         return redirect(url_for('student.student_detail', id=student.id))
     
     return render_template('student/edit.html', form=form, student=student)
@@ -233,13 +234,13 @@ def delete_student(id):
     
     # Check if student has active enrollments
     if student.enrollments.filter_by(status='active').count() > 0:
-        flash(f'Cannot delete {name}. They have active course enrollments. Please unenroll first.', 'error')
+        flash(_('Cannot delete %(name)s. They have active course enrollments. Please unenroll first.', name=name), 'error')
         return redirect(url_for('student.student_detail', id=id))
     
     db.session.delete(student)
     db.session.commit()
     
-    flash(f'Student {name} has been deleted.', 'success')
+    flash(_('Student %(name)s has been deleted.', name=name), 'success')
     return redirect(url_for('student.student_list'))
 
 
@@ -256,24 +257,24 @@ def assign_teacher(id):
         Teacher.user
     ).order_by(db.text('users.name')).all()
     
-    form.teacher_id.choices = [(0, 'Select a teacher...')] + [
-        (t.id, f'{t.name} - {t.department or "No Department"}') for t in teachers
+    form.teacher_id.choices = [(0, _('Select a teacher...'))] + [
+        (t.id, f'{t.name} - {t.department or _("No Department")}') for t in teachers
     ]
     
     if form.validate_on_submit():
         teacher_id = form.teacher_id.data
         
         if teacher_id == 0:
-            flash('Please select a teacher.', 'error')
+            flash(_('Please select a teacher.'), 'error')
         else:
             teacher = Teacher.query.get(teacher_id)
             if teacher:
                 student.assigned_teacher_id = teacher.id
                 db.session.commit()
-                flash(f'{student.name} has been assigned to {teacher.name}.', 'success')
+                flash(_('%(student)s has been assigned to %(teacher)s.', student=student.name, teacher=teacher.name), 'success')
                 return redirect(url_for('student.student_detail', id=student.id))
             else:
-                flash('Teacher not found.', 'error')
+                flash(_('Teacher not found.'), 'error')
     
     return render_template(
         'student/assign_teacher.html',
@@ -291,12 +292,12 @@ def unassign_teacher(id):
     student = Student.query.get_or_404(id)
     
     if student.assigned_teacher_id:
-        teacher_name = student.assigned_teacher.name if student.assigned_teacher else 'Unknown'
+        teacher_name = student.assigned_teacher.name if student.assigned_teacher else _('Unknown')
         student.assigned_teacher_id = None
         db.session.commit()
-        flash(f'{student.name} has been unassigned from {teacher_name}.', 'success')
+        flash(_('%(student)s has been unassigned from %(teacher)s.', student=student.name, teacher=teacher_name), 'success')
     else:
-        flash('Student was not assigned to any teacher.', 'info')
+        flash(_('Student was not assigned to any teacher.'), 'info')
     
     return redirect(url_for('student.student_detail', id=student.id))
 
@@ -310,10 +311,10 @@ def toggle_status(id):
     
     if student.status == StudentStatus.ACTIVE:
         student.status = StudentStatus.INACTIVE
-        flash(f'{student.name} has been deactivated.', 'success')
+        flash(_('%(name)s has been deactivated.', name=student.name), 'success')
     else:
         student.status = StudentStatus.ACTIVE
-        flash(f'{student.name} has been activated.', 'success')
+        flash(_('%(name)s has been activated.', name=student.name), 'success')
     
     db.session.commit()
     return redirect(url_for('student.student_detail', id=student.id))

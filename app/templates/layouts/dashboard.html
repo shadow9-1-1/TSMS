@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 
+{% set role_key = current_user.role.value|lower if current_user.role else '' %}
+{% set role_labels = {'admin': _('Admin'), 'supervisor': _('Supervisor'), 'teacher': _('Teacher')} %}
+{% set default_role_label = _('User') %}
+{% set current_role_label = role_labels.get(role_key, default_role_label) %}
+{% set sidebar_expanded_offset = 'lg:pr-64' if current_direction == 'rtl' else 'lg:pl-64' %}
+{% set sidebar_collapsed_offset = 'lg:pr-20' if current_direction == 'rtl' else 'lg:pl-20' %}
+
 {% block body %}
-<div x-data="{ sidebarOpen: true, mobileMenuOpen: false }" class="min-h-screen bg-slate-50">
+<div x-data="{ sidebarOpen: true, mobileMenuOpen: false }" class="min-h-screen w-full overflow-x-hidden bg-slate-50">
     
     <!-- Mobile Menu Overlay -->
     <div x-show="mobileMenuOpen" 
@@ -21,13 +28,13 @@
     {% include 'components/sidebar.html' %}
     
     <!-- Main Content Area -->
-    <div :class="sidebarOpen ? 'lg:pl-64' : 'lg:pl-20'" class="min-h-screen transition-all duration-300">
+    <div :class="sidebarOpen ? '{{ sidebar_expanded_offset }}' : '{{ sidebar_collapsed_offset }}'" class="min-h-screen w-full overflow-x-hidden transition-all duration-300">
         
         <!-- Top Navbar Component -->
         {% include 'components/navbar.html' %}
         
         <!-- Page Content -->
-        <main class="pt-20 pb-8 px-4 sm:px-6 lg:px-8">
+        <main class="app-main-content pt-20 pb-8 px-4 sm:px-6 lg:px-8">
             {% block content %}{% endblock %}
         </main>
         
@@ -35,12 +42,12 @@
         <footer class="py-6 px-4 sm:px-6 lg:px-8 border-t border-slate-200 bg-white">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
                 <p class="text-sm text-slate-500">
-                    &copy; 2026 TSMS. All rights reserved.
+                    &copy; 2026 TSMS. {{ _('All rights reserved.') }}
                 </p>
-                <div class="flex items-center space-x-6">
-                    <a href="#" class="text-sm text-slate-500 hover:text-slate-700 transition-colors">Privacy Policy</a>
-                    <a href="#" class="text-sm text-slate-500 hover:text-slate-700 transition-colors">Terms of Service</a>
-                    <a href="#" class="text-sm text-slate-500 hover:text-slate-700 transition-colors">Support</a>
+                <div class="flex items-center gap-6">
+                    <a href="#" class="text-sm text-slate-500 hover:text-slate-700 transition-colors">{{ _('Privacy Policy') }}</a>
+                    <a href="#" class="text-sm text-slate-500 hover:text-slate-700 transition-colors">{{ _('Terms of Service') }}</a>
+                    <a href="#" class="text-sm text-slate-500 hover:text-slate-700 transition-colors">{{ _('Support') }}</a>
                 </div>
             </div>
         </footer>

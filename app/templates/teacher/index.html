@@ -1,7 +1,7 @@
 {% extends "layouts/dashboard.html" %}
 
-{% block page_title %}Teacher Dashboard{% endblock %}
-{% block page_subtitle %}Welcome back{% if teacher %}, {{ teacher.user.name }}{% endif %}{% endblock %}
+{% block page_title %}{{ _('Teacher Dashboard') }}{% endblock %}
+{% block page_subtitle %}{{ _('Welcome back') }}{% if teacher %}, {{ teacher.user.name }}{% endif %}{% endblock %}
 
 {% block content %}
 <div class="space-y-6">
@@ -11,7 +11,7 @@
         <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-slate-500">My Students</p>
+                    <p class="text-sm font-medium text-slate-500">{{ _('My Students') }}</p>
                     <p class="text-3xl font-bold text-slate-900 mt-1">{{ student_count }}</p>
                 </div>
                 <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
@@ -21,7 +21,7 @@
                 </div>
             </div>
             <a href="{{ url_for('teacher.student_progress') }}" class="mt-4 inline-flex items-center text-sm text-emerald-600 hover:text-emerald-700 font-medium">
-                View progress →
+                {{ _('View progress') }} &rarr;
             </a>
         </div>
         
@@ -29,7 +29,7 @@
         <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-slate-500">Active Plans</p>
+                    <p class="text-sm font-medium text-slate-500">{{ _('Active Plans') }}</p>
                     <p class="text-3xl font-bold text-slate-900 mt-1">{{ planning_stats.active_plans }}</p>
                 </div>
                 <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
@@ -39,7 +39,7 @@
                 </div>
             </div>
             <a href="{{ url_for('teacher.planning') }}" class="mt-4 inline-flex items-center text-sm text-amber-600 hover:text-amber-700 font-medium">
-                Manage plans →
+                {{ _('Manage plans') }} &rarr;
             </a>
         </div>
         
@@ -47,7 +47,7 @@
         <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-slate-500">Pending Tasks</p>
+                    <p class="text-sm font-medium text-slate-500">{{ _('Pending Tasks') }}</p>
                     <p class="text-3xl font-bold {{ 'text-red-600' if planning_stats.overdue_tasks > 0 else 'text-slate-900' }} mt-1">{{ planning_stats.pending_tasks }}</p>
                 </div>
                 <div class="w-12 h-12 {{ 'bg-red-100' if planning_stats.overdue_tasks > 0 else 'bg-purple-100' }} rounded-xl flex items-center justify-center">
@@ -57,7 +57,7 @@
                 </div>
             </div>
             {% if planning_stats.overdue_tasks > 0 %}
-            <p class="mt-2 text-sm text-red-600">{{ planning_stats.overdue_tasks }} overdue</p>
+            <p class="mt-2 text-sm text-red-600">{{ _('%(count)s overdue', count=planning_stats.overdue_tasks) }}</p>
             {% endif %}
         </div>
     </div>
@@ -65,60 +65,72 @@
     <!-- Quick Actions -->
     <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
         <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200">
-            <h3 class="text-lg font-semibold text-slate-900">Quick Actions</h3>
+            <h3 class="text-lg font-semibold text-slate-900">{{ _('Quick Actions') }}</h3>
         </div>
         <div class="p-6">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <a href="{{ url_for('planning.create_plan') }}" 
-                   class="flex items-center p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors group">
-                    <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-primary-200 transition-colors">
+                   class="group quick-action-item quick-action-item--flat hover:bg-slate-100 transition-colors">
+                    <div class="quick-action-item__icon bg-primary-100 group-hover:bg-primary-200 transition-colors">
                         <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                         </svg>
                     </div>
-                    <div>
-                        <p class="font-medium text-slate-900">New Plan</p>
-                        <p class="text-sm text-slate-500">Create student plan</p>
+                    <div class="quick-action-item__text">
+                        <p class="quick-action-item__title">{{ _('New Plan') }}</p>
+                        <p class="quick-action-item__subtitle">{{ _('Create student plan') }}</p>
                     </div>
+                    <svg class="quick-action-item__chevron rtl-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
                 </a>
                 
                 <a href="{{ url_for('teacher.planning') }}" 
-                   class="flex items-center p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors group">
-                    <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-amber-200 transition-colors">
+                   class="group quick-action-item quick-action-item--flat hover:bg-slate-100 transition-colors">
+                    <div class="quick-action-item__icon bg-amber-100 group-hover:bg-amber-200 transition-colors">
                         <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                         </svg>
                     </div>
-                    <div>
-                        <p class="font-medium text-slate-900">Manage Plans</p>
-                        <p class="text-sm text-slate-500">View all plans</p>
+                    <div class="quick-action-item__text">
+                        <p class="quick-action-item__title">{{ _('Manage Plans') }}</p>
+                        <p class="quick-action-item__subtitle">{{ _('View all plans') }}</p>
                     </div>
+                    <svg class="quick-action-item__chevron rtl-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
                 </a>
                 
                 <a href="{{ url_for('teacher.student_progress') }}" 
-                   class="flex items-center p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors group">
-                    <div class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-emerald-200 transition-colors">
+                   class="group quick-action-item quick-action-item--flat hover:bg-slate-100 transition-colors">
+                    <div class="quick-action-item__icon bg-emerald-100 group-hover:bg-emerald-200 transition-colors">
                         <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                         </svg>
                     </div>
-                    <div>
-                        <p class="font-medium text-slate-900">Student Progress</p>
-                        <p class="text-sm text-slate-500">View progress bars</p>
+                    <div class="quick-action-item__text">
+                        <p class="quick-action-item__title">{{ _('Student Progress') }}</p>
+                        <p class="quick-action-item__subtitle">{{ _('View progress bars') }}</p>
                     </div>
+                    <svg class="quick-action-item__chevron rtl-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
                 </a>
                 
                 <a href="{{ url_for('teacher.students') }}" 
-                   class="flex items-center p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors group">
-                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-purple-200 transition-colors">
+                   class="group quick-action-item quick-action-item--flat hover:bg-slate-100 transition-colors">
+                    <div class="quick-action-item__icon bg-purple-100 group-hover:bg-purple-200 transition-colors">
                         <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                         </svg>
                     </div>
-                    <div>
-                        <p class="font-medium text-slate-900">My Students</p>
-                        <p class="text-sm text-slate-500">View my students</p>
+                    <div class="quick-action-item__text">
+                        <p class="quick-action-item__title">{{ _('My Students') }}</p>
+                        <p class="quick-action-item__subtitle">{{ _('View my students') }}</p>
                     </div>
+                    <svg class="quick-action-item__chevron rtl-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
                 </a>
             </div>
         </div>

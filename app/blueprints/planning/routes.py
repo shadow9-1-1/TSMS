@@ -13,6 +13,7 @@ from datetime import date
 from flask import render_template, redirect, url_for, flash, request, abort, jsonify
 from flask_login import login_required, current_user
 from functools import wraps
+from flask_babel import gettext as _
 
 from app.extensions import db
 from app.models import User, UserRole, UserStatus, Student, StudentStatus
@@ -57,11 +58,11 @@ def planning_access_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
-            flash('Please log in to access this page.', 'warning')
+            flash(_('Please log in to access this page.'), 'warning')
             return redirect(url_for('auth.login', next=request.url))
         
         if not (current_user.is_admin() or current_user.is_supervisor() or current_user.teacher_profile):
-            flash('You do not have permission to access this page.', 'error')
+            flash(_('You do not have permission to access this page.'), 'error')
             abort(403)
         
         return f(*args, **kwargs)
@@ -168,7 +169,7 @@ def create_plan(student_id=None):
     from app.models.planning import Objective, StudentPlan, StudentObjective
 
     if current_user.is_supervisor() and not current_user.is_admin():
-        flash('Supervisors can only view plans and progress.', 'warning')
+        flash(_('Supervisors can only view plans and progress.'), 'warning')
         return redirect(url_for('supervisor.plan_list'))
     
     form = PlanForm()
@@ -204,7 +205,7 @@ def create_plan(student_id=None):
         ),
         User.status == UserStatus.ACTIVE
     ).order_by(User.name).all()
-    form.supervisor_id.choices = [('', 'No Supervisor')] + [
+    form.supervisor_id.choices = [('', _('No Supervisor'))] + [
         (str(s.id), s.name) for s in supervisors
     ]
     
@@ -214,20 +215,20 @@ def create_plan(student_id=None):
         selected_students = Student.query.filter(Student.id.in_(selected_student_ids)).all()
         
         if not selected_students:
-            flash('Please select at least one student.', 'error')
+            flash(_('Please select at least one student.'), 'error')
             return render_template('planning/plan_form.html',
                                  form=form,
                                  plan=None,
-                                 title='Create Plan')
+                                 title=_('Create Plan'))
         
         # Verify permission for all selected students
         for student in selected_students:
             if not current_user.is_admin() and not can_manage_student(student):
-                flash(f'You do not have permission to create plans for {student.name}.', 'error')
+                flash(_('You do not have permission to create plans for %(student)s.', student=student.name), 'error')
                 return render_template('planning/plan_form.html',
                                      form=form,
                                      plan=None,
-                                     title='Create Plan')
+                                     title=_('Create Plan'))
         
         # Create the plan template (no student_id - uses StudentPlan instead)
         plan = Plan(
@@ -279,9 +280,9 @@ def create_plan(student_id=None):
         
         student_names = ', '.join([s.name for s in selected_students[:3]])
         if len(selected_students) > 3:
-            student_names += f' and {len(selected_students) - 3} more'
+            student_names += _(' and %(count)s more', count=len(selected_students) - 3)
         
-        flash(f'Plan "{plan.title}" created for {student_names}.', 'success')
+        flash(_('Plan "%(title)s" created for %(students)s.', title=plan.title, students=student_names), 'success')
         return redirect(url_for('planning.plan_detail', id=plan.id))
     
     # Pre-fill student if provided (from URL path or query param)
@@ -293,7 +294,7 @@ def create_plan(student_id=None):
     return render_template('planning/plan_form.html',
                          form=form,
                          plan=None,
-                         title='Create Plan')
+                         title=_('Create Plan'))
 
 
 @planning_bp.route('/<int:id>')
@@ -306,7 +307,7 @@ def plan_detail(id):
     # Check access
     if not current_user.is_admin():
         if not can_manage_plan(plan):
-            flash('You do not have permission to view this plan.', 'error')
+            flash(_('You do not have permission to view this plan.'), 'error')
             abort(403)
     
     tasks = plan.tasks.order_by(Task.order, Task.due_date).all()
@@ -334,7 +335,7 @@ def edit_plan(id):
     
     # Check access
     if not current_user.is_admin() and not can_manage_plan(plan):
-        flash('You do not have permission to edit this plan.', 'error')
+        flash(_('You do not have permission to edit this plan.'), 'error')
         abort(403)
     
     form = PlanForm(obj=plan)
@@ -361,7 +362,7 @@ def edit_plan(id):
             User.role == UserRole.ADMIN
         )
     ).order_by(User.name).all()
-    form.supervisor_id.choices = [('', 'No Supervisor')] + [
+    form.supervisor_id.choices = [('', _('No Supervisor'))] + [
         (str(s.id), s.name) for s in supervisors
     ]
     
@@ -417,13 +418,13 @@ def edit_plan(id):
         # Update progress
         plan.update_progress()
         
-        flash(f'Plan "{plan.title}" updated successfully.', 'success')
+        flash(_('Plan "%(title)s" updated successfully.', title=plan.title), 'success')
         return redirect(url_for('planning.plan_detail', id=plan.id))
     
     return render_template('planning/plan_form.html',
                          form=form,
                          plan=plan,
-                         title='Edit Plan')
+                         title=_('Edit Plan'))
 
 
 @planning_bp.route('/<int:id>/delete', methods=['POST'])
@@ -435,14 +436,14 @@ def delete_plan(id):
     
     # Check access
     if not current_user.is_admin() and plan.created_by_id != current_user.id:
-        flash('You do not have permission to delete this plan.', 'error')
+        flash(_('You do not have permission to delete this plan.'), 'error')
         abort(403)
     
     title = plan.title
     db.session.delete(plan)
     db.session.commit()
     
-    flash(f'Plan "{title}" deleted successfully.', 'success')
+    flash(_('Plan "%(title)s" deleted successfully.', title=title), 'success')
     return redirect(url_for('planning.index'))
 
 
@@ -459,7 +460,7 @@ def activate_plan(id):
     plan.status = PlanStatus.ACTIVE
     db.session.commit()
     
-    flash(f'Plan "{plan.title}" is now active.', 'success')
+    flash(_('Plan "%(title)s" is now active.', title=plan.title), 'success')
     return redirect(url_for('planning.plan_detail', id=plan.id))
 
 
@@ -475,7 +476,7 @@ def complete_plan(id):
     
     plan.complete()
     
-    flash(f'Plan "{plan.title}" marked as completed.', 'success')
+    flash(_('Plan "%(title)s" marked as completed.', title=plan.title), 'success')
     return redirect(url_for('planning.plan_detail', id=plan.id))
 
 
@@ -491,14 +492,14 @@ def create_task(plan_id):
     plan = Plan.query.get_or_404(plan_id)
     
     if not current_user.is_admin() and not can_manage_plan(plan):
-        flash('You do not have permission to add tasks to this plan.', 'error')
+        flash(_('You do not have permission to add tasks to this plan.'), 'error')
         abort(403)
     
     form = TaskForm()
     
     # Get users for assignment
     users = User.query.filter_by(status='active').order_by(User.name).all()
-    form.assigned_to_id.choices = [('', 'Unassigned')] + [
+    form.assigned_to_id.choices = [('', _('Unassigned'))] + [
         (str(u.id), u.name) for u in users
     ]
     
@@ -525,14 +526,14 @@ def create_task(plan_id):
         # Update plan progress
         plan.update_progress()
         
-        flash(f'Task "{task.title}" created successfully.', 'success')
+        flash(_('Task "%(title)s" created successfully.', title=task.title), 'success')
         return redirect(url_for('planning.plan_detail', id=plan_id))
     
     return render_template('planning/task_form.html',
                          form=form,
                          plan=plan,
                          task=None,
-                         title='Create Task')
+                         title=_('Create Task'))
 
 
 @planning_bp.route('/tasks/<int:id>/edit', methods=['GET', 'POST'])
@@ -544,13 +545,13 @@ def edit_task(id):
     plan = task.plan
     
     if not current_user.is_admin() and not can_manage_plan(plan):
-        flash('You do not have permission to edit this task.', 'error')
+        flash(_('You do not have permission to edit this task.'), 'error')
         abort(403)
     
     form = TaskForm(obj=task)
     
     users = User.query.filter_by(status='active').order_by(User.name).all()
-    form.assigned_to_id.choices = [('', 'Unassigned')] + [
+    form.assigned_to_id.choices = [('', _('Unassigned'))] + [
         (str(u.id), u.name) for u in users
     ]
     
@@ -574,14 +575,14 @@ def edit_task(id):
         # Update plan progress
         plan.update_progress()
         
-        flash(f'Task "{task.title}" updated successfully.', 'success')
+        flash(_('Task "%(title)s" updated successfully.', title=task.title), 'success')
         return redirect(url_for('planning.plan_detail', id=plan.id))
     
     return render_template('planning/task_form.html',
                          form=form,
                          plan=plan,
                          task=task,
-                         title='Edit Task')
+                         title=_('Edit Task'))
 
 
 @planning_bp.route('/tasks/<int:id>/delete', methods=['POST'])
@@ -593,7 +594,7 @@ def delete_task(id):
     plan = task.plan
     
     if not current_user.is_admin() and not can_manage_plan(plan):
-        flash('You do not have permission to delete this task.', 'error')
+        flash(_('You do not have permission to delete this task.'), 'error')
         abort(403)
     
     title = task.title
@@ -603,7 +604,7 @@ def delete_task(id):
     # Update plan progress
     plan.update_progress()
     
-    flash(f'Task "{title}" deleted successfully.', 'success')
+    flash(_('Task "%(title)s" deleted successfully.', title=title), 'success')
     return redirect(url_for('planning.plan_detail', id=plan.id))
 
 
@@ -619,7 +620,7 @@ def complete_task(id):
     
     task.complete()
     
-    flash(f'Task "{task.title}" marked as completed.', 'success')
+    flash(_('Task "%(title)s" marked as completed.', title=task.title), 'success')
     
     # Check if request is AJAX
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -643,7 +644,7 @@ def start_task(id):
     
     task.start()
     
-    flash(f'Task "{task.title}" started.', 'success')
+    flash(_('Task "%(title)s" started.', title=task.title), 'success')
     return redirect(url_for('planning.plan_detail', id=task.plan_id))
 
 
@@ -665,8 +666,8 @@ def toggle_objective(id):
     
     objective.toggle()
     
-    status_text = 'completed' if objective.is_completed else 'pending'
-    flash(f'Objective marked as {status_text}.', 'success')
+    status_text = _('completed') if objective.is_completed else _('pending')
+    flash(_('Objective marked as %(status)s.', status=status_text), 'success')
     
     # Check if request is AJAX
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -699,8 +700,8 @@ def toggle_student_objective(id):
     
     obj.toggle()
     
-    status_text = 'completed' if obj.is_completed else 'pending'
-    flash(f'Objective marked as {status_text}.', 'success')
+    status_text = _('completed') if obj.is_completed else _('pending')
+    flash(_('Objective marked as %(status)s.', status=status_text), 'success')
     
     # Check if request is AJAX
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -728,7 +729,7 @@ def activate_student_plan(id):
     
     sp.activate()
     
-    flash(f'Plan activated for {sp.student.name}.', 'success')
+    flash(_('Plan activated for %(student)s.', student=sp.student.name), 'success')
     return redirect(url_for('planning.plan_detail', id=sp.plan_id))
 
 
@@ -746,7 +747,7 @@ def complete_student_plan(id):
     
     sp.complete()
     
-    flash(f'Plan marked as completed for {sp.student.name}.', 'success')
+    flash(_('Plan marked as completed for %(student)s.', student=sp.student.name), 'success')
     return redirect(url_for('planning.plan_detail', id=sp.plan_id))
 
 
@@ -764,7 +765,7 @@ def student_plans(student_id):
     student = Student.query.get_or_404(student_id)
     
     if not current_user.is_admin() and not can_manage_student(student):
-        flash('You do not have permission to view this student\'s plans.', 'error')
+        flash(_('You do not have permission to view this student\'s plans.'), 'error')
         abort(403)
     
     # Get single-student plans (legacy)

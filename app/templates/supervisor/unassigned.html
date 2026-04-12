@@ -1,21 +1,21 @@
 {% extends "layouts/dashboard.html" %}
 
-{% block page_title %}Unassigned Students{% endblock %}
-{% block page_subtitle %}Students without a supervisor{% endblock %}
+{% block page_title %}{{ _('Unassigned Students') }}{% endblock %}
+{% block page_subtitle %}{{ _('Students without a supervisor') }}{% endblock %}
 
 {% block content %}
-<div class="space-y-6">
+<div class="page-stack management-page">
     <!-- Info Banner -->
     <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6">
-        <div class="flex items-start">
-            <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+        <div class="management-entity items-start">
+            <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
                 <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                 </svg>
             </div>
             <div>
-                <h4 class="font-semibold text-amber-900">Students Need Supervisors</h4>
-                <p class="text-sm text-amber-700 mt-1">The following students do not have a supervisor assigned. Assign supervisors to enable planning and progress tracking.</p>
+                <h4 class="font-semibold text-amber-900">{{ _('Students Need Supervisors') }}</h4>
+                <p class="text-sm text-amber-700 mt-1">{{ _('The following students do not have a supervisor assigned. Assign supervisors to enable planning and progress tracking.') }}</p>
             </div>
         </div>
     </div>
@@ -23,32 +23,32 @@
     <!-- Students List -->
     <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
         <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200">
-            <h3 class="text-lg font-semibold text-slate-900">Unassigned Students ({{ students.total }})</h3>
+            <h3 class="text-lg font-semibold text-slate-900">{{ _('Unassigned Students') }} ({{ students.total }})</h3>
         </div>
         
         {% if students %}
-        <div class="overflow-x-auto">
-            <table class="w-full">
+        <div class="management-table-wrap">
+            <table class="management-table w-full">
                 <thead class="bg-slate-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Student</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Student ID</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Enrolled</th>
-                        <th class="px-6 py-3 text-right text-xs font-semibold text-slate-600 uppercase tracking-wider">Actions</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">{{ _('Student') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">{{ _('Student ID') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">{{ _('Status') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">{{ _('Enrolled') }}</th>
+                        <th class="px-6 py-3 text-right text-xs font-semibold text-slate-600 uppercase tracking-wider is-actions">{{ _('Actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200">
                     {% for student in students %}
                     <tr class="hover:bg-slate-50/50 transition-colors">
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 bg-gradient-to-br from-slate-400 to-slate-500 rounded-lg flex items-center justify-center mr-3">
+                            <div class="management-entity">
+                                <div class="w-10 h-10 bg-gradient-to-br from-slate-400 to-slate-500 rounded-lg flex items-center justify-center">
                                     <span class="text-white font-semibold text-sm">{{ student.name[0]|upper }}</span>
                                 </div>
-                                <div>
+                                <div class="management-entity__meta">
                                     <p class="font-medium text-slate-900">{{ student.name }}</p>
-                                    <p class="text-sm text-slate-500">{{ student.email or 'No email' }}</p>
+                                    <p class="text-sm text-slate-500">{{ student.email or _('No email') }}</p>
                                 </div>
                             </div>
                         </td>
@@ -60,17 +60,19 @@
                                 {% if student.status.value == 'active' %}bg-emerald-100 text-emerald-700
                                 {% elif student.status.value == 'graduated' %}bg-blue-100 text-blue-700
                                 {% else %}bg-slate-100 text-slate-700{% endif %}">
-                                {{ student.status.value|title }}
+                                {{ _(student.status.value|replace('_', ' ')|title) }}
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                            {{ student.enrollment_date.strftime('%b %d, %Y') if student.enrollment_date else 'N/A' }}
+                            {{ student.enrollment_date.strftime('%b %d, %Y') if student.enrollment_date else _('N/A') }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right">
-                            <a href="{{ url_for('supervisor.assign_supervisor', id=student.id) }}" 
-                               class="px-4 py-2 bg-primary-600 text-white text-sm rounded-lg hover:bg-primary-700 transition-colors font-medium">
-                                Assign Supervisor
-                            </a>
+                        <td class="px-6 py-4 whitespace-nowrap text-right is-actions">
+                            <div class="management-actions">
+                                <a href="{{ url_for('supervisor.assign_supervisor', id=student.id) }}" 
+                                   class="px-4 py-2 bg-primary-600 text-white text-sm rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                                    {{ _('Assign Supervisor') }}
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}
@@ -84,8 +86,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
             </div>
-            <p class="text-slate-600 font-medium">All students have supervisors</p>
-            <p class="text-sm text-slate-500 mt-1">Every student has been assigned to a supervisor.</p>
+            <p class="text-slate-600 font-medium">{{ _('All students have supervisors') }}</p>
+            <p class="text-sm text-slate-500 mt-1">{{ _('Every student has been assigned to a supervisor.') }}</p>
         </div>
         {% endif %}
     </div>

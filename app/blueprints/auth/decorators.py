@@ -19,6 +19,7 @@ Usage:
 from functools import wraps
 from flask import abort, flash, redirect, url_for, request
 from flask_login import current_user
+from flask_babel import gettext as _
 
 from app.models import UserRole
 
@@ -49,7 +50,7 @@ def role_required(*roles):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             if not current_user.is_authenticated:
-                flash('Please log in to access this page.', 'warning')
+                flash(_('Please log in to access this page.'), 'warning')
                 return redirect(url_for('auth.login', next=request.url))
             
             # Check if user has any of the required roles
@@ -68,7 +69,7 @@ def role_required(*roles):
                         break
             
             if not allowed:
-                flash('You do not have permission to access this page.', 'error')
+                flash(_('You do not have permission to access this page.'), 'error')
                 abort(403)
             
             return f(*args, **kwargs)
@@ -90,11 +91,11 @@ def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
-            flash('Please log in to access this page.', 'warning')
+            flash(_('Please log in to access this page.'), 'warning')
             return redirect(url_for('auth.login', next=request.url))
         
         if not current_user.is_admin():
-            flash('Administrator access required.', 'error')
+            flash(_('Administrator access required.'), 'error')
             abort(403)
         
         return f(*args, **kwargs)
@@ -115,11 +116,11 @@ def supervisor_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
-            flash('Please log in to access this page.', 'warning')
+            flash(_('Please log in to access this page.'), 'warning')
             return redirect(url_for('auth.login', next=request.url))
         
         if not current_user.is_supervisor():
-            flash('Supervisor access required.', 'error')
+            flash(_('Supervisor access required.'), 'error')
             abort(403)
         
         return f(*args, **kwargs)
@@ -140,11 +141,11 @@ def teacher_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
-            flash('Please log in to access this page.', 'warning')
+            flash(_('Please log in to access this page.'), 'warning')
             return redirect(url_for('auth.login', next=request.url))
         
         if not current_user.is_teacher():
-            flash('Teacher access required.', 'error')
+            flash(_('Teacher access required.'), 'error')
             abort(403)
         
         return f(*args, **kwargs)
@@ -165,11 +166,11 @@ def admin_or_supervisor_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
-            flash('Please log in to access this page.', 'warning')
+            flash(_('Please log in to access this page.'), 'warning')
             return redirect(url_for('auth.login', next=request.url))
         
         if not current_user.can_manage_teachers():
-            flash('Management access required.', 'error')
+            flash(_('Management access required.'), 'error')
             abort(403)
         
         return f(*args, **kwargs)
@@ -190,11 +191,11 @@ def active_user_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
-            flash('Please log in to access this page.', 'warning')
+            flash(_('Please log in to access this page.'), 'warning')
             return redirect(url_for('auth.login', next=request.url))
         
         if not current_user.is_active_account():
-            flash('Your account is not active. Please contact support.', 'error')
+            flash(_('Your account is not active. Please contact support.'), 'error')
             return redirect(url_for('auth.login'))
         
         return f(*args, **kwargs)

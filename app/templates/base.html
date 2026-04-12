@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="{{ current_language|default('en') }}" dir="{{ current_direction|default('ltr') }}" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Teachers and Students Management System - Modern Education Platform">
+    <meta name="description" content="{{ _('Teachers and Students Management System - Modern Education Platform') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
     <title>{% block title %}{{ app_name }}{% endblock %}</title>
@@ -100,11 +100,363 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+
+        .rtl-arrow {
+            transition: transform 0.2s ease;
+        }
+
+        [dir="rtl"] .rtl-arrow {
+            transform: scaleX(-1);
+        }
+
+        .rtl-text-start {
+            text-align: left;
+        }
+
+        [dir="rtl"] .rtl-text-start {
+            text-align: right;
+        }
+
+        /* Keep sidebar icon/label spacing natural in RTL without global side flips. */
+        [dir="rtl"] aside .ml-3 {
+            margin-left: 0;
+            margin-right: 0.75rem;
+        }
+
+        [dir="rtl"] aside .ml-2 {
+            margin-left: 0;
+            margin-right: 0.5rem;
+        }
+
+        [dir="rtl"] aside .mr-3 {
+            margin-right: 0;
+            margin-left: 0.75rem;
+        }
+
+        /* Shared compact action-list rows (RTL/LTR aware). */
+        .quick-actions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .quick-action-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+            padding: 0.625rem 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.875rem;
+            text-align: start;
+        }
+
+        .quick-action-item--flat {
+            border-color: transparent;
+            background-color: #f8fafc;
+        }
+
+        .quick-action-item__icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.75rem;
+            flex: 0 0 auto;
+        }
+
+        .quick-action-item__text {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.125rem;
+            text-align: start;
+        }
+
+        .quick-action-item__title {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .quick-action-item__subtitle {
+            font-size: 0.75rem;
+            line-height: 1rem;
+            color: #64748b;
+        }
+
+        .quick-action-item__chevron {
+            margin-inline-start: auto;
+            width: 1rem;
+            height: 1rem;
+            color: #94a3b8;
+            flex: 0 0 auto;
+        }
+
+        .quick-action-item:hover .quick-action-item__chevron {
+            color: #64748b;
+        }
+
+        [dir="rtl"] .quick-action-item,
+        [dir="rtl"] .quick-action-item__text {
+            text-align: right;
+        }
+
+        /* Shared management/list page layout system (RTL/LTR aware). */
+        .page-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .page-header-row {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .page-header-row {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+
+        .page-header-title {
+            min-width: 0;
+        }
+
+        .page-header-actions {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .page-header-actions {
+                width: auto;
+                margin-inline-start: auto;
+            }
+        }
+
+        .management-toolbar {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.875rem;
+        }
+
+        @media (min-width: 640px) {
+            .management-toolbar {
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+        }
+
+        .management-toolbar__search {
+            flex: 1 1 18rem;
+            min-width: 16rem;
+        }
+
+        .management-toolbar__control {
+            width: 100%;
+            flex: 0 0 auto;
+        }
+
+        @media (min-width: 640px) {
+            .management-toolbar__control {
+                width: 10rem;
+            }
+
+            .management-toolbar__control--wide {
+                width: 12rem;
+            }
+        }
+
+        .management-search {
+            position: relative;
+        }
+
+        .management-search__icon {
+            position: absolute;
+            inset-block: 0;
+            inset-inline-start: 0;
+            padding-inline-start: 1rem;
+            display: flex;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .management-search__input {
+            width: 100%;
+            padding-block: 0.75rem;
+            padding-inline-start: 2.75rem;
+            padding-inline-end: 1rem;
+            text-align: start;
+        }
+
+        .management-field {
+            width: 100%;
+            padding-inline: 1rem;
+            text-align: start;
+        }
+
+        .management-submit {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.375rem;
+            white-space: nowrap;
+        }
+
+        .management-inline-icon {
+            margin-inline-end: 0.25rem;
+        }
+
+        .management-table-wrap {
+            overflow-x: auto;
+        }
+
+        .management-table {
+            width: 100%;
+            min-width: 100%;
+        }
+
+        .management-table th,
+        .management-table td {
+            text-align: start;
+        }
+
+        .management-table th.is-actions,
+        .management-table td.is-actions {
+            text-align: end;
+            white-space: nowrap;
+        }
+
+        .management-entity {
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+            min-width: 0;
+        }
+
+        .management-entity__meta {
+            min-width: 0;
+            text-align: start;
+        }
+
+        .management-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+
+        .management-progress {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .management-dot {
+            margin-inline-end: 0.375rem;
+        }
+
+        .management-pagination {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+
+        .management-pagination__links {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        @media (min-width: 640px) {
+            .management-pagination {
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+
+        .management-plan-side {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-inline-start: 1.5rem;
+        }
+
+        .management-plan-metric {
+            text-align: end;
+            min-width: 5.5rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .back-link__icon {
+            flex: 0 0 auto;
+        }
+
+        [dir="rtl"] .back-link__icon {
+            transform: scaleX(-1);
+        }
+
+        table th.text-left,
+        table td.text-left {
+            text-align: start;
+        }
+
+        table th.text-right,
+        table td.text-right {
+            text-align: end;
+        }
+
+        [dir="rtl"] [class*="space-x-"] > :not([hidden]) ~ :not([hidden]) {
+            --tw-space-x-reverse: 1;
+        }
+
+        .app-main-content {
+            width: 100%;
+            max-width: 100%;
+            margin-inline: auto;
+        }
+
+        @media (min-width: 1536px) {
+            .app-main-content {
+                max-width: 96rem;
+            }
+        }
     </style>
     
     {% block extra_css %}{% endblock %}
 </head>
-<body class="h-full font-sans antialiased bg-slate-50 text-slate-900">
+<body class="h-full overflow-x-hidden font-sans antialiased bg-slate-50 text-slate-900">
+    {% if not current_user.is_authenticated %}
+    <div class="fixed top-4 {% if current_direction == 'rtl' %}left-4{% else %}right-4{% endif %} z-50">
+        <div class="flex items-center rounded-lg border border-slate-200 bg-white/90 shadow-sm backdrop-blur p-1 text-xs font-medium">
+            <a href="{{ switch_lang_url('en') }}" class="px-2 py-1 rounded {% if current_language == 'en' %}bg-primary-600 text-white{% else %}text-slate-700 hover:text-slate-900{% endif %}">EN</a>
+            <a href="{{ switch_lang_url('ar') }}" class="px-2 py-1 rounded {% if current_language == 'ar' %}bg-primary-600 text-white{% else %}text-slate-700 hover:text-slate-900{% endif %}">AR</a>
+        </div>
+    </div>
+    {% endif %}
+
     {% block body %}
     <div class="min-h-full">
         {% block content %}{% endblock %}
@@ -114,10 +466,10 @@
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-        <div x-data="{ show: true }" 
+           <div x-data="{ show: true }" 
              x-show="show" 
              x-init="setTimeout(() => show = false, 5000)"
-             class="fixed bottom-4 right-4 z-50 space-y-2">
+               class="fixed bottom-4 {% if current_direction == 'rtl' %}left-4{% else %}right-4{% endif %} z-50 space-y-2">
             {% for category, message in messages %}
             <div class="flex items-center p-4 rounded-lg shadow-lg
                         {% if category == 'success' %}bg-green-50 text-green-800 border border-green-200
@@ -125,7 +477,7 @@
                         {% elif category == 'warning' %}bg-yellow-50 text-yellow-800 border border-yellow-200
                         {% else %}bg-blue-50 text-blue-800 border border-blue-200{% endif %}">
                 <!-- Icon -->
-                <span class="flex-shrink-0 mr-3">
+                <span class="flex-shrink-0 {% if current_direction == 'rtl' %}ml-3{% else %}mr-3{% endif %}">
                     {% if category == 'success' %}
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
@@ -141,7 +493,7 @@
                     {% endif %}
                 </span>
                 <span class="text-sm font-medium">{{ message }}</span>
-                <button @click="show = false" class="ml-4 text-current opacity-70 hover:opacity-100">
+                <button @click="show = false" class="{% if current_direction == 'rtl' %}mr-4{% else %}ml-4{% endif %} text-current opacity-70 hover:opacity-100">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
                     </svg>

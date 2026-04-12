@@ -12,6 +12,7 @@ Access:
 
 from flask import render_template, redirect, url_for, flash, request, abort
 from flask_login import login_required, current_user
+from flask_babel import gettext as _
 
 from app.extensions import db
 from app.models import User, UserRole, UserStatus
@@ -29,11 +30,11 @@ def admin_or_supervisor_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
-            flash('Please log in to access this page.', 'warning')
+            flash(_('Please log in to access this page.'), 'warning')
             return redirect(url_for('auth.login', next=request.url))
         
         if not (current_user.is_admin() or current_user.is_supervisor()):
-            flash('You do not have permission to access this page.', 'error')
+            flash(_('You do not have permission to access this page.'), 'error')
             abort(403)
         
         return f(*args, **kwargs)
@@ -126,7 +127,7 @@ def create():
         db.session.add(teacher)
         db.session.commit()
         
-        flash(f'Teacher {user.name} has been created successfully.', 'success')
+        flash(_('Teacher %(name)s has been created successfully.', name=user.name), 'success')
         return redirect(url_for('teacher.teacher_list'))
     
     return render_template('teacher/create.html', form=form)
@@ -191,7 +192,7 @@ def edit(id):
         
         db.session.commit()
         
-        flash(f'Teacher {user.name} has been updated successfully.', 'success')
+        flash(_('Teacher %(name)s has been updated successfully.', name=user.name), 'success')
         return redirect(url_for('teacher.detail', id=teacher.id))
     
     return render_template('teacher/edit.html', form=form, teacher=teacher)
@@ -208,14 +209,14 @@ def delete(id):
     
     # Check for assigned students
     if teacher.assigned_students.count() > 0:
-        flash(f'Cannot delete {name}. They have students assigned. Please reassign students first.', 'error')
+        flash(_('Cannot delete %(name)s. They have students assigned. Please reassign students first.', name=name), 'error')
         return redirect(url_for('teacher.detail', id=id))
     
     # Delete teacher profile (user will be deleted via cascade)
     db.session.delete(user)
     db.session.commit()
     
-    flash(f'Teacher {name} has been deleted.', 'success')
+    flash(_('Teacher %(name)s has been deleted.', name=name), 'success')
     return redirect(url_for('teacher.teacher_list'))
 
 
@@ -229,11 +230,11 @@ def toggle_status(id):
     if teacher.status == 'active':
         teacher.status = 'inactive'
         teacher.user.status = UserStatus.INACTIVE
-        flash(f'{teacher.name} has been deactivated.', 'success')
+        flash(_('%(name)s has been deactivated.', name=teacher.name), 'success')
     else:
         teacher.status = 'active'
         teacher.user.status = UserStatus.ACTIVE
-        flash(f'{teacher.name} has been activated.', 'success')
+        flash(_('%(name)s has been activated.', name=teacher.name), 'success')
     
     db.session.commit()
     
@@ -257,7 +258,7 @@ def assign_student(id):
     ).filter(Student.status == StudentStatus.ACTIVE).order_by(Student.name).all()
     
     form = AssignStudentForm()
-    form.student_id.choices = [(0, 'Select a student...')] + [
+    form.student_id.choices = [(0, _('Select a student...'))] + [
         (s.id, f'{s.name} ({s.student_id})') for s in unassigned_students
     ]
     
@@ -266,7 +267,7 @@ def assign_student(id):
         student.assigned_teacher_id = teacher.id
         db.session.commit()
         
-        flash(f'{student.name} has been assigned to {teacher.name}.', 'success')
+        flash(_('%(student)s has been assigned to %(teacher)s.', student=student.name, teacher=teacher.name), 'success')
         return redirect(url_for('teacher.detail', id=id))
     
     return render_template(
@@ -287,11 +288,11 @@ def unassign_student(id, student_id):
     student = Student.query.get_or_404(student_id)
     
     if student.assigned_teacher_id != teacher.id:
-        flash('This student is not assigned to this teacher.', 'error')
+        flash(_('This student is not assigned to this teacher.'), 'error')
         return redirect(url_for('teacher.detail', id=id))
     
     student.assigned_teacher_id = None
     db.session.commit()
     
-    flash(f'{student.name} has been unassigned from {teacher.name}.', 'success')
+    flash(_('%(student)s has been unassigned from %(teacher)s.', student=student.name, teacher=teacher.name), 'success')
     return redirect(url_for('teacher.detail', id=id))

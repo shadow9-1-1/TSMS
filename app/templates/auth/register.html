@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Create Account - {{ app_name }}{% endblock %}
+{% block title %}{{ _('Create Account') }} - {{ app_name }}{% endblock %}
 
 {% block content %}
 <div class="min-h-screen flex">
@@ -9,10 +9,10 @@
         <div class="flex items-center justify-center h-full px-12">
             <div class="text-center">
                 <h2 class="text-4xl font-bold text-white">
-                    Join TSMS Today
+                    {{ _('Join TSMS Today') }}
                 </h2>
                 <p class="mt-4 text-lg text-primary-100 max-w-md">
-                    Start managing your educational institution with our comprehensive management system.
+                    {{ _('Start managing your educational institution with our comprehensive management system.') }}
                 </p>
                 
                 <!-- Benefits list -->
@@ -23,7 +23,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
                         </div>
-                        <span class="text-white/90">Manage unlimited students</span>
+                        <span class="text-white/90">{{ _('Manage unlimited students') }}</span>
                     </div>
                     <div class="flex items-center space-x-3">
                         <div class="flex-shrink-0 w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
@@ -31,7 +31,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
                         </div>
-                        <span class="text-white/90">Track attendance & grades</span>
+                        <span class="text-white/90">{{ _('Track attendance & grades') }}</span>
                     </div>
                     <div class="flex items-center space-x-3">
                         <div class="flex-shrink-0 w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
@@ -39,7 +39,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
                         </div>
-                        <span class="text-white/90">Generate detailed reports</span>
+                        <span class="text-white/90">{{ _('Generate detailed reports') }}</span>
                     </div>
                     <div class="flex items-center space-x-3">
                         <div class="flex-shrink-0 w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
@@ -47,7 +47,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
                         </div>
-                        <span class="text-white/90">Role-based access control</span>
+                        <span class="text-white/90">{{ _('Role-based access control') }}</span>
                     </div>
                 </div>
             </div>
@@ -68,10 +68,10 @@
                     <span class="text-2xl font-bold text-gray-900">TSMS</span>
                 </a>
                 <h2 class="mt-6 text-3xl font-bold text-gray-900">
-                    Create your account
+                    {{ _('Create your account') }}
                 </h2>
                 <p class="mt-2 text-sm text-gray-600">
-                    Get started with TSMS in minutes
+                    {{ _('Get started with TSMS in minutes') }}
                 </p>
             </div>
             
@@ -83,7 +83,7 @@
                     <!-- Name fields in a row -->
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
+                            <label for="first_name" class="block text-sm font-medium text-gray-700">{{ _('First Name') }}</label>
                             <div class="mt-1">
                                 {{ form.first_name(class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors" + (" border-red-300" if form.first_name.errors else ""), placeholder="John") }}
                             </div>
@@ -93,7 +93,7 @@
                         </div>
                         
                         <div>
-                            <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
+                            <label for="last_name" class="block text-sm font-medium text-gray-700">{{ _('Last Name') }}</label>
                             <div class="mt-1">
                                 {{ form.last_name(class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors" + (" border-red-300" if form.last_name.errors else ""), placeholder="Doe") }}
                             </div>
@@ -105,7 +105,7 @@
                     
                     <!-- Username -->
                     <div>
-                        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                        <label for="username" class="block text-sm font-medium text-gray-700">{{ _('Username') }}</label>
                         <div class="mt-1">
                             {{ form.username(class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors" + (" border-red-300" if form.username.errors else ""), placeholder="johndoe") }}
                         </div>
@@ -116,7 +116,7 @@
                     
                     <!-- Email -->
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
+                        <label for="email" class="block text-sm font-medium text-gray-700">{{ _('Email address') }}</label>
                         <div class="mt-1">
                             {{ form.email(class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors" + (" border-red-300" if form.email.errors else ""), placeholder="you@example.com") }}
                         </div>
@@ -127,7 +127,7 @@
                     
                     <!-- Password -->
                     <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <label for="password" class="block text-sm font-medium text-gray-700">{{ _('Password') }}</label>
                         <div class="mt-1">
                             {{ form.password(class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors" + (" border-red-300" if form.password.errors else ""), placeholder="At least 8 characters") }}
                         </div>
@@ -138,7 +138,7 @@
                     
                     <!-- Confirm Password -->
                     <div>
-                        <label for="password_confirm" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                        <label for="password_confirm" class="block text-sm font-medium text-gray-700">{{ _('Confirm Password') }}</label>
                         <div class="mt-1">
                             {{ form.password_confirm(class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors" + (" border-red-300" if form.password_confirm.errors else ""), placeholder="Repeat your password") }}
                         </div>
@@ -152,9 +152,9 @@
                 <div class="flex items-start">
                     <input type="checkbox" required class="mt-1 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
                     <label class="ml-2 text-sm text-gray-600">
-                        I agree to the 
-                        <a href="#" class="text-primary-600 hover:text-primary-700">Terms of Service</a> and 
-                        <a href="#" class="text-primary-600 hover:text-primary-700">Privacy Policy</a>
+                        {{ _('I agree to the') }}
+                        <a href="#" class="text-primary-600 hover:text-primary-700">{{ _('Terms of Service') }}</a> {{ _('and') }}
+                        <a href="#" class="text-primary-600 hover:text-primary-700">{{ _('Privacy Policy') }}</a>
                     </label>
                 </div>
                 
@@ -166,9 +166,9 @@
             
             <!-- Sign in link -->
             <p class="text-center text-sm text-gray-600">
-                Already have an account?
+                {{ _('Already have an account?') }}
                 <a href="{{ url_for('auth.login') }}" class="font-medium text-primary-600 hover:text-primary-700">
-                    Sign in
+                    {{ _('Sign in') }}
                 </a>
             </p>
         </div>

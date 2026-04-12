@@ -15,6 +15,7 @@ from wtforms.validators import (
     DataRequired, Email, Length, EqualTo, 
     ValidationError, Regexp, Optional
 )
+from flask_babel import lazy_gettext as _l
 
 from app.models import User
 
@@ -29,23 +30,23 @@ class LoginForm(FlaskForm):
         remember_me: Keep user logged in
     """
     
-    email = StringField('Email or Username', validators=[
-        DataRequired(message='Email or username is required.')
+    email = StringField(_l('Email or Username'), validators=[
+        DataRequired(message=_l('Email or username is required.'))
     ], render_kw={
-        'placeholder': 'you@example.com',
+        'placeholder': _l('you@example.com'),
         'autocomplete': 'email'
     })
     
-    password = PasswordField('Password', validators=[
-        DataRequired(message='Password is required.')
+    password = PasswordField(_l('Password'), validators=[
+        DataRequired(message=_l('Password is required.'))
     ], render_kw={
-        'placeholder': 'Enter your password',
+        'placeholder': _l('Enter your password'),
         'autocomplete': 'current-password'
     })
     
-    remember_me = BooleanField('Remember me')
+    remember_me = BooleanField(_l('Remember me'))
     
-    submit = SubmitField('Sign In')
+    submit = SubmitField(_l('Sign In'))
 
 
 class RegistrationForm(FlaskForm):
@@ -61,74 +62,72 @@ class RegistrationForm(FlaskForm):
         password_confirm: Password confirmation
     """
     
-    email = StringField('Email', validators=[
-        DataRequired(message='Email is required.'),
-        Email(message='Please enter a valid email address.'),
-        Length(max=120, message='Email must be less than 120 characters.')
+    email = StringField(_l('Email'), validators=[
+        DataRequired(message=_l('Email is required.')),
+        Email(message=_l('Please enter a valid email address.')),
+        Length(max=120, message=_l('Email must be less than 120 characters.'))
     ], render_kw={
-        'placeholder': 'you@example.com',
+        'placeholder': _l('you@example.com'),
         'autocomplete': 'email'
     })
     
-    username = StringField('Username', validators=[
-        DataRequired(message='Username is required.'),
-        Length(min=3, max=64, message='Username must be between 3 and 64 characters.'),
+    username = StringField(_l('Username'), validators=[
+        DataRequired(message=_l('Username is required.')),
+        Length(min=3, max=64, message=_l('Username must be between 3 and 64 characters.')),
         Regexp(
             '^[A-Za-z][A-Za-z0-9_.]*$', 0,
-            message='Username must start with a letter and contain only '
-                    'letters, numbers, dots, or underscores.'
+            message=_l('Username must start with a letter and contain only letters, numbers, dots, or underscores.')
         )
     ], render_kw={
-        'placeholder': 'johndoe',
+        'placeholder': _l('johndoe'),
         'autocomplete': 'username'
     })
     
-    first_name = StringField('First Name', validators=[
-        DataRequired(message='First name is required.'),
-        Length(max=64, message='First name must be less than 64 characters.')
+    first_name = StringField(_l('First Name'), validators=[
+        DataRequired(message=_l('First name is required.')),
+        Length(max=64, message=_l('First name must be less than 64 characters.'))
     ], render_kw={
-        'placeholder': 'John'
+        'placeholder': _l('John')
     })
     
-    last_name = StringField('Last Name', validators=[
-        DataRequired(message='Last name is required.'),
-        Length(max=64, message='Last name must be less than 64 characters.')
+    last_name = StringField(_l('Last Name'), validators=[
+        DataRequired(message=_l('Last name is required.')),
+        Length(max=64, message=_l('Last name must be less than 64 characters.'))
     ], render_kw={
-        'placeholder': 'Doe'
+        'placeholder': _l('Doe')
     })
     
-    password = PasswordField('Password', validators=[
-        DataRequired(message='Password is required.'),
-        Length(min=8, message='Password must be at least 8 characters long.'),
+    password = PasswordField(_l('Password'), validators=[
+        DataRequired(message=_l('Password is required.')),
+        Length(min=8, message=_l('Password must be at least 8 characters long.')),
         Regexp(
             r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)',
-            message='Password must contain at least one uppercase letter, '
-                    'one lowercase letter, and one number.'
+            message=_l('Password must contain at least one uppercase letter, one lowercase letter, and one number.')
         )
     ], render_kw={
-        'placeholder': 'Minimum 8 characters',
+        'placeholder': _l('Minimum 8 characters'),
         'autocomplete': 'new-password'
     })
     
-    password_confirm = PasswordField('Confirm Password', validators=[
-        DataRequired(message='Please confirm your password.'),
-        EqualTo('password', message='Passwords must match.')
+    password_confirm = PasswordField(_l('Confirm Password'), validators=[
+        DataRequired(message=_l('Please confirm your password.')),
+        EqualTo('password', message=_l('Passwords must match.'))
     ], render_kw={
-        'placeholder': 'Repeat your password',
+        'placeholder': _l('Repeat your password'),
         'autocomplete': 'new-password'
     })
     
-    submit = SubmitField('Create Account')
+    submit = SubmitField(_l('Create Account'))
     
     def validate_email(self, field):
         """Check if email is already registered."""
         if User.query.filter_by(email=field.data.lower()).first():
-            raise ValidationError('This email is already registered.')
+            raise ValidationError(_l('This email is already registered.'))
     
     def validate_username(self, field):
         """Check if username is already taken."""
         if User.query.filter_by(username=field.data.lower()).first():
-            raise ValidationError('This username is already taken.')
+            raise ValidationError(_l('This username is already taken.'))
 
 
 class ProfileForm(FlaskForm):
@@ -141,29 +140,29 @@ class ProfileForm(FlaskForm):
         email: Email address (must be unique)
     """
     
-    first_name = StringField('First Name', validators=[
-        DataRequired(message='First name is required.'),
+    first_name = StringField(_l('First Name'), validators=[
+        DataRequired(message=_l('First name is required.')),
         Length(max=64)
     ])
     
-    last_name = StringField('Last Name', validators=[
-        DataRequired(message='Last name is required.'),
+    last_name = StringField(_l('Last Name'), validators=[
+        DataRequired(message=_l('Last name is required.')),
         Length(max=64)
     ])
     
-    email = StringField('Email', validators=[
-        DataRequired(message='Email is required.'),
-        Email(message='Please enter a valid email address.'),
+    email = StringField(_l('Email'), validators=[
+        DataRequired(message=_l('Email is required.')),
+        Email(message=_l('Please enter a valid email address.')),
         Length(max=120)
     ])
     
-    submit = SubmitField('Update Profile')
+    submit = SubmitField(_l('Update Profile'))
     
     def validate_email(self, field):
         """Check if email is already registered by another user."""
         user = User.query.filter_by(email=field.data.lower()).first()
         if user and user.id != current_user.id:
-            raise ValidationError('This email is already registered.')
+            raise ValidationError(_l('This email is already registered.'))
 
 
 class ChangePasswordForm(FlaskForm):
@@ -178,40 +177,39 @@ class ChangePasswordForm(FlaskForm):
         confirm_password: New password confirmation
     """
     
-    current_password = PasswordField('Current Password', validators=[
-        DataRequired(message='Current password is required.')
+    current_password = PasswordField(_l('Current Password'), validators=[
+        DataRequired(message=_l('Current password is required.'))
     ], render_kw={
-        'placeholder': 'Enter current password',
+        'placeholder': _l('Enter current password'),
         'autocomplete': 'current-password'
     })
     
-    new_password = PasswordField('New Password', validators=[
-        DataRequired(message='New password is required.'),
-        Length(min=8, message='Password must be at least 8 characters long.'),
+    new_password = PasswordField(_l('New Password'), validators=[
+        DataRequired(message=_l('New password is required.')),
+        Length(min=8, message=_l('Password must be at least 8 characters long.')),
         Regexp(
             r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)',
-            message='Password must contain at least one uppercase letter, '
-                    'one lowercase letter, and one number.'
+            message=_l('Password must contain at least one uppercase letter, one lowercase letter, and one number.')
         )
     ], render_kw={
-        'placeholder': 'Minimum 8 characters',
+        'placeholder': _l('Minimum 8 characters'),
         'autocomplete': 'new-password'
     })
     
-    confirm_password = PasswordField('Confirm New Password', validators=[
-        DataRequired(message='Please confirm your new password.'),
-        EqualTo('new_password', message='Passwords must match.')
+    confirm_password = PasswordField(_l('Confirm New Password'), validators=[
+        DataRequired(message=_l('Please confirm your new password.')),
+        EqualTo('new_password', message=_l('Passwords must match.'))
     ], render_kw={
-        'placeholder': 'Repeat new password',
+        'placeholder': _l('Repeat new password'),
         'autocomplete': 'new-password'
     })
     
-    submit = SubmitField('Change Password')
+    submit = SubmitField(_l('Change Password'))
     
     def validate_new_password(self, field):
         """Ensure new password is different from current."""
         if field.data == self.current_password.data:
-            raise ValidationError('New password must be different from current password.')
+            raise ValidationError(_l('New password must be different from current password.'))
 
 
 class ForgotPasswordForm(FlaskForm):
@@ -222,15 +220,15 @@ class ForgotPasswordForm(FlaskForm):
         email: User's email for password reset
     """
     
-    email = StringField('Email', validators=[
-        DataRequired(message='Email is required.'),
-        Email(message='Please enter a valid email address.')
+    email = StringField(_l('Email'), validators=[
+        DataRequired(message=_l('Email is required.')),
+        Email(message=_l('Please enter a valid email address.'))
     ], render_kw={
-        'placeholder': 'you@example.com',
+        'placeholder': _l('you@example.com'),
         'autocomplete': 'email'
     })
     
-    submit = SubmitField('Send Reset Link')
+    submit = SubmitField(_l('Send Reset Link'))
 
 
 class ResetPasswordForm(FlaskForm):
@@ -242,25 +240,24 @@ class ResetPasswordForm(FlaskForm):
         password_confirm: Password confirmation
     """
     
-    password = PasswordField('New Password', validators=[
-        DataRequired(message='Password is required.'),
-        Length(min=8, message='Password must be at least 8 characters long.'),
+    password = PasswordField(_l('New Password'), validators=[
+        DataRequired(message=_l('Password is required.')),
+        Length(min=8, message=_l('Password must be at least 8 characters long.')),
         Regexp(
             r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)',
-            message='Password must contain at least one uppercase letter, '
-                    'one lowercase letter, and one number.'
+            message=_l('Password must contain at least one uppercase letter, one lowercase letter, and one number.')
         )
     ], render_kw={
-        'placeholder': 'Minimum 8 characters',
+        'placeholder': _l('Minimum 8 characters'),
         'autocomplete': 'new-password'
     })
     
-    password_confirm = PasswordField('Confirm Password', validators=[
-        DataRequired(message='Please confirm your password.'),
-        EqualTo('password', message='Passwords must match.')
+    password_confirm = PasswordField(_l('Confirm Password'), validators=[
+        DataRequired(message=_l('Please confirm your password.')),
+        EqualTo('password', message=_l('Passwords must match.'))
     ], render_kw={
-        'placeholder': 'Repeat your password',
+        'placeholder': _l('Repeat your password'),
         'autocomplete': 'new-password'
     })
     
-    submit = SubmitField('Reset Password')
+    submit = SubmitField(_l('Reset Password'))

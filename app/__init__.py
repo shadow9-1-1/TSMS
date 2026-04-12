@@ -10,9 +10,27 @@ This pattern allows:
 """
 
 import os
-from flask import Flask
+from flask import Flask, request, session, url_for
+from flask_babel import get_locale
 
 from config import config
+
+
+SUPPORTED_LANGUAGES = ('en', 'ar')
+
+
+def _select_locale():
+    """Resolve locale from query parameter, session, then browser settings."""
+    lang = request.args.get('lang', type=str)
+    if lang in SUPPORTED_LANGUAGES:
+        session['language'] = lang
+        return lang
+
+    session_lang = session.get('language')
+    if session_lang in SUPPORTED_LANGUAGES:
+        return session_lang
+
+    return request.accept_languages.best_match(SUPPORTED_LANGUAGES) or 'en'
 
 
 def create_app(config_name=None):
@@ -50,7 +68,7 @@ def create_app(config_name=None):
     
     # Register template context processors
     _register_context_processors(app)
-    
+
     # Create upload folder if it doesn't exist
     if not os.path.exists(app.config.get('UPLOAD_FOLDER', 'uploads')):
         os.makedirs(app.config.get('UPLOAD_FOLDER', 'uploads'), exist_ok=True)
@@ -60,12 +78,13 @@ def create_app(config_name=None):
 
 def _init_extensions(app):
     """Initialize Flask extensions with the app instance."""
-    from app.extensions import db, migrate, login_manager, csrf
+    from app.extensions import db, migrate, login_manager, csrf, babel
     
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
     csrf.init_app(app)
+    babel.init_app(app, locale_selector=_select_locale)
     
     # User loader callback for Flask-Login
     from app.models import User
@@ -137,7 +156,31 @@ def _register_context_processors(app):
     
     @app.context_processor
     def inject_globals():
+        current_language = str(get_locale() or 'en')
+        current_direction = 'rtl' if current_language == 'ar' else 'ltr'
+
+        def switch_lang_url(lang_code):
+            if lang_code not in SUPPORTED_LANGUAGES:
+                lang_code = 'en'
+
+            endpoint = request.endpoint
+            if not endpoint:
+                return request.path
+
+            view_args = dict(request.view_args or {})
+            query_args = request.args.to_dict(flat=True)
+            query_args['lang'] = lang_code
+
+            try:
+                return url_for(endpoint, **view_args, **query_args)
+            except Exception:
+                return request.path
+
         return {
             'current_year': datetime.utcnow().year,
-            'app_name': 'TSMS'
+            'app_name': 'TSMS',
+            'current_language': current_language,
+            'current_direction': current_direction,
+            'supported_languages': SUPPORTED_LANGUAGES,
+            'switch_lang_url': switch_lang_url
         }

@@ -9,6 +9,7 @@ Flask-Migrate==4.0.5
 
 # Authentication
 Flask-Login==0.6.3
+Flask-Babel==4.0.0
 
 # Forms and validation
 Flask-WTF==1.2.1

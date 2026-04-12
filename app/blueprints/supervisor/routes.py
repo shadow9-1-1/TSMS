@@ -11,6 +11,7 @@ Access:
 from flask import render_template, redirect, url_for, flash, request, abort
 from flask_login import login_required, current_user
 from functools import wraps
+from flask_babel import gettext as _
 
 from app.extensions import db
 from app.models import User, UserRole, UserStatus, Student, StudentStatus
@@ -51,11 +52,11 @@ def supervisor_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
-            flash('Please log in to access this page.', 'warning')
+            flash(_('Please log in to access this page.'), 'warning')
             return redirect(url_for('auth.login', next=request.url))
         
         if not (current_user.is_admin() or current_user.is_supervisor()):
-            flash('You do not have permission to access this page.', 'error')
+            flash(_('You do not have permission to access this page.'), 'error')
             abort(403)
         
         return f(*args, **kwargs)
@@ -155,7 +156,7 @@ def student_detail(id):
     
     # Check access (admin can view all; supervisors can view only directly assigned students)
     if not current_user.is_admin() and student.supervisor_id != current_user.id:
-        flash('You do not have permission to view this student.', 'error')
+        flash(_('You do not have permission to view this student.'), 'error')
         abort(403)
     
     # Get student's plans
@@ -178,7 +179,7 @@ def assign_supervisor(id):
     # Only admins and current supervisors can reassign
     if not current_user.is_admin():
         if student.supervisor_id and student.supervisor_id != current_user.id:
-            flash('You cannot reassign this student.', 'error')
+            flash(_('You cannot reassign this student.'), 'error')
             abort(403)
     
     form = AssignSupervisorForm()
@@ -191,17 +192,17 @@ def assign_supervisor(id):
         ),
         User.status == UserStatus.ACTIVE
     ).order_by(User.name).all()
-    form.supervisor_id.choices = [('', 'Select Supervisor')] + [
+    form.supervisor_id.choices = [('', _('Select Supervisor'))] + [
         (str(s.id), s.name) for s in supervisors
     ]
     
     if form.validate_on_submit():
         if form.supervisor_id.data:
             student.supervisor_id = int(form.supervisor_id.data)
-            flash(f'Supervisor assigned to {student.name}.', 'success')
+            flash(_('Supervisor assigned to %(student)s.', student=student.name), 'success')
         else:
             student.supervisor_id = None
-            flash(f'Supervisor removed from {student.name}.', 'success')
+            flash(_('Supervisor removed from %(student)s.', student=student.name), 'success')
         
         db.session.commit()
         return redirect(url_for('supervisor.student_detail', id=student.id))
@@ -223,13 +224,13 @@ def unassign_supervisor(id):
     student = Student.query.get_or_404(id)
     
     if not current_user.is_admin() and student.supervisor_id != current_user.id:
-        flash('You cannot unassign this student.', 'error')
+        flash(_('You cannot unassign this student.'), 'error')
         abort(403)
     
     student.supervisor_id = None
     db.session.commit()
     
-    flash(f'Supervisor removed from {student.name}.', 'success')
+    flash(_('Supervisor removed from %(student)s.', student=student.name), 'success')
     return redirect(url_for('supervisor.student_list'))
 
 
@@ -284,7 +285,7 @@ def plan_detail(id):
                     break
 
         if not has_access:
-            flash('You do not have permission to view this plan.', 'error')
+            flash(_('You do not have permission to view this plan.'), 'error')
             abort(403)
     
     tasks = plan.tasks.order_by(Task.order, Task.due_date).all()
@@ -300,7 +301,7 @@ def plan_detail(id):
 def unassigned_students():
     """List students without supervisors (admin only)."""
     if not current_user.is_admin():
-        flash('Only administrators can access this page.', 'error')
+        flash(_('Only administrators can access this page.'), 'error')
         abort(403)
     
     page = request.args.get('page', 1, type=int)

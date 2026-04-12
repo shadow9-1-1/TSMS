@@ -1,7 +1,7 @@
 {% extends "layouts/dashboard.html" %}
 
-{% block page_title %}{{ 'Edit Plan' if plan else 'Create Plan' }}{% endblock %}
-{% block page_subtitle %}{{ 'Update plan details' if plan else 'Create a new plan for a student' }}{% endblock %}
+{% block page_title %}{{ _('Edit Plan') if plan else _('Create Plan') }}{% endblock %}
+{% block page_subtitle %}{{ _('Update plan details') if plan else _('Create a new plan for a student') }}{% endblock %}
 
 {% block content %}
 <div class="space-y-6">
@@ -10,13 +10,13 @@
         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
         </svg>
-        Back to Plans
+        {{ _('Back to Plans') }}
     </a>
     
     <div class="max-w-3xl mx-auto">
         <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
             <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200">
-                <h3 class="text-lg font-semibold text-slate-900">{{ 'Edit Plan' if plan else 'New Plan' }}</h3>
+                <h3 class="text-lg font-semibold text-slate-900">{{ _('Edit Plan') if plan else _('New Plan') }}</h3>
             </div>
             
             <form method="post" class="p-6 space-y-6">
@@ -30,7 +30,7 @@
                             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
                         </svg>
                         <div>
-                            <p class="text-sm font-medium text-red-800">Please fix the following errors:</p>
+                            <p class="text-sm font-medium text-red-800">{{ _('Please fix the following errors:') }}</p>
                             <ul class="mt-2 text-sm text-red-700 list-disc list-inside">
                                 {% for field, errors in form.errors.items() %}
                                 {% for error in errors %}
@@ -47,9 +47,9 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="md:col-span-2">
                         <label for="title" class="block text-sm font-medium text-slate-700 mb-2">
-                            Plan Title <span class="text-red-500">*</span>
+                            {{ _('Plan Title') }} <span class="text-red-500">*</span>
                         </label>
-                        {{ form.title(class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500", placeholder="e.g., Fall 2024 Academic Plan") }}
+                        {{ form.title(class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500", placeholder=_('e.g., Fall 2024 Academic Plan')) }}
                         {% if form.title.errors %}
                         <p class="mt-1 text-sm text-red-600">{{ form.title.errors[0] }}</p>
                         {% endif %}
@@ -57,7 +57,7 @@
                     
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-2">
-                            Students <span class="text-red-500">*</span>
+                            {{ _('Students') }} <span class="text-red-500">*</span>
                         </label>
                         <div class="max-h-56 overflow-y-auto border border-slate-300 rounded-lg p-3 space-y-2 bg-slate-50/40">
                             {% for value, label in form.student_ids.choices %}
@@ -71,7 +71,7 @@
                             </label>
                             {% endfor %}
                         </div>
-                        <p class="mt-1 text-sm text-slate-500">Select one or more students.</p>
+                        <p class="mt-1 text-sm text-slate-500">{{ _('Select one or more students.') }}</p>
                         {% if form.student_ids.errors %}
                         <p class="mt-1 text-sm text-red-600">{{ form.student_ids.errors[0] }}</p>
                         {% endif %}
@@ -79,7 +79,7 @@
                     
                     <div>
                         <label for="plan_type" class="block text-sm font-medium text-slate-700 mb-2">
-                            Plan Type <span class="text-red-500">*</span>
+                            {{ _('Plan Type') }} <span class="text-red-500">*</span>
                         </label>
                         {{ form.plan_type(class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500") }}
                         {% if form.plan_type.errors %}
@@ -91,9 +91,9 @@
                 <!-- Description -->
                 <div>
                     <label for="description" class="block text-sm font-medium text-slate-700 mb-2">
-                        Description
+                        {{ _('Description') }}
                     </label>
-                    {{ form.description(class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500", rows="4", placeholder="Describe the plan objectives and goals...") }}
+                    {{ form.description(class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500", rows="4", placeholder=_('Describe the plan objectives and goals...')) }}
                     {% if form.description.errors %}
                     <p class="mt-1 text-sm text-red-600">{{ form.description.errors[0] }}</p>
                     {% endif %}
@@ -102,10 +102,10 @@
                 <!-- Objectives -->
                 <div>
                     <label for="objectives" class="block text-sm font-medium text-slate-700 mb-2">
-                        Objectives
+                        {{ _('Objectives') }}
                     </label>
-                    {{ form.objectives(class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500", rows="3", placeholder="List key objectives, one per line...") }}
-                    <p class="mt-1 text-sm text-slate-500">List key objectives or milestones for this plan.</p>
+                    {{ form.objectives(class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500", rows="3", placeholder=_('List key objectives, one per line...')) }}
+                    <p class="mt-1 text-sm text-slate-500">{{ _('List key objectives or milestones for this plan.') }}</p>
                     {% if form.objectives.errors %}
                     <p class="mt-1 text-sm text-red-600">{{ form.objectives.errors[0] }}</p>
                     {% endif %}
@@ -115,7 +115,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="start_date" class="block text-sm font-medium text-slate-700 mb-2">
-                            Start Date
+                            {{ _('Start Date') }}
                         </label>
                         {{ form.start_date(class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500", type="date") }}
                         {% if form.start_date.errors %}
@@ -125,7 +125,7 @@
                     
                     <div>
                         <label for="end_date" class="block text-sm font-medium text-slate-700 mb-2">
-                            End Date
+                            {{ _('End Date') }}
                         </label>
                         {{ form.end_date(class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500", type="date") }}
                         {% if form.end_date.errors %}
@@ -138,7 +138,7 @@
                 <!-- Status (only for edit) -->
                 <div>
                     <label for="status" class="block text-sm font-medium text-slate-700 mb-2">
-                        Status
+                        {{ _('Status') }}
                     </label>
                     {{ form.status(class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500") }}
                     {% if form.status.errors %}
@@ -154,12 +154,12 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                         <div>
-                            <p class="font-medium text-blue-800">Tips for creating effective plans</p>
+                            <p class="font-medium text-blue-800">{{ _('Tips for creating effective plans') }}</p>
                             <ul class="text-sm text-blue-700 mt-1 list-disc list-inside space-y-1">
-                                <li>Set clear, achievable objectives</li>
-                                <li>Include realistic start and end dates</li>
-                                <li>After creating the plan, add specific tasks with deadlines</li>
-                                <li>Review and update progress regularly</li>
+                                <li>{{ _('Set clear, achievable objectives') }}</li>
+                                <li>{{ _('Include realistic start and end dates') }}</li>
+                                <li>{{ _('After creating the plan, add specific tasks with deadlines') }}</li>
+                                <li>{{ _('Review and update progress regularly') }}</li>
                             </ul>
                         </div>
                     </div>
@@ -169,7 +169,7 @@
                 <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
                     <a href="{{ url_for('planning.index') }}" 
                        class="px-6 py-2.5 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors font-medium">
-                        Cancel
+                        {{ _('Cancel') }}
                     </a>
                     {{ form.submit(class="px-6 py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium cursor-pointer") }}
                 </div>

@@ -1,7 +1,8 @@
 <!-- Sidebar Component -->
 <!-- Desktop Sidebar -->
 <aside :class="sidebarOpen ? 'w-64' : 'w-20'"
-       class="fixed inset-y-0 left-0 z-50 bg-slate-900 sidebar-transition hidden lg:flex lg:flex-col">
+    class="fixed inset-y-0 z-50 bg-slate-900 sidebar-transition hidden lg:flex lg:flex-col"
+    style="{% if current_direction == 'rtl' %}right: 0; left: auto;{% else %}left: 0; right: auto;{% endif %}">
     
     <!-- Logo Section -->
     <div class="flex items-center justify-between h-16 px-4 bg-slate-800/50 border-b border-slate-700/50">
@@ -26,7 +27,7 @@
     <nav class="flex-1 mt-6 px-3 space-y-1 overflow-y-auto">
         <!-- Main Section -->
         <div x-show="sidebarOpen" class="mb-4">
-            <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Main</p>
+            <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">{{ _('Main') }}</p>
         </div>
         
         {% if not (current_user.is_teacher() and not current_user.is_supervisor() and not current_user.is_admin()) %}
@@ -44,7 +45,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                 </svg>
             </div>
-            <span x-show="sidebarOpen" x-transition class="ml-3">Dashboard</span>
+            <span x-show="sidebarOpen" x-transition class="ml-3">{{ _('Dashboard') }}</span>
         </a>
         {% endif %}
         
@@ -63,7 +64,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                 </svg>
             </div>
-            <span x-show="sidebarOpen" x-transition class="ml-3">Teachers</span>
+            <span x-show="sidebarOpen" x-transition class="ml-3">{{ _('Teachers') }}</span>
         </a>
         {% endif %}
         
@@ -82,14 +83,14 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                 </svg>
             </div>
-            <span x-show="sidebarOpen" x-transition class="ml-3">Students</span>
+            <span x-show="sidebarOpen" x-transition class="ml-3">{{ _('Students') }}</span>
         </a>
         {% endif %}
         
         <!-- Teaching Section (for teachers) -->
         {% if current_user.is_teacher() and not current_user.is_supervisor() and not current_user.is_admin() %}
         <div x-show="sidebarOpen" class="pt-6 mt-6 border-t border-slate-700/50">
-            <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Teaching</p>
+            <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">{{ _('Teaching') }}</p>
         </div>
         <div :class="sidebarOpen ? '' : 'pt-6 mt-6 border-t border-slate-700/50'"></div>
         
@@ -107,7 +108,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                 </svg>
             </div>
-            <span x-show="sidebarOpen" x-transition class="ml-3">My Dashboard</span>
+            <span x-show="sidebarOpen" x-transition class="ml-3">{{ _('My Dashboard') }}</span>
         </a>
         
         <!-- My Students (Teacher) -->
@@ -124,7 +125,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                 </svg>
             </div>
-            <span x-show="sidebarOpen" x-transition class="ml-3">My Students</span>
+            <span x-show="sidebarOpen" x-transition class="ml-3">{{ _('My Students') }}</span>
         </a>
 
         <!-- Student Progress (Teacher) -->
@@ -141,7 +142,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                 </svg>
             </div>
-            <span x-show="sidebarOpen" x-transition class="ml-3">Student Progress</span>
+            <span x-show="sidebarOpen" x-transition class="ml-3">{{ _('Student Progress') }}</span>
         </a>
         
         <!-- Planning (Teacher) -->
@@ -158,14 +159,14 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
                 </svg>
             </div>
-            <span x-show="sidebarOpen" x-transition class="ml-3">Planning</span>
+            <span x-show="sidebarOpen" x-transition class="ml-3">{{ _('Planning') }}</span>
         </a>
         {% endif %}
         
         <!-- Supervision Section -->
         {% if current_user.is_supervisor() or current_user.is_admin() %}
         <div x-show="sidebarOpen" class="pt-6 mt-6 border-t border-slate-700/50">
-            <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Supervision</p>
+            <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">{{ _('Supervision') }}</p>
         </div>
         <div :class="sidebarOpen ? '' : 'pt-6 mt-6 border-t border-slate-700/50'"></div>
         
@@ -183,7 +184,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                 </svg>
             </div>
-            <span x-show="sidebarOpen" x-transition class="ml-3">Supervision</span>
+            <span x-show="sidebarOpen" x-transition class="ml-3">{{ _('Supervision') }}</span>
         </a>
         
         <!-- My Students (Supervisor) -->
@@ -200,7 +201,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
             </div>
-            <span x-show="sidebarOpen" x-transition class="ml-3">Student Progress</span>
+            <span x-show="sidebarOpen" x-transition class="ml-3">{{ _('Student Progress') }}</span>
         </a>
         
         <!-- Planning -->
@@ -217,14 +218,14 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
                 </svg>
             </div>
-            <span x-show="sidebarOpen" x-transition class="ml-3">Planning</span>
+            <span x-show="sidebarOpen" x-transition class="ml-3">{{ _('Planning') }}</span>
         </a>
         {% endif %}
         
         <!-- Admin Section -->
         {% if current_user.is_admin() %}
         <div x-show="sidebarOpen" class="pt-6 mt-6 border-t border-slate-700/50">
-            <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Administration</p>
+            <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">{{ _('Administration') }}</p>
         </div>
         <div :class="sidebarOpen ? '' : 'pt-6 mt-6 border-t border-slate-700/50'"></div>
         
@@ -242,7 +243,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                 </svg>
             </div>
-            <span x-show="sidebarOpen" x-transition class="ml-3">Users</span>
+            <span x-show="sidebarOpen" x-transition class="ml-3">{{ _('Users') }}</span>
         </a>
         
         <!-- System Overview -->
@@ -263,7 +264,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h3"/>
                 </svg>
             </div>
-            <span x-show="sidebarOpen" x-transition class="ml-3">System Overview</span>
+            <span x-show="sidebarOpen" x-transition class="ml-3">{{ _('System Overview') }}</span>
         </a>
         {% endif %}
     </nav>
@@ -278,11 +279,11 @@
             </div>
             <div x-show="sidebarOpen" x-transition class="ml-3 flex-1 min-w-0">
                 <p class="text-sm font-medium text-white truncate">{{ current_user.name }}</p>
-                <p class="text-xs text-slate-400 truncate">{{ current_user.role.value|title if current_user.role else 'User' }}</p>
+                <p class="text-xs text-slate-400 truncate">{{ current_role_label }}</p>
             </div>
             <a x-show="sidebarOpen" href="{{ url_for('auth.logout') }}" 
                class="ml-2 p-2 text-slate-400 hover:text-red-400 rounded-lg hover:bg-slate-700/50 transition-colors"
-               title="Logout">
+                    title="{{ _('Logout') }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                 </svg>
@@ -295,12 +296,13 @@
 <aside x-show="mobileMenuOpen"
        x-cloak
        x-transition:enter="transition ease-out duration-300"
-       x-transition:enter-start="-translate-x-full"
+    x-transition:enter-start="{{ 'translate-x-full' if current_direction == 'rtl' else '-translate-x-full' }}"
        x-transition:enter-end="translate-x-0"
        x-transition:leave="transition ease-in duration-200"
        x-transition:leave-start="translate-x-0"
-       x-transition:leave-end="-translate-x-full"
-       class="fixed inset-y-0 left-0 z-50 w-72 bg-slate-900 lg:hidden flex flex-col">
+    x-transition:leave-end="{{ 'translate-x-full' if current_direction == 'rtl' else '-translate-x-full' }}"
+    class="fixed inset-y-0 z-50 w-72 bg-slate-900 lg:hidden flex flex-col"
+    style="{% if current_direction == 'rtl' %}right: 0; left: auto;{% else %}left: 0; right: auto;{% endif %}">
     
     <!-- Mobile Logo -->
     <div class="flex items-center justify-between h-16 px-4 bg-slate-800/50 border-b border-slate-700/50">
@@ -321,7 +323,7 @@
     
     <!-- Mobile Navigation -->
     <nav class="flex-1 mt-6 px-3 space-y-1 overflow-y-auto">
-        <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Main</p>
+        <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">{{ _('Main') }}</p>
         
         {% if not (current_user.is_teacher() and not current_user.is_supervisor() and not current_user.is_admin()) %}
         <a href="{{ url_for('main.dashboard') }}" @click="mobileMenuOpen = false"
@@ -334,7 +336,7 @@
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
             </svg>
-            Dashboard
+            {{ _('Dashboard') }}
         </a>
         {% endif %}
         
@@ -349,7 +351,7 @@
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
             </svg>
-            Teachers
+            {{ _('Teachers') }}
         </a>
         {% endif %}
         
@@ -364,14 +366,14 @@
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
             </svg>
-            Students
+            {{ _('Students') }}
         </a>
         {% endif %}
         
         <!-- Teaching Section (for teachers) - Mobile -->
         {% if current_user.is_teacher() and not current_user.is_supervisor() and not current_user.is_admin() %}
         <div class="pt-6 mt-6 border-t border-slate-700/50">
-            <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Teaching</p>
+            <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">{{ _('Teaching') }}</p>
         </div>
         
         <a href="{{ url_for('teacher.index') }}" @click="mobileMenuOpen = false"
@@ -384,7 +386,7 @@
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
             </svg>
-            My Dashboard
+            {{ _('My Dashboard') }}
         </a>
         
         <a href="{{ url_for('teacher.students') }}" @click="mobileMenuOpen = false"
@@ -397,7 +399,7 @@
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
             </svg>
-            My Students
+            {{ _('My Students') }}
         </a>
 
         <a href="{{ url_for('teacher.student_progress') }}" @click="mobileMenuOpen = false"
@@ -410,7 +412,7 @@
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
             </svg>
-            Student Progress
+            {{ _('Student Progress') }}
         </a>
         
         <a href="{{ url_for('teacher.planning') }}" @click="mobileMenuOpen = false"
@@ -423,13 +425,13 @@
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
             </svg>
-            Planning
+            {{ _('Planning') }}
         </a>
         {% endif %}
 
         {% if current_user.is_supervisor() or current_user.is_admin() %}
         <div class="pt-6 mt-6 border-t border-slate-700/50">
-            <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Supervision</p>
+            <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">{{ _('Supervision') }}</p>
         </div>
 
         <a href="{{ url_for('supervisor.index') }}" @click="mobileMenuOpen = false"
@@ -442,7 +444,7 @@
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
             </svg>
-            Supervision
+            {{ _('Supervision') }}
         </a>
 
         <a href="{{ url_for('supervisor.student_list') }}" @click="mobileMenuOpen = false"
@@ -455,7 +457,7 @@
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
             </svg>
-            Student Progress
+            {{ _('Student Progress') }}
         </a>
 
         <a href="{{ url_for('planning.index') }}" @click="mobileMenuOpen = false"
@@ -468,13 +470,13 @@
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
             </svg>
-            Planning
+            {{ _('Planning') }}
         </a>
         {% endif %}
         
         {% if current_user.is_admin() %}
         <div class="pt-6 mt-6 border-t border-slate-700/50">
-            <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Administration</p>
+            <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">{{ _('Administration') }}</p>
         </div>
         
         <a href="{{ url_for('admin.users') }}" @click="mobileMenuOpen = false"
@@ -487,7 +489,7 @@
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
             </svg>
-            Users
+            {{ _('Users') }}
         </a>
         
         <a href="{{ url_for('admin.index') }}" @click="mobileMenuOpen = false"
@@ -504,7 +506,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 14h4"/>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h3"/>
             </svg>
-            System Overview
+            {{ _('System Overview') }}
         </a>
         {% endif %}
     </nav>
@@ -518,7 +520,7 @@
                 </div>
                 <div class="ml-3">
                     <p class="text-sm font-medium text-white">{{ current_user.name }}</p>
-                    <p class="text-xs text-slate-400">{{ current_user.role.value|title if current_user.role else 'User' }}</p>
+                    <p class="text-xs text-slate-400">{{ current_role_label }}</p>
                 </div>
             </div>
             <a href="{{ url_for('auth.logout') }}" 

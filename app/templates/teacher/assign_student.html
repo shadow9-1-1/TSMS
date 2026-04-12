@@ -1,6 +1,6 @@
 {% extends "layouts/dashboard.html" %}
 
-{% block page_title %}Assign Students{% endblock %}
+{% block page_title %}{{ _('Assign Students') }}{% endblock %}
 {% block page_subtitle %}{{ teacher.name }}{% endblock %}
 
 {% block content %}
@@ -12,15 +12,15 @@
             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
             </svg>
-            Back to Profile
+            {{ _('Back to Profile') }}
         </a>
         <div class="flex items-center space-x-4">
             <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/25">
                 <span class="text-white font-bold text-xl">{{ teacher.name[0]|upper }}</span>
             </div>
             <div>
-                <h2 class="text-2xl font-bold text-slate-900">Assign Students to {{ teacher.name }}</h2>
-                <p class="text-slate-500 mt-1">Manage student assignments for this teacher</p>
+                <h2 class="text-2xl font-bold text-slate-900">{{ _('Assign Students to %(name)s', name=teacher.name) }}</h2>
+                <p class="text-slate-500 mt-1">{{ _('Manage student assignments for this teacher') }}</p>
             </div>
         </div>
     </div>
@@ -32,7 +32,7 @@
                 <svg class="w-5 h-5 mr-2 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
                 </svg>
-                Assign New Student
+                {{ _('Assign New Student') }}
             </h3>
         </div>
         <div class="p-6">
@@ -51,7 +51,7 @@
                         <svg class="w-5 h-5 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                         </svg>
-                        Assign Student
+                        {{ _('Assign Student') }}
                     </button>
                 </div>
             </form>
@@ -62,7 +62,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
                 </div>
-                <p class="text-slate-500">All students have been assigned to this teacher</p>
+                <p class="text-slate-500">{{ _('All students have been assigned to this teacher') }}</p>
             </div>
             {% endif %}
         </div>
@@ -75,9 +75,9 @@
                 <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                 </svg>
-                Currently Assigned Students
+                {{ _('Currently Assigned Students') }}
             </h3>
-            <span class="text-sm text-slate-500">{{ assigned_students|length }} student{% if assigned_students|length != 1 %}s{% endif %}</span>
+            <span class="text-sm text-slate-500">{{ _('%(count)s students', count=assigned_students|length) }}</span>
         </div>
         <div class="p-6">
             {% if assigned_students %}
@@ -103,15 +103,15 @@
                             {% if student.status.value == 'active' %}bg-emerald-100 text-emerald-700
                             {% elif student.status.value == 'inactive' %}bg-slate-100 text-slate-600
                             {% else %}bg-amber-100 text-amber-700{% endif %}">
-                            {{ student.status.value|capitalize }}
+                                                        {{ _(student.status.value|replace('_', ' ')|title) }}
                         </span>
                         <form action="{{ url_for('teacher.unassign_student', id=teacher.id, student_id=student.id) }}" 
                               method="POST"
-                              onsubmit="return confirm('Are you sure you want to remove {{ student.name }} from {{ teacher.name }}?');">
+                                                            onsubmit="return confirm('{{ _('Are you sure you want to remove %(student)s from %(teacher)s?', student=student.name, teacher=teacher.name) }}');">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <button type="submit" 
                                     class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
-                                    title="Unassign Student">
+                                                                        title="{{ _('Unassign Student') }}">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                                 </svg>
@@ -128,9 +128,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                     </svg>
                 </div>
-                <h4 class="text-lg font-semibold text-slate-900 mb-2">No Students Assigned</h4>
+                <h4 class="text-lg font-semibold text-slate-900 mb-2">{{ _('No Students Assigned') }}</h4>
                 <p class="text-slate-500 max-w-sm mx-auto">
-                    This teacher doesn't have any students assigned yet. Use the form above to assign students.
+                    {{ _('This teacher doesn\'t have any students assigned yet. Use the form above to assign students.') }}
                 </p>
             </div>
             {% endif %}
@@ -141,7 +141,7 @@
     <div class="flex items-center justify-end">
         <a href="{{ url_for('teacher.detail', id=teacher.id) }}" 
            class="px-6 py-3 bg-slate-100 text-slate-700 rounded-xl font-medium hover:bg-slate-200 transition-colors">
-            Done
+            {{ _('Done') }}
         </a>
     </div>
 </div>

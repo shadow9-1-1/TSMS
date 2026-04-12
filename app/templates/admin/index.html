@@ -1,7 +1,7 @@
 {% extends "layouts/dashboard.html" %}
 
-{% block page_title %}Admin Dashboard{% endblock %}
-{% block page_subtitle %}System overview and management{% endblock %}
+{% block page_title %}{{ _('Admin Dashboard') }}{% endblock %}
+{% block page_subtitle %}{{ _('System overview and management') }}{% endblock %}
 
 {% block content %}
 <div class="space-y-8">
@@ -18,11 +18,11 @@
             </div>
             <div class="mt-4">
                 <h3 class="text-3xl font-bold text-slate-900">{{ stats.total_users }}</h3>
-                <p class="text-sm text-slate-500 mt-1">Total Users</p>
+                <p class="text-sm text-slate-500 mt-1">{{ _('Total Users') }}</p>
             </div>
             <div class="mt-4 pt-4 border-t border-slate-100">
                 <a href="{{ url_for('admin.users') }}" class="text-sm font-medium text-primary-600 hover:text-primary-700 flex items-center">
-                    Manage users
+                    {{ _('Manage users') }}
                     <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
@@ -41,11 +41,11 @@
             </div>
             <div class="mt-4">
                 <h3 class="text-3xl font-bold text-slate-900">{{ stats.total_teachers }}</h3>
-                <p class="text-sm text-slate-500 mt-1">Total Teachers</p>
+                <p class="text-sm text-slate-500 mt-1">{{ _('Total Teachers') }}</p>
             </div>
             <div class="mt-4 pt-4 border-t border-slate-100">
                 <a href="{{ url_for('teacher.teacher_list') }}" class="text-sm font-medium text-primary-600 hover:text-primary-700 flex items-center">
-                    View teachers
+                    {{ _('View teachers') }}
                     <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
@@ -64,11 +64,11 @@
             </div>
             <div class="mt-4">
                 <h3 class="text-3xl font-bold text-slate-900">{{ stats.total_students }}</h3>
-                <p class="text-sm text-slate-500 mt-1">Total Students</p>
+                <p class="text-sm text-slate-500 mt-1">{{ _('Total Students') }}</p>
             </div>
             <div class="mt-4 pt-4 border-t border-slate-100">
                 <a href="{{ url_for('student.student_list') }}" class="text-sm font-medium text-primary-600 hover:text-primary-700 flex items-center">
-                    View students
+                    {{ _('View students') }}
                     <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
@@ -82,46 +82,55 @@
         <!-- Quick Actions Card -->
         <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
             <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200">
-                <h3 class="text-lg font-semibold text-slate-900">Quick Actions</h3>
+                <h3 class="text-lg font-semibold text-slate-900">{{ _('Quick Actions') }}</h3>
             </div>
-            <div class="p-6 space-y-3">
+            <div class="p-5 quick-actions-list">
                 <a href="{{ url_for('admin.create_user') }}" 
-                   class="flex items-center p-4 rounded-xl border border-slate-200 hover:border-primary-200 hover:bg-primary-50/50 transition-all">
-                    <div class="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl">
+                   class="group quick-action-item hover:border-primary-200 hover:bg-primary-50/50 transition-all">
+                    <div class="quick-action-item__icon bg-gradient-to-br from-blue-500 to-blue-600">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
                         </svg>
                     </div>
-                    <div class="ml-4">
-                        <span class="text-sm font-semibold text-slate-700">Add New User</span>
-                        <p class="text-xs text-slate-500 mt-0.5">Create a new user account</p>
+                    <div class="quick-action-item__text">
+                        <span class="quick-action-item__title group-hover:text-primary-700">{{ _('Add New User') }}</span>
+                        <p class="quick-action-item__subtitle">{{ _('Create a new user account') }}</p>
                     </div>
+                    <svg class="quick-action-item__chevron rtl-arrow group-hover:text-primary-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
                 </a>
                 
                      <a href="{{ url_for('teacher.create') }}" 
-                   class="flex items-center p-4 rounded-xl border border-slate-200 hover:border-emerald-200 hover:bg-emerald-50/50 transition-all">
-                    <div class="p-3 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl">
+                   class="group quick-action-item hover:border-emerald-200 hover:bg-emerald-50/50 transition-all">
+                    <div class="quick-action-item__icon bg-gradient-to-br from-emerald-500 to-emerald-600">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                         </svg>
                     </div>
-                    <div class="ml-4">
-                        <span class="text-sm font-semibold text-slate-700">Add New Teacher</span>
-                        <p class="text-xs text-slate-500 mt-0.5">Register a new teacher</p>
+                    <div class="quick-action-item__text">
+                        <span class="quick-action-item__title group-hover:text-emerald-700">{{ _('Add New Teacher') }}</span>
+                        <p class="quick-action-item__subtitle">{{ _('Register a new teacher') }}</p>
                     </div>
+                    <svg class="quick-action-item__chevron rtl-arrow group-hover:text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
                 </a>
                 
                 <a href="{{ url_for('student.create_student') }}" 
-                   class="flex items-center p-4 rounded-xl border border-slate-200 hover:border-violet-200 hover:bg-violet-50/50 transition-all">
-                    <div class="p-3 bg-gradient-to-br from-violet-500 to-purple-600 rounded-xl">
+                   class="group quick-action-item hover:border-violet-200 hover:bg-violet-50/50 transition-all">
+                    <div class="quick-action-item__icon bg-gradient-to-br from-violet-500 to-purple-600">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                         </svg>
                     </div>
-                    <div class="ml-4">
-                        <span class="text-sm font-semibold text-slate-700">Add New Student</span>
-                        <p class="text-xs text-slate-500 mt-0.5">Enroll a new student</p>
+                    <div class="quick-action-item__text">
+                        <span class="quick-action-item__title group-hover:text-violet-700">{{ _('Add New Student') }}</span>
+                        <p class="quick-action-item__subtitle">{{ _('Enroll a new student') }}</p>
                     </div>
+                    <svg class="quick-action-item__chevron rtl-arrow group-hover:text-violet-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
                 </a>
             </div>
         </div>
@@ -129,24 +138,24 @@
         <!-- System Info Card -->
         <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
             <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200">
-                <h3 class="text-lg font-semibold text-slate-900">System Information</h3>
+                <h3 class="text-lg font-semibold text-slate-900">{{ _('System Information') }}</h3>
             </div>
             <div class="p-6">
                 <dl class="space-y-4">
                     <div class="flex justify-between">
-                        <dt class="text-sm text-slate-500">Active Users</dt>
+                        <dt class="text-sm text-slate-500">{{ _('Active Users') }}</dt>
                         <dd class="text-sm font-semibold text-slate-900">{{ stats.active_users }}</dd>
                     </div>
                     <div class="flex justify-between">
-                        <dt class="text-sm text-slate-500">User Accounts</dt>
+                        <dt class="text-sm text-slate-500">{{ _('User Accounts') }}</dt>
                         <dd class="text-sm font-semibold text-slate-900">{{ stats.total_users }}</dd>
                     </div>
                     <div class="flex justify-between">
-                        <dt class="text-sm text-slate-500">Teacher Profiles</dt>
+                        <dt class="text-sm text-slate-500">{{ _('Teacher Profiles') }}</dt>
                         <dd class="text-sm font-semibold text-slate-900">{{ stats.total_teachers }}</dd>
                     </div>
                     <div class="flex justify-between">
-                        <dt class="text-sm text-slate-500">Student Records</dt>
+                        <dt class="text-sm text-slate-500">{{ _('Student Records') }}</dt>
                         <dd class="text-sm font-semibold text-slate-900">{{ stats.total_students }}</dd>
                     </div>
                 </dl>
@@ -157,30 +166,30 @@
     <!-- Recent Users -->
     <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
         <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200 flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-slate-900">Recent Users</h3>
+            <h3 class="text-lg font-semibold text-slate-900">{{ _('Recent Users') }}</h3>
             <a href="{{ url_for('admin.users') }}" class="text-sm font-medium text-primary-600 hover:text-primary-700">
-                View all →
+                {{ _('View all') }} &rarr;
             </a>
         </div>
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-slate-200">
+        <div class="management-table-wrap">
+            <table class="management-table min-w-full divide-y divide-slate-200">
                 <thead class="bg-slate-50/50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">User</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Role</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Created</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">{{ _('User') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">{{ _('Role') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">{{ _('Status') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">{{ _('Created') }}</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-slate-100">
                     {% for user in recent_users %}
                     <tr class="hover:bg-slate-50 transition-colors">
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
+                            <div class="management-entity">
                                 <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
                                     <span class="text-white font-bold">{{ user.name[0]|upper }}</span>
                                 </div>
-                                <div class="ml-4">
+                                <div class="management-entity__meta">
                                     <div class="text-sm font-medium text-slate-900">{{ user.name }}</div>
                                     <div class="text-sm text-slate-500">{{ user.email }}</div>
                                 </div>
@@ -202,13 +211,13 @@
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                            {{ user.created_at.strftime('%b %d, %Y') if user.created_at else 'N/A' }}
+                            {{ user.created_at.strftime('%b %d, %Y') if user.created_at else _('N/A') }}
                         </td>
                     </tr>
                     {% else %}
                     <tr>
                         <td colspan="4" class="px-6 py-12 text-center text-slate-500">
-                            No users found
+                            {{ _('No users found') }}
                         </td>
                     </tr>
                     {% endfor %}

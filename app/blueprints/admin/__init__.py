@@ -8,6 +8,7 @@ system configuration, and reporting.
 from functools import wraps
 from flask import Blueprint, render_template, redirect, url_for, flash, request, abort
 from flask_login import login_required, current_user
+from flask_babel import gettext as _
 
 from app.extensions import db
 from app.models import User, UserRole, UserStatus
@@ -120,7 +121,7 @@ def create_user():
         db.session.add(user)
         db.session.commit()
         
-        flash(f'User {user.username} has been created successfully.', 'success')
+        flash(_('User %(username)s has been created successfully.', username=user.username), 'success')
         return redirect(url_for('admin.users'))
     
     return render_template('admin/user_form.html', form=form, user=None)
@@ -161,7 +162,7 @@ def edit_user(id):
         
         db.session.commit()
         
-        flash(f'User {user.username} has been updated successfully.', 'success')
+        flash(_('User %(username)s has been updated successfully.', username=user.username), 'success')
         return redirect(url_for('admin.user_detail', id=user.id))
     
     return render_template('admin/user_form.html', form=form, user=user)
@@ -179,7 +180,7 @@ def change_password(id):
         user.set_password(form.password.data)
         db.session.commit()
         
-        flash(f'Password for {user.username} has been changed.', 'success')
+        flash(_('Password for %(username)s has been changed.', username=user.username), 'success')
         return redirect(url_for('admin.user_detail', id=user.id))
     
     return render_template('admin/change_password.html', form=form, user=user)
@@ -193,20 +194,20 @@ def toggle_user_status(id):
     user = User.query.get_or_404(id)
     
     if user.id == current_user.id:
-        flash('You cannot deactivate your own account.', 'error')
+        flash(_('You cannot deactivate your own account.'), 'error')
         return redirect(url_for('admin.users'))
     
     # Toggle between active and inactive
     if user.status == UserStatus.ACTIVE:
         user.status = UserStatus.INACTIVE
-        status_text = 'deactivated'
+        status_text = _('deactivated')
     else:
         user.status = UserStatus.ACTIVE
-        status_text = 'activated'
+        status_text = _('activated')
     
     db.session.commit()
     
-    flash(f'User {user.username} has been {status_text}.', 'success')
+    flash(_('User %(username)s has been %(status_text)s.', username=user.username, status_text=status_text), 'success')
     return redirect(url_for('admin.users'))
 
 
@@ -218,14 +219,14 @@ def delete_user(id):
     user = User.query.get_or_404(id)
     
     if user.id == current_user.id:
-        flash('You cannot delete your own account.', 'error')
+        flash(_('You cannot delete your own account.'), 'error')
         return redirect(url_for('admin.users'))
     
     username = user.username
     db.session.delete(user)
     db.session.commit()
     
-    flash(f'User {username} has been deleted.', 'success')
+    flash(_('User %(username)s has been deleted.', username=username), 'success')
     return redirect(url_for('admin.users'))
 
 

@@ -1,7 +1,9 @@
 {% extends "layouts/dashboard.html" %}
 
-{% block page_title %}Dashboard{% endblock %}
-{% block page_subtitle %}Overview & Statistics{% endblock %}
+{% block page_title %}{{ _('Dashboard') }}{% endblock %}
+{% block page_subtitle %}{{ _('Overview & Statistics') }}{% endblock %}
+
+{% set user_short_name = current_user.name.split()[0] if current_user.name else _('User') %}
 
 {% block content %}
 <div class="space-y-8">
@@ -25,12 +27,12 @@
         <div class="relative z-10">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                    <h2 class="text-3xl font-bold">Welcome back, {{ current_user.name.split()[0] }}!</h2>
-                    <p class="mt-2 text-primary-100 text-lg">Here's what's happening with your school today.</p>
+                    <h2 class="text-3xl font-bold">{{ _('Welcome back, %(name)s!', name=user_short_name) }}</h2>
+                    <p class="mt-2 text-primary-100 text-lg">{{ _("Here's what's happening with your school today.") }}</p>
                 </div>
                 <div class="flex items-center space-x-3">
                     <span class="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-xl text-sm font-medium">
-                        {{ current_user.role.value|title if current_user.role else 'User' }}
+                        {{ current_role_label }}
                     </span>
                 </div>
             </div>
@@ -56,12 +58,12 @@
             </div>
             <div class="mt-4">
                 <h3 class="text-3xl font-bold text-slate-900">{{ stats.total_students }}</h3>
-                <p class="text-sm text-slate-500 mt-1">Total Students</p>
+                <p class="text-sm text-slate-500 mt-1">{{ _('Total Students') }}</p>
             </div>
             <div class="mt-4 pt-4 border-t border-slate-100">
                 <a href="{{ url_for('student.student_list') }}" class="text-sm font-medium text-primary-600 hover:text-primary-700 flex items-center group-hover:underline">
-                    View all students
-                    <svg class="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {{ _('View all students') }}
+                    <svg class="w-4 h-4 rtl-arrow {% if current_direction == 'rtl' %}mr-1 group-hover:-translate-x-1{% else %}ml-1 group-hover:translate-x-1{% endif %} transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                 </a>
@@ -85,18 +87,18 @@
             </div>
             <div class="mt-4">
                 <h3 class="text-3xl font-bold text-slate-900">{{ stats.total_teachers }}</h3>
-                <p class="text-sm text-slate-500 mt-1">Total Teachers</p>
+                <p class="text-sm text-slate-500 mt-1">{{ _('Total Teachers') }}</p>
             </div>
             <div class="mt-4 pt-4 border-t border-slate-100">
                 {% if current_user.is_supervisor() or current_user.is_admin() %}
                 <a href="{{ url_for('teacher.index') }}" class="text-sm font-medium text-primary-600 hover:text-primary-700 flex items-center group-hover:underline">
-                    View all teachers
-                    <svg class="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {{ _('View all teachers') }}
+                    <svg class="w-4 h-4 rtl-arrow {% if current_direction == 'rtl' %}mr-1 group-hover:-translate-x-1{% else %}ml-1 group-hover:translate-x-1{% endif %} transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                 </a>
                 {% else %}
-                <span class="text-sm text-slate-400">Staff members</span>
+                <span class="text-sm text-slate-400">{{ _('Staff members') }}</span>
                 {% endif %}
             </div>
         </div>
@@ -108,72 +110,72 @@
         <!-- Quick Actions -->
         <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
             <div class="p-6 bg-gradient-to-r from-slate-50 to-white border-b border-slate-100">
-                <h3 class="text-lg font-semibold text-slate-900">Quick Actions</h3>
-                <p class="text-sm text-slate-500 mt-0.5">Shortcuts to common tasks</p>
+                <h3 class="text-lg font-semibold text-slate-900">{{ _('Quick Actions') }}</h3>
+                <p class="text-sm text-slate-500 mt-0.5">{{ _('Shortcuts to common tasks') }}</p>
             </div>
-            <div class="p-6 space-y-3">
+            <div class="p-5 quick-actions-list">
                 <a href="{{ url_for('student.create_student') }}" 
-                   class="group flex items-center p-4 rounded-xl border border-slate-200 hover:border-primary-200 hover:bg-primary-50/50 transition-all">
-                    <div class="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg shadow-blue-500/25 group-hover:shadow-blue-500/40 transition-shadow">
+                   class="group quick-action-item hover:border-primary-200 hover:bg-primary-50/50 transition-all">
+                    <div class="quick-action-item__icon bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg shadow-blue-500/25 group-hover:shadow-blue-500/40 transition-shadow">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
                         </svg>
                     </div>
-                    <div class="ml-4">
-                        <span class="text-sm font-semibold text-slate-700 group-hover:text-primary-700">Add New Student</span>
-                        <p class="text-xs text-slate-500 mt-0.5">Enroll a new student</p>
+                    <div class="quick-action-item__text">
+                        <span class="quick-action-item__title group-hover:text-primary-700">{{ _('Add New Student') }}</span>
+                        <p class="quick-action-item__subtitle">{{ _('Enroll a new student') }}</p>
                     </div>
-                    <svg class="w-5 h-5 ml-auto text-slate-300 group-hover:text-primary-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="quick-action-item__chevron rtl-arrow group-hover:text-primary-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                 </a>
                 
                 <a href="{{ url_for('student.student_list') }}" 
-                   class="group flex items-center p-4 rounded-xl border border-slate-200 hover:border-emerald-200 hover:bg-emerald-50/50 transition-all">
-                    <div class="p-3 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl shadow-lg shadow-emerald-500/25 group-hover:shadow-emerald-500/40 transition-shadow">
+                   class="group quick-action-item hover:border-emerald-200 hover:bg-emerald-50/50 transition-all">
+                    <div class="quick-action-item__icon bg-gradient-to-br from-emerald-500 to-emerald-600 shadow-lg shadow-emerald-500/25 group-hover:shadow-emerald-500/40 transition-shadow">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                         </svg>
                     </div>
-                    <div class="ml-4">
-                        <span class="text-sm font-semibold text-slate-700 group-hover:text-emerald-700">Manage Students</span>
-                        <p class="text-xs text-slate-500 mt-0.5">View and edit records</p>
+                    <div class="quick-action-item__text">
+                        <span class="quick-action-item__title group-hover:text-emerald-700">{{ _('Manage Students') }}</span>
+                        <p class="quick-action-item__subtitle">{{ _('View and edit records') }}</p>
                     </div>
-                    <svg class="w-5 h-5 ml-auto text-slate-300 group-hover:text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="quick-action-item__chevron rtl-arrow group-hover:text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                 </a>
                 
                 {% if current_user.is_admin() %}
                 <a href="{{ url_for('admin.users') }}" 
-                   class="group flex items-center p-4 rounded-xl border border-slate-200 hover:border-amber-200 hover:bg-amber-50/50 transition-all">
-                    <div class="p-3 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl shadow-lg shadow-amber-500/25 group-hover:shadow-amber-500/40 transition-shadow">
+                   class="group quick-action-item hover:border-amber-200 hover:bg-amber-50/50 transition-all">
+                    <div class="quick-action-item__icon bg-gradient-to-br from-amber-500 to-orange-500 shadow-lg shadow-amber-500/25 group-hover:shadow-amber-500/40 transition-shadow">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                         </svg>
                     </div>
-                    <div class="ml-4">
-                        <span class="text-sm font-semibold text-slate-700 group-hover:text-amber-700">Manage Users</span>
-                        <p class="text-xs text-slate-500 mt-0.5">User administration</p>
+                    <div class="quick-action-item__text">
+                        <span class="quick-action-item__title group-hover:text-amber-700">{{ _('Manage Users') }}</span>
+                        <p class="quick-action-item__subtitle">{{ _('User administration') }}</p>
                     </div>
-                    <svg class="w-5 h-5 ml-auto text-slate-300 group-hover:text-amber-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="quick-action-item__chevron rtl-arrow group-hover:text-amber-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                 </a>
                 
                 <a href="{{ url_for('admin.index') }}" 
-                   class="group flex items-center p-4 rounded-xl border border-slate-200 hover:border-violet-200 hover:bg-violet-50/50 transition-all">
-                    <div class="p-3 bg-gradient-to-br from-violet-500 to-violet-600 rounded-xl shadow-lg shadow-violet-500/25 group-hover:shadow-violet-500/40 transition-shadow">
+                   class="group quick-action-item hover:border-violet-200 hover:bg-violet-50/50 transition-all">
+                    <div class="quick-action-item__icon bg-gradient-to-br from-violet-500 to-violet-600 shadow-lg shadow-violet-500/25 group-hover:shadow-violet-500/40 transition-shadow">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
                     </div>
-                    <div class="ml-4">
-                        <span class="text-sm font-semibold text-slate-700 group-hover:text-violet-700">Settings</span>
-                        <p class="text-xs text-slate-500 mt-0.5">System configuration</p>
+                    <div class="quick-action-item__text">
+                        <span class="quick-action-item__title group-hover:text-violet-700">{{ _('Settings') }}</span>
+                        <p class="quick-action-item__subtitle">{{ _('System configuration') }}</p>
                     </div>
-                    <svg class="w-5 h-5 ml-auto text-slate-300 group-hover:text-violet-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="quick-action-item__chevron rtl-arrow group-hover:text-violet-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                 </a>

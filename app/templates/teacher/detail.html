@@ -1,6 +1,6 @@
 {% extends "layouts/dashboard.html" %}
 
-{% block page_title %}Teacher Profile{% endblock %}
+{% block page_title %}{{ _('Teacher Profile') }}{% endblock %}
 {% block page_subtitle %}{{ teacher.name }}{% endblock %}
 
 {% block content %}
@@ -12,7 +12,7 @@
             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
             </svg>
-            Back to Teachers
+            {{ _('Back to Teachers') }}
         </a>
         <div class="flex items-center space-x-3">
             <a href="{{ url_for('teacher.edit', id=teacher.id) }}" 
@@ -20,14 +20,14 @@
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                 </svg>
-                Edit Profile
+                {{ _('Edit Profile') }}
             </a>
             <a href="{{ url_for('teacher.assign_student', id=teacher.id) }}" 
                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-xl font-medium shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
                 </svg>
-                Assign Students
+                {{ _('Assign Students') }}
             </a>
         </div>
     </div>
@@ -49,24 +49,24 @@
                     </div>
                     <div class="pb-2">
                         <h1 class="text-2xl font-bold text-slate-900 mb-1">{{ teacher.name }}</h1>
-                        <p class="text-slate-500">{{ teacher.department or 'No department' }}{% if teacher.specialization %} • {{ teacher.specialization }}{% endif %}</p>
+                        <p class="text-slate-500">{{ teacher.department or _('No department') }}{% if teacher.specialization %} • {{ teacher.specialization }}{% endif %}</p>
                     </div>
                 </div>
                 <div class="mt-4 sm:mt-0 sm:pb-2">
                     {% if teacher.status == 'active' %}
                     <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold bg-emerald-100 text-emerald-700">
                         <span class="w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>
-                        Active
+                        {{ _('Active') }}
                     </span>
                     {% elif teacher.status == 'inactive' %}
                     <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold bg-slate-100 text-slate-600">
                         <span class="w-2 h-2 bg-slate-400 rounded-full mr-2"></span>
-                        Inactive
+                        {{ _('Inactive') }}
                     </span>
                     {% elif teacher.status == 'on_leave' %}
                     <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold bg-amber-100 text-amber-700">
                         <span class="w-2 h-2 bg-amber-500 rounded-full mr-2"></span>
-                        On Leave
+                        {{ _('On Leave') }}
                     </span>
                     {% endif %}
                 </div>
@@ -80,7 +80,7 @@
             <!-- Contact Information -->
             <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
                 <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200">
-                    <h3 class="text-lg font-semibold text-slate-900">Contact Information</h3>
+                    <h3 class="text-lg font-semibold text-slate-900">{{ _('Contact Information') }}</h3>
                 </div>
                 <div class="p-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -91,7 +91,7 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm text-slate-500">Email</p>
+                                <p class="text-sm text-slate-500">{{ _('Email') }}</p>
                                 <p class="font-medium text-slate-900">{{ teacher.email }}</p>
                             </div>
                         </div>
@@ -102,8 +102,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm text-slate-500">Phone</p>
-                                <p class="font-medium text-slate-900">{{ teacher.phone or 'Not provided' }}</p>
+                                <p class="text-sm text-slate-500">{{ _('Phone') }}</p>
+                                <p class="font-medium text-slate-900">{{ teacher.phone or _('Not provided') }}</p>
                             </div>
                         </div>
                     </div>
@@ -113,45 +113,45 @@
             <!-- Professional Details -->
             <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
                 <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200">
-                    <h3 class="text-lg font-semibold text-slate-900">Professional Details</h3>
+                    <h3 class="text-lg font-semibold text-slate-900">{{ _('Professional Details') }}</h3>
                 </div>
                 <div class="p-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <p class="text-sm text-slate-500 mb-1">Employee ID</p>
+                            <p class="text-sm text-slate-500 mb-1">{{ _('Employee ID') }}</p>
                             <p class="font-mono font-medium text-slate-900 bg-slate-100 px-3 py-1.5 rounded-lg inline-block">
-                                {{ teacher.employee_id or 'Not assigned' }}
+                                {{ teacher.employee_id or _('Not assigned') }}
                             </p>
                         </div>
                         <div>
-                            <p class="text-sm text-slate-500 mb-1">Department</p>
-                            <p class="font-medium text-slate-900">{{ teacher.department or 'Not assigned' }}</p>
+                            <p class="text-sm text-slate-500 mb-1">{{ _('Department') }}</p>
+                            <p class="font-medium text-slate-900">{{ teacher.department or _('Not assigned') }}</p>
                         </div>
                         <div>
-                            <p class="text-sm text-slate-500 mb-1">Specialization</p>
-                            <p class="font-medium text-slate-900">{{ teacher.specialization or 'Not specified' }}</p>
+                            <p class="text-sm text-slate-500 mb-1">{{ _('Specialization') }}</p>
+                            <p class="font-medium text-slate-900">{{ teacher.specialization or _('Not specified') }}</p>
                         </div>
                         <div>
-                            <p class="text-sm text-slate-500 mb-1">Qualification</p>
-                            <p class="font-medium text-slate-900">{{ teacher.qualification or 'Not specified' }}</p>
+                            <p class="text-sm text-slate-500 mb-1">{{ _('Qualification') }}</p>
+                            <p class="font-medium text-slate-900">{{ teacher.qualification or _('Not specified') }}</p>
                         </div>
                         <div>
-                            <p class="text-sm text-slate-500 mb-1">Experience</p>
+                            <p class="text-sm text-slate-500 mb-1">{{ _('Experience') }}</p>
                             <p class="font-medium text-slate-900">
                                 {% if teacher.experience_years %}
-                                    {{ teacher.experience_years }} year{% if teacher.experience_years != 1 %}s{% endif %}
+                                    {{ _('%(years)s years', years=teacher.experience_years) }}
                                 {% else %}
-                                    Not specified
+                                    {{ _('Not specified') }}
                                 {% endif %}
                             </p>
                         </div>
                         <div>
-                            <p class="text-sm text-slate-500 mb-1">Hire Date</p>
+                            <p class="text-sm text-slate-500 mb-1">{{ _('Hire Date') }}</p>
                             <p class="font-medium text-slate-900">
                                 {% if teacher.hire_date %}
                                     {{ teacher.hire_date.strftime('%B %d, %Y') }}
                                 {% else %}
-                                    Not specified
+                                    {{ _('Not specified') }}
                                 {% endif %}
                             </p>
                         </div>
@@ -159,7 +159,7 @@
                     
                     {% if teacher.bio %}
                     <div class="mt-6 pt-6 border-t border-slate-100">
-                        <p class="text-sm text-slate-500 mb-2">Bio</p>
+                        <p class="text-sm text-slate-500 mb-2">{{ _('Bio') }}</p>
                         <p class="text-slate-700 leading-relaxed">{{ teacher.bio }}</p>
                     </div>
                     {% endif %}
@@ -169,10 +169,10 @@
             <!-- Assigned Students -->
             <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
                 <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200 flex items-center justify-between">
-                    <h3 class="text-lg font-semibold text-slate-900">Assigned Students ({{ assigned_students|length }})</h3>
+                    <h3 class="text-lg font-semibold text-slate-900">{{ _('Assigned Students') }} ({{ assigned_students|length }})</h3>
                     <a href="{{ url_for('teacher.assign_student', id=teacher.id) }}" 
                        class="text-sm text-primary-600 hover:text-primary-700 font-medium">
-                        Manage Students
+                        {{ _('Manage Students') }}
                     </a>
                 </div>
                 <div class="p-6">
@@ -191,11 +191,11 @@
                             </div>
                             <form action="{{ url_for('teacher.unassign_student', id=teacher.id, student_id=student.id) }}" 
                                   method="POST"
-                                  onsubmit="return confirm('Remove this student from {{ teacher.name }}?');">
+                                  onsubmit="return confirm('{{ _('Remove this student from %(teacher)s?', teacher=teacher.name) }}');">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                 <button type="submit" 
                                         class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
-                                        title="Unassign Student">
+                                        title="{{ _('Unassign Student') }}">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                                     </svg>
@@ -211,13 +211,13 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                             </svg>
                         </div>
-                        <p class="text-slate-500 mb-4">No students assigned yet</p>
+                                <p class="text-slate-500 mb-4">{{ _('No students assigned yet') }}</p>
                         <a href="{{ url_for('teacher.assign_student', id=teacher.id) }}" 
                            class="inline-flex items-center text-sm text-primary-600 hover:text-primary-700 font-medium">
                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                             </svg>
-                            Assign Students
+                            {{ _('Assign Students') }}
                         </a>
                     </div>
                     {% endif %}
@@ -229,7 +229,7 @@
         <div class="space-y-6">
             <!-- Stats -->
             <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 p-6">
-                <h3 class="text-lg font-semibold text-slate-900 mb-4">Overview</h3>
+                <h3 class="text-lg font-semibold text-slate-900 mb-4">{{ _('Overview') }}</h3>
                 <div class="space-y-4">
                     <div class="flex items-center justify-between p-4 bg-blue-50 rounded-xl">
                         <div class="flex items-center space-x-3">
@@ -238,7 +238,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                                 </svg>
                             </div>
-                            <span class="font-medium text-slate-700">Students</span>
+                            <span class="font-medium text-slate-700">{{ _('Students') }}</span>
                         </div>
                         <span class="text-2xl font-bold text-blue-600">{{ teacher.get_student_count() }}</span>
                     </div>
@@ -247,31 +247,37 @@
             
             <!-- Quick Actions -->
             <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 p-6">
-                <h3 class="text-lg font-semibold text-slate-900 mb-4">Quick Actions</h3>
-                <div class="space-y-3">
+                <h3 class="text-lg font-semibold text-slate-900 mb-4">{{ _('Quick Actions') }}</h3>
+                <div class="quick-actions-list">
                     <a href="{{ url_for('teacher.edit', id=teacher.id) }}" 
-                       class="flex items-center p-3 rounded-xl hover:bg-slate-50 transition-colors group">
-                        <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-amber-200 transition-colors">
+                       class="group quick-action-item quick-action-item--flat hover:bg-slate-50 transition-colors">
+                        <div class="quick-action-item__icon bg-amber-100 group-hover:bg-amber-200 transition-colors">
                             <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                             </svg>
                         </div>
-                        <span class="font-medium text-slate-700">Edit Profile</span>
+                        <span class="quick-action-item__title">{{ _('Edit Profile') }}</span>
+                        <svg class="quick-action-item__chevron rtl-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
                     </a>
                     <a href="{{ url_for('teacher.assign_student', id=teacher.id) }}" 
-                       class="flex items-center p-3 rounded-xl hover:bg-slate-50 transition-colors group">
-                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-blue-200 transition-colors">
+                       class="group quick-action-item quick-action-item--flat hover:bg-slate-50 transition-colors">
+                        <div class="quick-action-item__icon bg-blue-100 group-hover:bg-blue-200 transition-colors">
                             <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
                             </svg>
                         </div>
-                        <span class="font-medium text-slate-700">Assign Students</span>
+                        <span class="quick-action-item__title">{{ _('Assign Students') }}</span>
+                        <svg class="quick-action-item__chevron rtl-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
                     </a>
                     <form action="{{ url_for('teacher.toggle_status', id=teacher.id) }}" method="POST" class="w-full">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                         <button type="submit" 
-                                class="w-full flex items-center p-3 rounded-xl hover:bg-slate-50 transition-colors group text-left">
-                            <div class="w-10 h-10 bg-{{ 'slate' if teacher.status == 'active' else 'emerald' }}-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-{{ 'slate' if teacher.status == 'active' else 'emerald' }}-200 transition-colors">
+                                class="group quick-action-item quick-action-item--flat hover:bg-slate-50 transition-colors text-start">
+                            <div class="quick-action-item__icon bg-{{ 'slate' if teacher.status == 'active' else 'emerald' }}-100 group-hover:bg-{{ 'slate' if teacher.status == 'active' else 'emerald' }}-200 transition-colors">
                                 <svg class="w-5 h-5 text-{{ 'slate' if teacher.status == 'active' else 'emerald' }}-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     {% if teacher.status == 'active' %}
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
@@ -280,8 +286,8 @@
                                     {% endif %}
                                 </svg>
                             </div>
-                            <span class="font-medium text-slate-700">
-                                {% if teacher.status == 'active' %}Deactivate{% else %}Activate{% endif %} Teacher
+                            <span class="quick-action-item__title">
+                                {% if teacher.status == 'active' %}{{ _('Deactivate') }}{% else %}{{ _('Activate') }}{% endif %} {{ _('Teacher') }}
                             </span>
                         </button>
                     </form>
@@ -290,25 +296,25 @@
             
             <!-- Timestamps -->
             <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 p-6">
-                <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Record Info</h3>
+                <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">{{ _('Record Info') }}</h3>
                 <div class="space-y-3 text-sm">
                     <div class="flex justify-between">
-                        <span class="text-slate-500">Created</span>
+                        <span class="text-slate-500">{{ _('Created') }}</span>
                         <span class="text-slate-900">
                             {% if teacher.created_at %}
                                 {{ teacher.created_at.strftime('%b %d, %Y') }}
                             {% else %}
-                                N/A
+                                {{ _('N/A') }}
                             {% endif %}
                         </span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-slate-500">Last Updated</span>
+                        <span class="text-slate-500">{{ _('Last Updated') }}</span>
                         <span class="text-slate-900">
                             {% if teacher.updated_at %}
                                 {{ teacher.updated_at.strftime('%b %d, %Y') }}
                             {% else %}
-                                N/A
+                                {{ _('N/A') }}
                             {% endif %}
                         </span>
                     </div>

@@ -16,6 +16,7 @@ from flask import (
     Blueprint, render_template, redirect, url_for, 
     flash, request, current_app, session
 )
+from flask_babel import gettext as _
 from flask_login import (
     login_user, logout_user, login_required, 
     current_user, fresh_login_required
@@ -100,20 +101,20 @@ def login():
         
         # Validate credentials
         if user is None or not user.verify_password(form.password.data):
-            flash('Invalid email/username or password.', 'error')
+            flash(_('Invalid email/username or password.'), 'error')
             return render_template('auth/login.html', form=form)
         
         # Check account status
         if user.status == UserStatus.INACTIVE:
-            flash('Your account has been deactivated. Please contact support.', 'error')
+            flash(_('Your account has been deactivated. Please contact support.'), 'error')
             return render_template('auth/login.html', form=form)
         
         if user.status == UserStatus.SUSPENDED:
-            flash('Your account has been suspended. Please contact support.', 'error')
+            flash(_('Your account has been suspended. Please contact support.'), 'error')
             return render_template('auth/login.html', form=form)
         
         if user.status == UserStatus.PENDING:
-            flash('Your account is pending approval. Please wait for activation.', 'warning')
+            flash(_('Your account is pending approval. Please wait for activation.'), 'warning')
             return render_template('auth/login.html', form=form)
         
         # Login user
@@ -129,7 +130,7 @@ def login():
         session.permanent = form.remember_me.data
         
         # Flash success message
-        flash(f'Welcome back, {user.name}!', 'success')
+        flash(_('Welcome back, %(name)s!', name=user.name), 'success')
         
         # Redirect to next page or dashboard
         next_page = get_redirect_target()
@@ -159,7 +160,7 @@ def logout():
     # Logout user
     logout_user()
     
-    flash('You have been logged out successfully.', 'info')
+    flash(_('You have been logged out successfully.'), 'info')
     return redirect(url_for('main.index'))
 
 
@@ -178,7 +179,7 @@ def register():
     """
     # Check if registration is enabled
     if not current_app.config.get('REGISTRATION_ENABLED', True):
-        flash('Registration is currently disabled.', 'warning')
+        flash(_('Registration is currently disabled.'), 'warning')
         return redirect(url_for('auth.login'))
     
     # Redirect if already logged in
@@ -203,8 +204,7 @@ def register():
             db.session.commit()
             
             flash(
-                'Registration successful! Your account is pending approval. '
-                'You will be notified once activated.',
+                _('Registration successful! Your account is pending approval. You will be notified once activated.'),
                 'success'
             )
             return redirect(url_for('auth.login'))
@@ -212,7 +212,7 @@ def register():
         except Exception as e:
             db.session.rollback()
             current_app.logger.error(f'Registration error: {e}')
-            flash('An error occurred during registration. Please try again.', 'error')
+            flash(_('An error occurred during registration. Please try again.'), 'error')
     
     return render_template('auth/register.html', form=form)
 
@@ -253,13 +253,13 @@ def edit_profile():
         
         try:
             db.session.commit()
-            flash('Profile updated successfully.', 'success')
+            flash(_('Profile updated successfully.'), 'success')
             return redirect(url_for('auth.profile'))
             
         except Exception as e:
             db.session.rollback()
             current_app.logger.error(f'Profile update error: {e}')
-            flash('An error occurred while updating your profile.', 'error')
+            flash(_('An error occurred while updating your profile.'), 'error')
     
     # Pre-populate form with split name
     if request.method == 'GET':
@@ -290,7 +290,7 @@ def change_password():
     if form.validate_on_submit():
         # Verify current password
         if not current_user.verify_password(form.current_password.data):
-            flash('Current password is incorrect.', 'error')
+            flash(_('Current password is incorrect.'), 'error')
             return render_template('auth/change_password.html', form=form)
         
         # Update password
@@ -298,13 +298,13 @@ def change_password():
         
         try:
             db.session.commit()
-            flash('Password changed successfully.', 'success')
+            flash(_('Password changed successfully.'), 'success')
             return redirect(url_for('auth.profile'))
             
         except Exception as e:
             db.session.rollback()
             current_app.logger.error(f'Password change error: {e}')
-            flash('An error occurred while changing your password.', 'error')
+            flash(_('An error occurred while changing your password.'), 'error')
     
     return render_template('auth/change_password.html', form=form)
 
@@ -324,7 +324,7 @@ def before_request():
         # Check if user account is still active
         if current_user.status != UserStatus.ACTIVE:
             logout_user()
-            flash('Your account is no longer active.', 'warning')
+            flash(_('Your account is no longer active.'), 'warning')
             return redirect(url_for('auth.login'))
 
 

@@ -1,7 +1,7 @@
 {% extends "layouts/dashboard.html" %}
 
 {% block page_title %}{{ student.name }}{% endblock %}
-{% block page_subtitle %}Student Profile{% endblock %}
+{% block page_subtitle %}{{ _('Student Profile') }}{% endblock %}
 
 {% block content %}
 <div class="space-y-6">
@@ -10,7 +10,7 @@
         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
         </svg>
-        Back to Students
+        {{ _('Back to Students') }}
     </a>
     
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -32,7 +32,7 @@
                             <svg class="w-4 h-4 text-slate-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                             </svg>
-                            <span class="text-slate-600">{{ student.email or 'No email' }}</span>
+                            <span class="text-slate-600">{{ student.email or _('No email') }}</span>
                         </div>
                         {% if student.phone %}
                         <div class="flex items-center text-sm">
@@ -50,20 +50,20 @@
                                 {% if student.status.value == 'active' %}bg-emerald-100 text-emerald-700
                                 {% elif student.status.value == 'graduated' %}bg-blue-100 text-blue-700
                                 {% else %}bg-slate-100 text-slate-700{% endif %}">
-                                {{ student.status.value|title }}
+                                {{ _(student.status.value|replace('_', ' ')|title) }}
                             </span>
                         </div>
                     </div>
                     
                     <div class="mt-6 pt-6 border-t border-slate-200">
-                        <p class="text-sm text-slate-500">Plan creation is restricted for supervisors.</p>
+                        <p class="text-sm text-slate-500">{{ _('Plan creation is restricted for supervisors.') }}</p>
                     </div>
                 </div>
             </div>
             
             <!-- Supervisor Info -->
             <div class="mt-6 bg-white rounded-2xl shadow-soft border border-slate-200/60 p-6">
-                <h4 class="font-semibold text-slate-900 mb-4">Supervisor</h4>
+                <h4 class="font-semibold text-slate-900 mb-4">{{ _('Supervisor') }}</h4>
                 {% if student.supervisor %}
                 <div class="flex items-center">
                     <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center mr-3">
@@ -77,17 +77,17 @@
                 {% if current_user.is_admin() %}
                 <form action="{{ url_for('supervisor.unassign_supervisor', id=student.id) }}" method="post" class="mt-4">
                     <button type="submit" class="text-sm text-red-600 hover:text-red-700 font-medium"
-                            onclick="return confirm('Are you sure you want to unassign this supervisor?')">
-                        Unassign Supervisor
+                            onclick="return confirm('{{ _('Are you sure you want to unassign this supervisor?') }}')">
+                        {{ _('Unassign Supervisor') }}
                     </button>
                 </form>
                 {% endif %}
                 {% else %}
-                <p class="text-slate-500 text-sm">No supervisor assigned</p>
+                <p class="text-slate-500 text-sm">{{ _('No supervisor assigned') }}</p>
                 {% if current_user.is_admin() %}
                 <a href="{{ url_for('supervisor.assign_supervisor', id=student.id) }}" 
                    class="mt-3 inline-block text-sm text-primary-600 hover:text-primary-700 font-medium">
-                    Assign Supervisor
+                    {{ _('Assign Supervisor') }}
                 </a>
                 {% endif %}
                 {% endif %}
@@ -101,9 +101,9 @@
             <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
                 <div class="px-6 py-4 bg-emerald-50/80 border-b border-emerald-200">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-lg font-semibold text-emerald-900">Active Plan</h3>
+                        <h3 class="text-lg font-semibold text-emerald-900">{{ _('Active Plan') }}</h3>
                         <span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 text-xs font-medium rounded-full">
-                            {{ active_plan.status.value|title }}
+                            {{ _(active_plan.status.value|replace('_', ' ')|title) }}
                         </span>
                     </div>
                 </div>
@@ -111,11 +111,11 @@
                     <div class="flex items-start justify-between mb-4">
                         <div>
                             <h4 class="text-xl font-bold text-slate-900">{{ active_plan.title }}</h4>
-                            <p class="text-sm text-slate-500 mt-1">{{ active_plan.plan_type.value|title }}</p>
+                            <p class="text-sm text-slate-500 mt-1">{{ _(active_plan.plan_type.value|replace('_', ' ')|title) }}</p>
                         </div>
                         <a href="{{ url_for('planning.plan_detail', id=active_plan.id) }}" 
                            class="px-4 py-2 bg-primary-600 text-white text-sm rounded-lg hover:bg-primary-700 transition-colors font-medium">
-                            View Plan
+                            {{ _('View Plan') }}
                         </a>
                     </div>
                     
@@ -125,19 +125,19 @@
                     
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                         <div class="bg-slate-50 rounded-lg px-4 py-3">
-                            <p class="text-xs text-slate-500 uppercase tracking-wide">Start Date</p>
-                            <p class="font-semibold text-slate-900">{{ active_plan.start_date.strftime('%b %d, %Y') if active_plan.start_date else 'Not set' }}</p>
+                            <p class="text-xs text-slate-500 uppercase tracking-wide">{{ _('Start Date') }}</p>
+                            <p class="font-semibold text-slate-900">{{ active_plan.start_date.strftime('%b %d, %Y') if active_plan.start_date else _('Not set') }}</p>
                         </div>
                         <div class="bg-slate-50 rounded-lg px-4 py-3">
-                            <p class="text-xs text-slate-500 uppercase tracking-wide">End Date</p>
-                            <p class="font-semibold text-slate-900">{{ active_plan.end_date.strftime('%b %d, %Y') if active_plan.end_date else 'Not set' }}</p>
+                            <p class="text-xs text-slate-500 uppercase tracking-wide">{{ _('End Date') }}</p>
+                            <p class="font-semibold text-slate-900">{{ active_plan.end_date.strftime('%b %d, %Y') if active_plan.end_date else _('Not set') }}</p>
                         </div>
                         <div class="bg-slate-50 rounded-lg px-4 py-3">
-                            <p class="text-xs text-slate-500 uppercase tracking-wide">Tasks</p>
+                            <p class="text-xs text-slate-500 uppercase tracking-wide">{{ _('Tasks') }}</p>
                             <p class="font-semibold text-slate-900">{{ active_plan.tasks.all()|length }}</p>
                         </div>
                         <div class="bg-slate-50 rounded-lg px-4 py-3">
-                            <p class="text-xs text-slate-500 uppercase tracking-wide">Completed</p>
+                            <p class="text-xs text-slate-500 uppercase tracking-wide">{{ _('Completed') }}</p>
                             <p class="font-semibold text-slate-900">{{ active_plan.tasks.all()|selectattr('status.value', 'equalto', 'completed')|list|length }}</p>
                         </div>
                     </div>
@@ -155,8 +155,8 @@
             <!-- All Plans -->
             <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
                 <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200 flex items-center justify-between">
-                    <h3 class="text-lg font-semibold text-slate-900">All Plans ({{ plans|length }})</h3>
-                    <span class="text-sm text-slate-500">View-only access</span>
+                    <h3 class="text-lg font-semibold text-slate-900">{{ _('All Plans') }} ({{ plans|length }})</h3>
+                    <span class="text-sm text-slate-500">{{ _('View-only access') }}</span>
                 </div>
                 
                 {% if plans %}
@@ -167,7 +167,7 @@
                             <div>
                                 <h4 class="font-medium text-slate-900">{{ plan.title }}</h4>
                                 <div class="flex items-center space-x-3 mt-1">
-                                    <span class="text-sm text-slate-500">{{ plan.plan_type.value|title }}</span>
+                                    <span class="text-sm text-slate-500">{{ _(plan.plan_type.value|replace('_', ' ')|title) }}</span>
                                     <span class="text-slate-300">•</span>
                                     <span class="px-2 py-0.5 rounded-full text-xs font-medium
                                         {% if plan.status.value == 'active' %}bg-emerald-100 text-emerald-700
@@ -175,7 +175,7 @@
                                         {% elif plan.status.value == 'draft' %}bg-slate-100 text-slate-700
                                         {% elif plan.status.value == 'cancelled' %}bg-red-100 text-red-700
                                         {% else %}bg-amber-100 text-amber-700{% endif %}">
-                                        {{ plan.status.value|title }}
+                                        {{ _(plan.status.value|replace('_', ' ')|title) }}
                                     </span>
                                 </div>
                             </div>
@@ -190,7 +190,7 @@
                                 </div>
                                 <a href="{{ url_for('planning.plan_detail', id=plan.id) }}" 
                                    class="px-3 py-1.5 text-sm text-primary-600 hover:text-primary-700 font-medium hover:bg-primary-50 rounded-lg transition-colors">
-                                    View
+                                    {{ _('View') }}
                                 </a>
                             </div>
                         </div>
@@ -199,7 +199,7 @@
                 </div>
                 {% else %}
                 <div class="p-8 text-center">
-                    <p class="text-slate-500">No plans created yet</p>
+                    <p class="text-slate-500">{{ _('No plans created yet') }}</p>
                 </div>
                 {% endif %}
             </div>

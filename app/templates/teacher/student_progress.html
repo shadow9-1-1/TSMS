@@ -1,7 +1,7 @@
 {% extends "layouts/dashboard.html" %}
 
-{% block page_title %}Student Progress{% endblock %}
-{% block page_subtitle %}Track progress and performance of your students{% endblock %}
+{% block page_title %}{{ _('Student Progress') }}{% endblock %}
+{% block page_subtitle %}{{ _('Track progress and performance of your students') }}{% endblock %}
 
 {% block actions %}
 <a href="{{ url_for('teacher.planning') }}" 
@@ -9,7 +9,7 @@
     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
     </svg>
-    Back to Planning
+    {{ _('Back to Planning') }}
 </a>
 {% endblock %}
 
@@ -19,32 +19,32 @@
     <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
         <div class="bg-white rounded-xl shadow-soft border border-slate-200/60 p-4 text-center">
             <p class="text-3xl font-bold text-slate-900">{{ students_data|length }}</p>
-            <p class="text-xs font-medium text-slate-500 uppercase tracking-wide mt-1">Total Students</p>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wide mt-1">{{ _('Total Students') }}</p>
         </div>
         
         <div class="bg-white rounded-xl shadow-soft border border-slate-200/60 p-4 text-center">
             <p class="text-3xl font-bold text-emerald-600">{{ students_data|selectattr('active_plan')|list|length }}</p>
-            <p class="text-xs font-medium text-slate-500 uppercase tracking-wide mt-1">Active Plans</p>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wide mt-1">{{ _('Active Plans') }}</p>
         </div>
         
         <div class="bg-white rounded-xl shadow-soft border border-slate-200/60 p-4 text-center">
             <p class="text-3xl font-bold text-primary-600">{{ students_data|sum(attribute='total_objectives') }}</p>
-            <p class="text-xs font-medium text-slate-500 uppercase tracking-wide mt-1">Objectives</p>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wide mt-1">{{ _('Objectives') }}</p>
         </div>
         
         <div class="bg-white rounded-xl shadow-soft border border-slate-200/60 p-4 text-center">
             <p class="text-3xl font-bold text-emerald-600">{{ students_data|sum(attribute='completed_objectives') }}</p>
-            <p class="text-xs font-medium text-slate-500 uppercase tracking-wide mt-1">Completed</p>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wide mt-1">{{ _('Completed') }}</p>
         </div>
         
         <div class="bg-white rounded-xl shadow-soft border border-slate-200/60 p-4 text-center">
             <p class="text-3xl font-bold text-slate-900">{{ students_data|sum(attribute='total_tasks') }}</p>
-            <p class="text-xs font-medium text-slate-500 uppercase tracking-wide mt-1">Total Tasks</p>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wide mt-1">{{ _('Total Tasks') }}</p>
         </div>
         
         <div class="bg-white rounded-xl shadow-soft border border-slate-200/60 p-4 text-center">
             <p class="text-3xl font-bold text-red-600">{{ students_data|sum(attribute='overdue_tasks') }}</p>
-            <p class="text-xs font-medium text-slate-500 uppercase tracking-wide mt-1">Overdue</p>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wide mt-1">{{ _('Overdue') }}</p>
         </div>
     </div>
     
@@ -69,11 +69,11 @@
                         {% if data.active_plan %}
                         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
                             <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-1.5"></span>
-                            Active Plan
+                            {{ _('Active Plan') }}
                         </span>
                         {% else %}
                         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">
-                            No Active Plan
+                            {{ _('No Active Plan') }}
                         </span>
                         {% endif %}
                     </div>
@@ -85,7 +85,7 @@
                 <!-- Main Progress Bar -->
                 <div class="mb-6">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-sm font-medium text-slate-700">Overall Progress</span>
+                        <span class="text-sm font-medium text-slate-700">{{ _('Overall Progress') }}</span>
                         <span class="text-2xl font-bold {% if data.progress_percentage >= 75 %}text-emerald-600{% elif data.progress_percentage >= 50 %}text-amber-600{% elif data.progress_percentage >= 25 %}text-orange-600{% else %}text-slate-600{% endif %}">
                             {{ data.progress_percentage }}%
                         </span>
@@ -106,11 +106,11 @@
                 <div class="grid grid-cols-2 gap-3 mb-4">
                     <div class="bg-primary-50 rounded-lg p-3 text-center">
                         <p class="text-xl font-bold text-primary-600">{{ data.completed_objectives }}/{{ data.total_objectives }}</p>
-                        <p class="text-xs text-primary-600 mt-1">Objectives</p>
+                        <p class="text-xs text-primary-600 mt-1">{{ _('Objectives') }}</p>
                     </div>
                     <div class="bg-emerald-50 rounded-lg p-3 text-center">
                         <p class="text-xl font-bold text-emerald-600">{{ data.completed_tasks }}/{{ data.total_tasks }}</p>
-                        <p class="text-xs text-emerald-600 mt-1">Tasks Done</p>
+                        <p class="text-xs text-emerald-600 mt-1">{{ _('Tasks Done') }}</p>
                     </div>
                 </div>
                 
@@ -118,19 +118,19 @@
                 <div class="grid grid-cols-4 gap-3 mb-6">
                     <div class="bg-slate-50 rounded-lg p-3 text-center">
                         <p class="text-xl font-bold text-slate-900">{{ data.total_tasks }}</p>
-                        <p class="text-xs text-slate-500 mt-1">Total</p>
+                        <p class="text-xs text-slate-500 mt-1">{{ _('Total') }}</p>
                     </div>
                     <div class="bg-emerald-50 rounded-lg p-3 text-center">
                         <p class="text-xl font-bold text-emerald-600">{{ data.completed_tasks }}</p>
-                        <p class="text-xs text-emerald-600 mt-1">Done</p>
+                        <p class="text-xs text-emerald-600 mt-1">{{ _('Done') }}</p>
                     </div>
                     <div class="bg-amber-50 rounded-lg p-3 text-center">
                         <p class="text-xl font-bold text-amber-600">{{ data.pending_tasks }}</p>
-                        <p class="text-xs text-amber-600 mt-1">Pending</p>
+                        <p class="text-xs text-amber-600 mt-1">{{ _('Pending') }}</p>
                     </div>
                     <div class="bg-red-50 rounded-lg p-3 text-center">
                         <p class="text-xl font-bold text-red-600">{{ data.overdue_tasks }}</p>
-                        <p class="text-xs text-red-600 mt-1">Overdue</p>
+                        <p class="text-xs text-red-600 mt-1">{{ _('Overdue') }}</p>
                     </div>
                 </div>
                 
@@ -193,21 +193,21 @@
                     {% if data.active_plan %}
                     <a href="{{ url_for('planning.plan_detail', id=data.active_plan.id) }}" 
                        class="flex-1 px-4 py-2 bg-primary-600 text-white text-center rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium">
-                        View Active Plan
+                        {{ _('View Active Plan') }}
                     </a>
                     <a href="{{ url_for('planning.create_task', plan_id=data.active_plan.id) }}" 
                        class="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100 transition-colors text-sm font-medium">
-                        Add Task
+                        {{ _('Add Task') }}
                     </a>
                     {% else %}
                     <a href="{{ url_for('planning.create_plan') }}?student_id={{ data.student.id }}" 
                        class="flex-1 px-4 py-2 bg-primary-600 text-white text-center rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium">
-                        Create Plan
+                        {{ _('Create Plan') }}
                     </a>
                     {% endif %}
                     <a href="{{ url_for('planning.student_plans', student_id=data.student.id) }}" 
                        class="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200 transition-colors text-sm font-medium">
-                        All Plans
+                        {{ _('All Plans') }}
                     </a>
                 </div>
             </div>
@@ -222,13 +222,13 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
             </svg>
         </div>
-        <h3 class="text-lg font-medium text-slate-900 mb-2">No students assigned</h3>
-        <p class="text-slate-500 mb-6">You don't have any students assigned to you yet.</p>
+        <h3 class="text-lg font-medium text-slate-900 mb-2">{{ _('No students assigned') }}</h3>
+        <p class="text-slate-500 mb-6">{{ _('You don\'t have any students assigned to you yet.') }}</p>
         <a href="{{ url_for('teacher.index') }}" class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium">
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
             </svg>
-            Back to dashboard
+            {{ _('Back to dashboard') }}
         </a>
     </div>
     {% endif %}

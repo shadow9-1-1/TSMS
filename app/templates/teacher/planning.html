@@ -1,7 +1,7 @@
 {% extends "layouts/dashboard.html" %}
 
-{% block page_title %}Student Planning{% endblock %}
-{% block page_subtitle %}Manage plans and tasks for your students{% endblock %}
+{% block page_title %}{{ _('Student Planning') }}{% endblock %}
+{% block page_subtitle %}{{ _('Manage plans and tasks for your students') }}{% endblock %}
 
 {% block actions %}
 <a href="{{ url_for('planning.create_plan') }}" 
@@ -9,7 +9,7 @@
     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
     </svg>
-    Create New Plan
+    {{ _('Create New Plan') }}
 </a>
 {% endblock %}
 
@@ -20,7 +20,7 @@
         <div class="bg-white rounded-xl shadow-soft border border-slate-200/60 p-4">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">Total Students</p>
+                    <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">{{ _('Total Students') }}</p>
                     <p class="text-2xl font-bold text-slate-900 mt-1">{{ students_with_progress|length }}</p>
                 </div>
                 <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
@@ -34,7 +34,7 @@
         <div class="bg-white rounded-xl shadow-soft border border-slate-200/60 p-4">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">With Active Plans</p>
+                    <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">{{ _('With Active Plans') }}</p>
                     <p class="text-2xl font-bold text-emerald-600 mt-1">{{ students_with_progress|selectattr('active_plan')|list|length }}</p>
                 </div>
                 <div class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
@@ -48,7 +48,7 @@
         <div class="bg-white rounded-xl shadow-soft border border-slate-200/60 p-4">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">Without Plans</p>
+                    <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">{{ _('Without Plans') }}</p>
                     <p class="text-2xl font-bold text-amber-600 mt-1">{{ students_with_progress|rejectattr('active_plan')|list|length }}</p>
                 </div>
                 <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
@@ -62,7 +62,7 @@
         <div class="bg-white rounded-xl shadow-soft border border-slate-200/60 p-4">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">Total Tasks</p>
+                    <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">{{ _('Total Tasks') }}</p>
                     <p class="text-2xl font-bold text-slate-900 mt-1">{{ students_with_progress|sum(attribute='total_tasks') }}</p>
                 </div>
                 <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -77,9 +77,9 @@
     <!-- Students with Progress -->
     <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
         <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200 flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-slate-900">Students Progress</h3>
+            <h3 class="text-lg font-semibold text-slate-900">{{ _('Students Progress') }}</h3>
             <a href="{{ url_for('teacher.student_progress') }}" class="text-sm text-primary-600 hover:text-primary-700 font-medium">
-                View detailed progress →
+                {{ _('View detailed progress') }} &rarr;
             </a>
         </div>
         
@@ -94,7 +94,7 @@
                         </div>
                         <div>
                             <h4 class="font-medium text-slate-900">{{ data.student.name }}</h4>
-                            <p class="text-sm text-slate-500">{{ data.student.student_id }} • {{ data.student.department or 'No department' }}</p>
+                            <p class="text-sm text-slate-500">{{ data.student.student_id }} • {{ data.student.department or _('No department') }}</p>
                         </div>
                     </div>
                     
@@ -102,7 +102,7 @@
                         <!-- Progress Bar -->
                         <div class="w-48">
                             <div class="flex justify-between text-xs mb-1">
-                                <span class="text-slate-500">Progress</span>
+                                <span class="text-slate-500">{{ _('Progress') }}</span>
                                 <span class="font-medium {% if data.overall_progress >= 75 %}text-emerald-600{% elif data.overall_progress >= 50 %}text-amber-600{% else %}text-slate-600{% endif %}">{{ data.overall_progress }}%</span>
                             </div>
                             <div class="w-full bg-slate-200 rounded-full h-2">
@@ -112,11 +112,11 @@
                         
                         <!-- Task Stats -->
                         <div class="flex items-center space-x-3 text-sm">
-                            <span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-md" title="Completed tasks">
-                                {{ data.completed_tasks }} done
+                            <span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-md" title="{{ _('Completed tasks') }}">
+                                {{ _('%(count)s done', count=data.completed_tasks) }}
                             </span>
-                            <span class="px-2 py-1 bg-slate-100 text-slate-700 rounded-md" title="Total tasks">
-                                {{ data.total_tasks }} total
+                            <span class="px-2 py-1 bg-slate-100 text-slate-700 rounded-md" title="{{ _('Total tasks') }}">
+                                {{ _('%(count)s total', count=data.total_tasks) }}
                             </span>
                         </div>
                         
@@ -125,19 +125,19 @@
                             {% if data.active_plan %}
                             <a href="{{ url_for('planning.plan_detail', id=data.active_plan.id) }}" 
                                class="px-3 py-1.5 text-sm text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
-                               title="View active plan">
-                                View Plan
+                               title="{{ _('View active plan') }}">
+                                {{ _('View Plan') }}
                             </a>
                             {% else %}
                             <a href="{{ url_for('planning.create_plan') }}?student_id={{ data.student.id }}" 
                                class="px-3 py-1.5 text-sm bg-primary-50 text-primary-600 hover:bg-primary-100 rounded-lg transition-colors"
-                               title="Create new plan">
-                                Create Plan
+                               title="{{ _('Create new plan') }}">
+                                {{ _('Create Plan') }}
                             </a>
                             {% endif %}
                             <a href="{{ url_for('planning.student_plans', student_id=data.student.id) }}" 
                                class="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
-                               title="View all plans">
+                               title="{{ _('View all plans') }}">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                                 </svg>
@@ -155,8 +155,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                 </svg>
             </div>
-            <h3 class="text-lg font-medium text-slate-900 mb-2">No students assigned</h3>
-            <p class="text-slate-500">You don't have any students assigned to you yet.</p>
+            <h3 class="text-lg font-medium text-slate-900 mb-2">{{ _('No students assigned') }}</h3>
+            <p class="text-slate-500">{{ _('You don\'t have any students assigned to you yet.') }}</p>
         </div>
         {% endif %}
     </div>
@@ -171,8 +171,8 @@
                 </svg>
             </div>
             <div>
-                <p class="font-medium text-slate-900">All Plans</p>
-                <p class="text-sm text-slate-500">View and manage all plans</p>
+                <p class="font-medium text-slate-900">{{ _('All Plans') }}</p>
+                <p class="text-sm text-slate-500">{{ _('View and manage all plans') }}</p>
             </div>
         </a>
         
@@ -184,8 +184,8 @@
                 </svg>
             </div>
             <div>
-                <p class="font-medium text-slate-900">New Plan</p>
-                <p class="text-sm text-slate-500">Create a new student plan</p>
+                <p class="font-medium text-slate-900">{{ _('New Plan') }}</p>
+                <p class="text-sm text-slate-500">{{ _('Create a new student plan') }}</p>
             </div>
         </a>
         
@@ -197,8 +197,8 @@
                 </svg>
             </div>
             <div>
-                <p class="font-medium text-slate-900">Progress Report</p>
-                <p class="text-sm text-slate-500">Detailed student progress</p>
+                <p class="font-medium text-slate-900">{{ _('Progress Report') }}</p>
+                <p class="text-sm text-slate-500">{{ _('Detailed student progress') }}</p>
             </div>
         </a>
     </div>

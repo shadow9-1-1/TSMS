@@ -1,0 +1,3063 @@
+# Arabic translations for PROJECT.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-04-12 18:37+0200\n"
+"PO-Revision-Date: 2026-04-12 18:38+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: ar <LL@li.org>\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=0 && n%100<=2 ? 4 : 5);\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: app/blueprints/auth/decorators.py:53 app/blueprints/auth/decorators.py:94
+#: app/blueprints/auth/decorators.py:119 app/blueprints/auth/decorators.py:144
+#: app/blueprints/auth/decorators.py:169 app/blueprints/auth/decorators.py:194
+#: app/blueprints/planning/routes.py:61 app/blueprints/supervisor/routes.py:55
+#: app/blueprints/teacher/routes.py:33 app/decorators.py:66
+#: app/decorators.py:113 app/decorators.py:138 app/decorators.py:163
+#: app/decorators.py:188 app/decorators.py:215 app/decorators.py:246
+msgid "Please log in to access this page."
+msgstr "الرجاء تسجيل الدخول للوصول إلى هذه الصفحة."
+
+#: app/decorators.py:73 app/decorators.py:221
+msgid "Your account is not active. Please contact an administrator."
+msgstr "حسابك غير نشط. الرجاء الاتصال بالمسؤول."
+
+#: app/blueprints/auth/decorators.py:72 app/blueprints/planning/routes.py:65
+#: app/blueprints/student/routes.py:34 app/blueprints/supervisor/routes.py:59
+#: app/blueprints/teacher/routes.py:37 app/decorators.py:91
+#: app/decorators.py:117 app/decorators.py:142 app/decorators.py:167
+#: app/decorators.py:192
+msgid "You do not have permission to access this page."
+msgstr "ليس لديك إذن للوصول إلى هذه الصفحة."
+
+#: app/decorators.py:253 app/decorators.py:257
+msgid "You do not have permission to perform this action."
+msgstr "ليس لديك الإذن للقيام بهذا الإجراء."
+
+#: app/blueprints/admin/__init__.py:124
+#, python-format
+msgid "User %(username)s has been created successfully."
+msgstr "تم إنشاء المستخدم %(username)s بنجاح."
+
+#: app/blueprints/admin/__init__.py:165
+#, python-format
+msgid "User %(username)s has been updated successfully."
+msgstr "تم تحديث المستخدم %(username)s بنجاح."
+
+#: app/blueprints/admin/__init__.py:183
+#, python-format
+msgid "Password for %(username)s has been changed."
+msgstr "تم تغيير كلمة المرور لـ %(username)s."
+
+#: app/blueprints/admin/__init__.py:197
+msgid "You cannot deactivate your own account."
+msgstr "لا يمكنك إلغاء تنشيط حسابك الخاص."
+
+#: app/blueprints/admin/__init__.py:203
+msgid "deactivated"
+msgstr "معطل"
+
+#: app/blueprints/admin/__init__.py:206
+msgid "activated"
+msgstr "تفعيلها"
+
+#: app/blueprints/admin/__init__.py:210
+#, python-format
+msgid "User %(username)s has been %(status_text)s."
+msgstr "المستخدم %(username)s كان %(status_text)s."
+
+#: app/blueprints/admin/__init__.py:222
+msgid "You cannot delete your own account."
+msgstr "لا يمكنك حذف حسابك الخاص."
+
+#: app/blueprints/admin/__init__.py:229
+#, python-format
+msgid "User %(username)s has been deleted."
+msgstr "تم حذف المستخدم %(username)s."
+
+#: app/blueprints/auth/decorators.py:98
+msgid "Administrator access required."
+msgstr "مطلوب وصول المسؤول."
+
+#: app/blueprints/auth/decorators.py:123
+msgid "Supervisor access required."
+msgstr "مطلوب وصول المشرف."
+
+#: app/blueprints/auth/decorators.py:148
+msgid "Teacher access required."
+msgstr "مطلوب وصول المعلم."
+
+#: app/blueprints/auth/decorators.py:173
+msgid "Management access required."
+msgstr "الوصول إلى الإدارة مطلوب."
+
+#: app/blueprints/auth/decorators.py:198
+msgid "Your account is not active. Please contact support."
+msgstr "حسابك غير نشط. يرجى الاتصال بالدعم."
+
+#: app/blueprints/auth/routes.py:104
+msgid "Invalid email/username or password."
+msgstr "البريد الإلكتروني/اسم المستخدم أو كلمة المرور غير صالحة."
+
+#: app/blueprints/auth/routes.py:109
+msgid "Your account has been deactivated. Please contact support."
+msgstr "لقد تم تعطيل حسابك. يرجى الاتصال بالدعم."
+
+#: app/blueprints/auth/routes.py:113
+msgid "Your account has been suspended. Please contact support."
+msgstr "لقد تم تعليق حسابك. يرجى الاتصال بالدعم."
+
+#: app/blueprints/auth/routes.py:117
+msgid "Your account is pending approval. Please wait for activation."
+msgstr "حسابك في انتظار الموافقة. من فضلك انتظر التنشيط."
+
+#: app/blueprints/auth/routes.py:133 app/templates/main/dashboard.html:30
+#, python-format
+msgid "Welcome back, %(name)s!"
+msgstr "مرحبًا بك مرة أخرى، %(name)s!"
+
+#: app/blueprints/auth/routes.py:163
+msgid "You have been logged out successfully."
+msgstr "لقد تم تسجيل خروجك بنجاح."
+
+#: app/blueprints/auth/routes.py:182
+msgid "Registration is currently disabled."
+msgstr "التسجيل معطل حاليا."
+
+#: app/blueprints/auth/routes.py:207
+msgid ""
+"Registration successful! Your account is pending approval. You will be "
+"notified once activated."
+msgstr "التسجيل ناجح! حسابك في انتظار الموافقة. سيتم اعلامك بمجرد تفعيلها."
+
+#: app/blueprints/auth/routes.py:215
+msgid "An error occurred during registration. Please try again."
+msgstr "حدث خطأ أثناء التسجيل. يرجى المحاولة مرة أخرى."
+
+#: app/blueprints/auth/routes.py:256
+msgid "Profile updated successfully."
+msgstr "تم تحديث الملف الشخصي بنجاح."
+
+#: app/blueprints/auth/routes.py:262
+msgid "An error occurred while updating your profile."
+msgstr "حدث خطأ أثناء تحديث ملف التعريف الخاص بك."
+
+#: app/blueprints/auth/routes.py:293
+msgid "Current password is incorrect."
+msgstr "كلمة المرور الحالية غير صحيحة."
+
+#: app/blueprints/auth/routes.py:301
+msgid "Password changed successfully."
+msgstr "تم تغيير كلمة المرور بنجاح."
+
+#: app/blueprints/auth/routes.py:307
+msgid "An error occurred while changing your password."
+msgstr "حدث خطأ أثناء تغيير كلمة المرور الخاصة بك."
+
+#: app/blueprints/auth/routes.py:327
+msgid "Your account is no longer active."
+msgstr "حسابك لم يعد نشطا."
+
+#: app/blueprints/planning/routes.py:172
+msgid "Supervisors can only view plans and progress."
+msgstr "يمكن للمشرفين عرض الخطط والتقدم فقط."
+
+#: app/blueprints/planning/routes.py:208 app/blueprints/planning/routes.py:365
+msgid "No Supervisor"
+msgstr "لا يوجد مشرف"
+
+#: app/blueprints/planning/routes.py:218
+msgid "Please select at least one student."
+msgstr "يرجى اختيار طالب واحد على الأقل."
+
+#: app/blueprints/planning/routes.py:222 app/blueprints/planning/routes.py:231
+#: app/blueprints/planning/routes.py:297
+#: app/templates/planning/plan_form.html:3
+#: app/templates/teacher/planning.html:135
+#: app/templates/teacher/student_progress.html:205
+msgid "Create Plan"
+msgstr "إنشاء خطة"
+
+#: app/blueprints/planning/routes.py:227
+#, python-format
+msgid "You do not have permission to create plans for %(student)s."
+msgstr "ليس لديك إذن بإنشاء خطط لـ %(student)s."
+
+#: app/blueprints/planning/routes.py:283
+#, python-format
+msgid " and %(count)s more"
+msgstr "و%(count)s أكثر"
+
+#: app/blueprints/planning/routes.py:285
+#, python-format
+msgid "Plan \"%(title)s\" created for %(students)s."
+msgstr "تم إنشاء الخطة \"%(title)s\" من أجل %(students)s."
+
+#: app/blueprints/planning/routes.py:310
+#: app/blueprints/supervisor/routes.py:288
+msgid "You do not have permission to view this plan."
+msgstr "ليس لديك إذن لعرض هذه الخطة."
+
+#: app/blueprints/planning/routes.py:338
+msgid "You do not have permission to edit this plan."
+msgstr "ليس لديك إذن لتعديل هذه الخطة."
+
+#: app/blueprints/planning/routes.py:421
+#, python-format
+msgid "Plan \"%(title)s\" updated successfully."
+msgstr "تم تحديث الخطة \"%(title)s\" بنجاح."
+
+#: app/blueprints/planning/routes.py:427
+#: app/templates/planning/plan_detail.html:80
+#: app/templates/planning/plan_form.html:3
+#: app/templates/planning/plan_form.html:19
+msgid "Edit Plan"
+msgstr "تحرير الخطة"
+
+#: app/blueprints/planning/routes.py:439
+msgid "You do not have permission to delete this plan."
+msgstr "ليس لديك الإذن بحذف هذه الخطة."
+
+#: app/blueprints/planning/routes.py:446
+#, python-format
+msgid "Plan \"%(title)s\" deleted successfully."
+msgstr "تم حذف الخطة \"%(title)s\" بنجاح."
+
+#: app/blueprints/planning/routes.py:463
+#, python-format
+msgid "Plan \"%(title)s\" is now active."
+msgstr "الخطة \"%(title)s\" نشطة الآن."
+
+#: app/blueprints/planning/routes.py:479
+#, python-format
+msgid "Plan \"%(title)s\" marked as completed."
+msgstr "تم وضع علامة على الخطة \"%(title)s\" كمكتملة."
+
+#: app/blueprints/planning/routes.py:495
+msgid "You do not have permission to add tasks to this plan."
+msgstr "ليس لديك إذن لإضافة مهام إلى هذه الخطة."
+
+#: app/blueprints/planning/routes.py:502 app/blueprints/planning/routes.py:554
+#: app/templates/student/list.html:53 app/templates/student/list.html:132
+#: app/templates/supervisor/index.html:119
+msgid "Unassigned"
+msgstr "غير معين"
+
+#: app/blueprints/planning/routes.py:529
+#, python-format
+msgid "Task \"%(title)s\" created successfully."
+msgstr "تم إنشاء المهمة \"%(title)s\" بنجاح."
+
+#: app/blueprints/planning/routes.py:536
+msgid "Create Task"
+msgstr "إنشاء مهمة"
+
+#: app/blueprints/planning/routes.py:548
+msgid "You do not have permission to edit this task."
+msgstr "ليس لديك الإذن بتحرير هذه المهمة."
+
+#: app/blueprints/planning/routes.py:578
+#, python-format
+msgid "Task \"%(title)s\" updated successfully."
+msgstr "تم تحديث المهمة \"%(title)s\" بنجاح."
+
+#: app/blueprints/planning/routes.py:585
+#: app/templates/planning/plan_detail.html:360
+#: app/templates/planning/task_form.html:3
+#: app/templates/planning/task_form.html:34
+msgid "Edit Task"
+msgstr "تحرير المهمة"
+
+#: app/blueprints/planning/routes.py:597
+msgid "You do not have permission to delete this task."
+msgstr "ليس لديك الإذن بحذف هذه المهمة."
+
+#: app/blueprints/planning/routes.py:607
+#, python-format
+msgid "Task \"%(title)s\" deleted successfully."
+msgstr "تم حذف المهمة \"%(title)s\" بنجاح."
+
+#: app/blueprints/planning/routes.py:623
+#, python-format
+msgid "Task \"%(title)s\" marked as completed."
+msgstr "تم وضع علامة على المهمة \"%(title)s\" كمكتملة."
+
+#: app/blueprints/planning/routes.py:647
+#, python-format
+msgid "Task \"%(title)s\" started."
+msgstr "بدأت المهمة \"%(title)s\"."
+
+#: app/blueprints/planning/routes.py:669 app/blueprints/planning/routes.py:703
+#: app/templates/planning/student_plans.html:128
+msgid "completed"
+msgstr "مكتمل"
+
+#: app/blueprints/planning/routes.py:669 app/blueprints/planning/routes.py:703
+msgid "pending"
+msgstr "قيد الانتظار"
+
+#: app/blueprints/planning/routes.py:670 app/blueprints/planning/routes.py:704
+#, python-format
+msgid "Objective marked as %(status)s."
+msgstr "تم وضع علامة على الهدف كـ %(status)s."
+
+#: app/blueprints/planning/routes.py:732
+#, python-format
+msgid "Plan activated for %(student)s."
+msgstr "تم تفعيل الخطة لـ %(student)s."
+
+#: app/blueprints/planning/routes.py:750
+#, python-format
+msgid "Plan marked as completed for %(student)s."
+msgstr "تم وضع علامة على الخطة كمكتملة لـ %(student)s."
+
+#: app/blueprints/planning/routes.py:768
+msgid "You do not have permission to view this student's plans."
+msgstr "ليس لديك الإذن لعرض خطط هذا الطالب."
+
+#: app/blueprints/student/routes.py:160
+#, python-format
+msgid "Student %(name)s has been created successfully."
+msgstr "تم إنشاء الطالب %(name)s بنجاح."
+
+#: app/blueprints/student/routes.py:174
+#: app/blueprints/supervisor/routes.py:159
+msgid "You do not have permission to view this student."
+msgstr "ليس لديك الإذن بمشاهدة هذا الطالب."
+
+#: app/blueprints/student/routes.py:221
+#, python-format
+msgid "Student %(name)s has been updated successfully."
+msgstr "تم تحديث الطالب %(name)s بنجاح."
+
+#: app/blueprints/student/routes.py:237
+#, python-format
+msgid ""
+"Cannot delete %(name)s. They have active course enrollments. Please unenroll"
+" first."
+msgstr ""
+"لا يمكن حذف %(name)s. لديهم تسجيلات دورة نشطة. يرجى إلغاء التسجيل أولا."
+
+#: app/blueprints/student/routes.py:243
+#, python-format
+msgid "Student %(name)s has been deleted."
+msgstr "تم حذف الطالب %(name)s."
+
+#: app/blueprints/student/routes.py:260
+msgid "Select a teacher..."
+msgstr "اختار المعلم..."
+
+#: app/blueprints/student/routes.py:268
+msgid "Please select a teacher."
+msgstr "الرجاء اختيار المعلم."
+
+#: app/blueprints/student/routes.py:274 app/blueprints/teacher/routes.py:270
+#, python-format
+msgid "%(student)s has been assigned to %(teacher)s."
+msgstr "تم تعيين %(student)s إلى %(teacher)s."
+
+#: app/blueprints/student/routes.py:277
+msgid "Teacher not found."
+msgstr "لم يتم العثور على المعلم."
+
+#: app/blueprints/student/routes.py:295
+#: app/templates/admin/user_detail.html:202
+#: app/templates/planning/plan_detail.html:58
+#: app/templates/student/detail.html:250
+msgid "Unknown"
+msgstr "مجهول"
+
+#: app/blueprints/student/routes.py:298 app/blueprints/teacher/routes.py:297
+#, python-format
+msgid "%(student)s has been unassigned from %(teacher)s."
+msgstr "تم إلغاء تعيين %(student)s من %(teacher)s."
+
+#: app/blueprints/student/routes.py:300
+msgid "Student was not assigned to any teacher."
+msgstr "لم يتم تعيين الطالب إلى أي معلم."
+
+#: app/blueprints/student/routes.py:314 app/blueprints/teacher/routes.py:233
+#, python-format
+msgid "%(name)s has been deactivated."
+msgstr "تم إلغاء تنشيط %(name)s."
+
+#: app/blueprints/student/routes.py:317 app/blueprints/teacher/routes.py:237
+#, python-format
+msgid "%(name)s has been activated."
+msgstr "تم تفعيل %(name)s."
+
+#: app/blueprints/supervisor/routes.py:182
+msgid "You cannot reassign this student."
+msgstr "لا يمكنك إعادة تعيين هذا الطالب."
+
+#: app/blueprints/supervisor/routes.py:195
+#: app/templates/supervisor/assign_supervisor.html:41
+msgid "Select Supervisor"
+msgstr "اختر المشرف"
+
+#: app/blueprints/supervisor/routes.py:202
+#, python-format
+msgid "Supervisor assigned to %(student)s."
+msgstr "تم تعيين المشرف إلى %(student)s."
+
+#: app/blueprints/supervisor/routes.py:205
+#: app/blueprints/supervisor/routes.py:233
+#, python-format
+msgid "Supervisor removed from %(student)s."
+msgstr "تمت إزالة المشرف من %(student)s."
+
+#: app/blueprints/supervisor/routes.py:227
+msgid "You cannot unassign this student."
+msgstr "لا يمكنك إلغاء تعيين هذا الطالب."
+
+#: app/blueprints/supervisor/routes.py:304
+msgid "Only administrators can access this page."
+msgstr "يمكن للمسؤولين فقط الوصول إلى هذه الصفحة."
+
+#: app/blueprints/teacher/routes.py:130
+#, python-format
+msgid "Teacher %(name)s has been created successfully."
+msgstr "تم إنشاء المعلم %(name)s بنجاح."
+
+#: app/blueprints/teacher/routes.py:195
+#, python-format
+msgid "Teacher %(name)s has been updated successfully."
+msgstr "تم تحديث المعلم %(name)s بنجاح."
+
+#: app/blueprints/teacher/routes.py:212
+#, python-format
+msgid ""
+"Cannot delete %(name)s. They have students assigned. Please reassign "
+"students first."
+msgstr ""
+"لا يمكن حذف %(name)s. لقد تم تعيين الطلاب. يرجى إعادة تعيين الطلاب أولاً."
+
+#: app/blueprints/teacher/routes.py:219
+#, python-format
+msgid "Teacher %(name)s has been deleted."
+msgstr "تم حذف المعلم %(name)s."
+
+#: app/blueprints/teacher/routes.py:261
+msgid "Select a student..."
+msgstr "اختار الطالب..."
+
+#: app/blueprints/teacher/routes.py:291
+msgid "This student is not assigned to this teacher."
+msgstr "لم يتم تعيين هذا الطالب لهذا المعلم."
+
+#: app/templates/base.html:6
+msgid "Teachers and Students Management System - Modern Education Platform"
+msgstr "نظام إدارة المعلمين والطلاب – منصة التعليم الحديث"
+
+#: app/templates/admin/change_password.html:3
+#: app/templates/admin/change_password.html:29
+#: app/templates/admin/change_password.html:99
+#: app/templates/admin/user_detail.html:238
+#: app/templates/admin/user_form.html:172
+#: app/templates/admin/user_form.html:184
+msgid "Change Password"
+msgstr "تغيير كلمة المرور"
+
+#: app/templates/admin/change_password.html:4
+msgid "Update password for"
+msgstr "تحديث كلمة المرور ل"
+
+#: app/templates/admin/change_password.html:15
+msgid "Back to User"
+msgstr "العودة إلى المستخدم"
+
+#: app/templates/admin/change_password.html:30
+msgid "Set a new password for"
+msgstr "قم بتعيين كلمة مرور جديدة لـ"
+
+#: app/templates/admin/change_password.html:54
+#: app/templates/auth/change_password.html:25
+msgid "New Password"
+msgstr "كلمة المرور الجديدة"
+
+#: app/templates/admin/change_password.html:56
+msgid "Enter new password"
+msgstr "أدخل كلمة المرور الجديدة"
+
+#: app/templates/admin/change_password.html:60
+#: app/templates/admin/user_form.html:130
+msgid "Minimum 8 characters"
+msgstr "الحد الأدنى 8 أحرف"
+
+#: app/templates/admin/change_password.html:66
+#: app/templates/auth/change_password.html:33
+msgid "Confirm New Password"
+msgstr "تأكيد كلمة المرور الجديدة"
+
+#: app/templates/admin/change_password.html:68
+msgid "Confirm new password"
+msgstr "تأكيد كلمة المرور الجديدة"
+
+#: app/templates/admin/change_password.html:82
+msgid ""
+"This will immediately change the user's password. They will need to use the "
+"new password on their next login."
+msgstr ""
+"سيؤدي هذا إلى تغيير كلمة مرور المستخدم على الفور. سيحتاجون إلى استخدام كلمة "
+"المرور الجديدة عند تسجيل الدخول التالي."
+
+#: app/templates/admin/change_password.html:92
+#: app/templates/admin/user_form.html:151
+#: app/templates/auth/change_password.html:42
+#: app/templates/auth/edit_profile.html:44
+#: app/templates/planning/plan_form.html:172
+#: app/templates/planning/task_form.html:148
+#: app/templates/student/assign_teacher.html:89
+#: app/templates/student/create.html:228 app/templates/student/detail.html:390
+#: app/templates/student/edit.html:255 app/templates/student/edit.html:307
+#: app/templates/student/list.html:314
+#: app/templates/supervisor/assign_supervisor.html:67
+#: app/templates/teacher/create.html:221 app/templates/teacher/edit.html:224
+#: app/templates/teacher/edit.html:276 app/templates/teacher/list.html:292
+msgid "Cancel"
+msgstr "يلغي"
+
+#: app/templates/admin/index.html:3
+msgid "Admin Dashboard"
+msgstr "لوحة تحكم المشرف"
+
+#: app/templates/admin/index.html:4
+msgid "System overview and management"
+msgstr "نظرة عامة على النظام وإدارته"
+
+#: app/templates/admin/index.html:21
+msgid "Total Users"
+msgstr "إجمالي المستخدمين"
+
+#: app/templates/admin/index.html:25
+msgid "Manage users"
+msgstr "إدارة المستخدمين"
+
+#: app/templates/admin/index.html:44 app/templates/main/dashboard.html:90
+msgid "Total Teachers"
+msgstr "إجمالي المعلمين"
+
+#: app/templates/admin/index.html:48
+msgid "View teachers"
+msgstr "عرض المعلمين"
+
+#: app/templates/admin/index.html:67 app/templates/main/dashboard.html:61
+#: app/templates/teacher/planning.html:23
+#: app/templates/teacher/student_progress.html:22
+msgid "Total Students"
+msgstr "إجمالي الطلاب"
+
+#: app/templates/admin/index.html:71 app/templates/supervisor/index.html:24
+msgid "View students"
+msgstr "عرض الطلاب"
+
+#: app/templates/admin/index.html:85 app/templates/admin/user_detail.html:223
+#: app/templates/main/dashboard.html:113 app/templates/student/detail.html:320
+#: app/templates/supervisor/index.html:80
+#: app/templates/teacher/detail.html:250 app/templates/teacher/index.html:68
+msgid "Quick Actions"
+msgstr "إجراءات سريعة"
+
+#: app/templates/admin/index.html:96
+msgid "Add New User"
+msgstr "إضافة مستخدم جديد"
+
+#: app/templates/admin/index.html:97
+msgid "Create a new user account"
+msgstr "إنشاء حساب مستخدم جديد"
+
+#: app/templates/admin/index.html:109 app/templates/teacher/create.html:17
+msgid "Add New Teacher"
+msgstr "إضافة معلم جديد"
+
+#: app/templates/admin/index.html:110
+msgid "Register a new teacher"
+msgstr "تسجيل معلم جديد"
+
+#: app/templates/admin/index.html:122 app/templates/main/dashboard.html:125
+#: app/templates/student/create.html:17
+msgid "Add New Student"
+msgstr "إضافة طالب جديد"
+
+#: app/templates/admin/index.html:123 app/templates/main/dashboard.html:126
+msgid "Enroll a new student"
+msgstr "تسجيل طالب جديد"
+
+#: app/templates/admin/index.html:132
+msgid "System Information"
+msgstr "معلومات النظام"
+
+#: app/templates/admin/index.html:137
+msgid "Active Users"
+msgstr "المستخدمون النشطون"
+
+#: app/templates/admin/index.html:141
+msgid "User Accounts"
+msgstr "حسابات المستخدمين"
+
+#: app/templates/admin/index.html:145
+msgid "Teacher Profiles"
+msgstr "الملفات الشخصية للمعلم"
+
+#: app/templates/admin/index.html:149
+msgid "Student Records"
+msgstr "سجلات الطلاب"
+
+#: app/templates/admin/index.html:160
+msgid "Recent Users"
+msgstr "المستخدمون الجدد"
+
+#: app/templates/admin/index.html:162 app/templates/supervisor/index.html:134
+#: app/templates/supervisor/index.html:174
+msgid "View all"
+msgstr "عرض الكل"
+
+#: app/templates/admin/index.html:169 app/templates/admin/users.html:66
+#: app/templates/layouts/dashboard.html:5 app/templates/main/dashboard.html:6
+msgid "User"
+msgstr "مستخدم"
+
+#: app/templates/admin/index.html:170 app/templates/admin/user_detail.html:111
+#: app/templates/admin/user_form.html:92 app/templates/admin/users.html:68
+#: app/templates/auth/profile.html:42
+msgid "Role"
+msgstr "دور"
+
+#: app/templates/admin/index.html:171 app/templates/admin/user_form.html:103
+#: app/templates/admin/users.html:69 app/templates/planning/index.html:77
+#: app/templates/planning/plan_form.html:141
+#: app/templates/planning/task_form.html:77
+#: app/templates/student/create.html:134 app/templates/student/edit.html:152
+#: app/templates/student/list.html:94
+#: app/templates/supervisor/students.html:43
+#: app/templates/supervisor/unassigned.html:36
+#: app/templates/teacher/create.html:195 app/templates/teacher/edit.html:189
+#: app/templates/teacher/list.html:86
+#: app/templates/teacher/student_detail.html:38
+#: app/templates/teacher/students.html:28
+msgid "Status"
+msgstr "حالة"
+
+#: app/templates/admin/index.html:172 app/templates/admin/users.html:70
+#: app/templates/teacher/detail.html:296
+msgid "Created"
+msgstr "مخلوق"
+
+#: app/templates/admin/index.html:205 app/templates/admin/users.html:112
+#: app/templates/student/list.html:117
+#: app/templates/supervisor/unassigned.html:67
+#: app/templates/teacher/detail.html:301 app/templates/teacher/detail.html:311
+#: app/templates/teacher/list.html:109
+#: app/templates/teacher/student_detail.html:27
+#: app/templates/teacher/student_detail.html:31
+#: app/templates/teacher/student_detail.html:39
+#: app/templates/teacher/student_detail.html:43
+#: app/templates/teacher/student_detail.html:47
+#: app/templates/teacher/student_detail.html:51
+#: app/templates/teacher/students.html:41
+msgid "N/A"
+msgstr "لا يوجد"
+
+#: app/templates/admin/index.html:211 app/templates/admin/users.html:158
+msgid "No users found"
+msgstr "لم يتم العثور على مستخدمين"
+
+#: app/templates/admin/user_detail.html:3
+msgid "User Details"
+msgstr "تفاصيل المستخدم"
+
+#: app/templates/admin/user_detail.html:4
+msgid "View user information"
+msgstr "عرض معلومات المستخدم"
+
+#: app/templates/admin/user_detail.html:15
+#: app/templates/admin/user_form.html:15
+msgid "Back to Users"
+msgstr "العودة إلى المستخدمين"
+
+#: app/templates/admin/user_detail.html:53 app/templates/admin/users.html:126
+#: app/templates/student/detail.html:52 app/templates/student/list.html:176
+#: app/templates/teacher/list.html:156
+msgid "Edit"
+msgstr "يحرر"
+
+#: app/templates/admin/user_detail.html:64 app/templates/admin/users.html:136
+#: app/templates/teacher/detail.html:284
+msgid "Deactivate"
+msgstr "إلغاء التنشيط"
+
+#: app/templates/admin/user_detail.html:69 app/templates/admin/users.html:136
+#: app/templates/planning/plan_detail.html:198
+#: app/templates/teacher/detail.html:284
+msgid "Activate"
+msgstr "فعل"
+
+#: app/templates/admin/user_detail.html:89 app/templates/auth/profile.html:23
+#: app/templates/teacher/create.html:32 app/templates/teacher/edit.html:39
+msgid "Account Information"
+msgstr "معلومات الحساب"
+
+#: app/templates/admin/user_detail.html:95
+#: app/templates/admin/user_form.html:51 app/templates/student/create.html:40
+#: app/templates/student/edit.html:47 app/templates/teacher/create.html:40
+#: app/templates/teacher/edit.html:47
+msgid "Full Name"
+msgstr "الاسم الكامل"
+
+#: app/templates/admin/user_detail.html:99
+#: app/templates/admin/user_form.html:62 app/templates/admin/users.html:67
+#: app/templates/auth/profile.html:27 app/templates/auth/register.html:108
+#: app/templates/teacher/create.html:64 app/templates/teacher/edit.html:70
+msgid "Username"
+msgstr "اسم المستخدم"
+
+#: app/templates/admin/user_detail.html:103
+#: app/templates/admin/user_form.html:73 app/templates/student/create.html:51
+#: app/templates/student/edit.html:58 app/templates/teacher/create.html:51
+#: app/templates/teacher/edit.html:58
+msgid "Email Address"
+msgstr "عنوان البريد الإلكتروني"
+
+#: app/templates/admin/user_detail.html:122 app/templates/auth/profile.html:61
+msgid "Account Status"
+msgstr "حالة الحساب"
+
+#: app/templates/admin/user_detail.html:137
+#: app/templates/admin/user_detail.html:212 app/templates/auth/profile.html:52
+msgid "Last Login"
+msgstr "تسجيل الدخول الأخير"
+
+#: app/templates/admin/user_detail.html:142
+#: app/templates/admin/user_detail.html:208
+#: app/templates/admin/user_detail.html:214 app/templates/auth/profile.html:54
+msgid "Never"
+msgstr "أبداً"
+
+#: app/templates/admin/user_detail.html:158
+#: app/templates/teacher/detail.html:3
+msgid "Teacher Profile"
+msgstr "الملف الشخصي للمعلم"
+
+#: app/templates/admin/user_detail.html:164
+#: app/templates/teacher/detail.html:121 app/templates/teacher/edit.html:81
+#: app/templates/teacher/list.html:83
+msgid "Employee ID"
+msgstr "معرف الموظف"
+
+#: app/templates/admin/user_detail.html:168
+#: app/templates/teacher/create.html:112 app/templates/teacher/detail.html:127
+#: app/templates/teacher/edit.html:106 app/templates/teacher/list.html:84
+msgid "Department"
+msgstr "قسم"
+
+#: app/templates/admin/user_detail.html:169
+#: app/templates/student/detail.html:240 app/templates/student/edit.html:73
+#: app/templates/teacher/detail.html:123 app/templates/teacher/detail.html:128
+#: app/templates/teacher/edit.html:84 app/templates/teacher/list.html:113
+msgid "Not assigned"
+msgstr "لم يتم تعيينه"
+
+#: app/templates/admin/user_detail.html:172
+#: app/templates/teacher/create.html:123 app/templates/teacher/detail.html:131
+#: app/templates/teacher/edit.html:117
+msgid "Specialization"
+msgstr "التخصص"
+
+#: app/templates/admin/user_detail.html:173
+#: app/templates/student/detail.html:163 app/templates/teacher/detail.html:132
+#: app/templates/teacher/detail.html:136 app/templates/teacher/detail.html:144
+#: app/templates/teacher/detail.html:154
+msgid "Not specified"
+msgstr "غير محدد"
+
+#: app/templates/admin/user_detail.html:176 app/templates/auth/profile.html:37
+#: app/templates/student/detail.html:95 app/templates/student/detail.html:168
+#: app/templates/teacher/detail.html:105
+#: app/templates/teacher/student_detail.html:30
+msgid "Phone"
+msgstr "هاتف"
+
+#: app/templates/admin/user_detail.html:177
+#: app/templates/student/detail.html:90 app/templates/student/detail.html:102
+#: app/templates/student/detail.html:112 app/templates/student/detail.html:122
+#: app/templates/student/detail.html:132 app/templates/student/detail.html:175
+#: app/templates/student/detail.html:187 app/templates/teacher/detail.html:106
+msgid "Not provided"
+msgstr "غير متوفر"
+
+#: app/templates/admin/user_detail.html:183
+msgid "View full teacher profile"
+msgstr "عرض ملف المعلم الكامل"
+
+#: app/templates/admin/user_detail.html:196
+msgid "Activity"
+msgstr "نشاط"
+
+#: app/templates/admin/user_detail.html:200
+msgid "Account Created"
+msgstr "تم إنشاء الحساب"
+
+#: app/templates/admin/user_detail.html:206
+#: app/templates/teacher/detail.html:306
+msgid "Last Updated"
+msgstr "آخر تحديث"
+
+#: app/templates/admin/user_detail.html:231
+#: app/templates/admin/user_form.html:3 app/templates/admin/user_form.html:33
+msgid "Edit User"
+msgstr "تحرير المستخدم"
+
+#: app/templates/admin/user_detail.html:242
+msgid "Are you sure you want to delete this user?"
+msgstr "هل أنت متأكد أنك تريد حذف هذا المستخدم؟"
+
+#: app/templates/admin/user_detail.html:249
+#: app/templates/admin/user_form.html:212
+msgid "Delete User"
+msgstr "حذف المستخدم"
+
+#: app/templates/admin/user_form.html:3 app/templates/admin/user_form.html:158
+msgid "Create User"
+msgstr "إنشاء مستخدم"
+
+#: app/templates/admin/user_form.html:4
+msgid "Update user information"
+msgstr "تحديث معلومات المستخدم"
+
+#: app/templates/admin/user_form.html:4
+msgid "Add a new user to the system"
+msgstr "إضافة مستخدم جديد إلى النظام"
+
+#: app/templates/admin/user_form.html:33
+msgid "Create New User"
+msgstr "إنشاء مستخدم جديد"
+
+#: app/templates/admin/user_form.html:34 app/templates/student/edit.html:23
+#: app/templates/teacher/edit.html:23
+msgid "Update the information below"
+msgstr "قم بتحديث المعلومات أدناه"
+
+#: app/templates/admin/user_form.html:34
+msgid "Fill in the details below"
+msgstr "املأ التفاصيل أدناه"
+
+#: app/templates/admin/user_form.html:45
+msgid "Basic Information"
+msgstr "المعلومات الأساسية"
+
+#: app/templates/admin/user_form.html:53 app/templates/student/create.html:42
+#: app/templates/student/edit.html:49 app/templates/teacher/create.html:42
+#: app/templates/teacher/edit.html:49
+msgid "Enter full name"
+msgstr "أدخل الاسم الكامل"
+
+#: app/templates/admin/user_form.html:64
+msgid "Enter username"
+msgstr "أدخل اسم المستخدم"
+
+#: app/templates/admin/user_form.html:85
+msgid "Role & Status"
+msgstr "الدور والحالة"
+
+#: app/templates/admin/user_form.html:117
+#: app/templates/admin/user_form.html:124 app/templates/auth/login.html:66
+#: app/templates/auth/register.html:130 app/templates/teacher/create.html:75
+msgid "Password"
+msgstr "كلمة المرور"
+
+#: app/templates/admin/user_form.html:126
+msgid "Enter password"
+msgstr "أدخل كلمة المرور"
+
+#: app/templates/admin/user_form.html:136 app/templates/auth/register.html:141
+#: app/templates/teacher/create.html:86
+msgid "Confirm Password"
+msgstr "تأكيد كلمة المرور"
+
+#: app/templates/admin/user_form.html:138
+msgid "Confirm password"
+msgstr "تأكيد كلمة المرور"
+
+#: app/templates/admin/user_form.html:158
+msgid "Update User"
+msgstr "تحديث المستخدم"
+
+#: app/templates/admin/user_form.html:177
+msgid "Need to update this user's password?"
+msgstr "هل تحتاج إلى تحديث كلمة مرور هذا المستخدم؟"
+
+#: app/templates/admin/user_form.html:197
+msgid "Danger Zone"
+msgstr "منطقة الخطر"
+
+#: app/templates/admin/user_form.html:202
+msgid ""
+"Deleting this user will permanently remove all their data. This action "
+"cannot be undone."
+msgstr ""
+"سيؤدي حذف هذا المستخدم إلى إزالة جميع بياناته نهائيًا. لا يمكن التراجع عن "
+"هذا الإجراء."
+
+#: app/templates/admin/user_form.html:205
+msgid ""
+"Are you sure you want to permanently delete this user? This action cannot be"
+" undone."
+msgstr ""
+"هل أنت متأكد أنك تريد حذف هذا المستخدم نهائيًا؟ لا يمكن التراجع عن هذا "
+"الإجراء."
+
+#: app/templates/admin/users.html:3
+msgid "User Management"
+msgstr "إدارة المستخدم"
+
+#: app/templates/admin/users.html:4
+msgid "Manage system users and permissions"
+msgstr "إدارة مستخدمي النظام والأذونات"
+
+#: app/templates/admin/users.html:11 app/templates/components/sidebar.html:246
+#: app/templates/components/sidebar.html:492
+msgid "Users"
+msgstr "المستخدمين"
+
+#: app/templates/admin/users.html:12
+msgid "Manage all user accounts in the system"
+msgstr "إدارة جميع حسابات المستخدمين في النظام"
+
+#: app/templates/admin/users.html:19 app/templates/admin/users.html:166
+msgid "Add User"
+msgstr "إضافة مستخدم"
+
+#: app/templates/admin/users.html:31
+msgid "Search users..."
+msgstr "البحث عن المستخدمين..."
+
+#: app/templates/admin/users.html:40
+msgid "All Roles"
+msgstr "جميع الأدوار"
+
+#: app/templates/admin/users.html:41 app/templates/layouts/dashboard.html:4
+msgid "Admin"
+msgstr "مسؤل"
+
+#: app/templates/admin/users.html:42 app/templates/layouts/dashboard.html:4
+#: app/templates/supervisor/student_detail.html:66
+msgid "Supervisor"
+msgstr "مشرف"
+
+#: app/templates/admin/users.html:43 app/templates/layouts/dashboard.html:4
+#: app/templates/teacher/detail.html:284 app/templates/teacher/list.html:82
+msgid "Teacher"
+msgstr "مدرس"
+
+#: app/templates/admin/users.html:48 app/templates/planning/index.html:79
+#: app/templates/student/list.html:65 app/templates/supervisor/plans.html:18
+#: app/templates/supervisor/students.html:18
+#: app/templates/teacher/list.html:59
+msgid "All Status"
+msgstr "كل الحالة"
+
+#: app/templates/admin/users.html:49 app/templates/planning/index.html:81
+#: app/templates/student/list.html:66 app/templates/student/list.html:139
+#: app/templates/supervisor/plans.html:20
+#: app/templates/supervisor/students.html:19
+#: app/templates/teacher/detail.html:59 app/templates/teacher/list.html:60
+#: app/templates/teacher/list.html:130
+msgid "Active"
+msgstr "نشيط"
+
+#: app/templates/admin/users.html:50 app/templates/student/list.html:67
+#: app/templates/student/list.html:144
+#: app/templates/supervisor/students.html:20
+#: app/templates/teacher/detail.html:64 app/templates/teacher/list.html:61
+#: app/templates/teacher/list.html:135
+msgid "Inactive"
+msgstr "غير نشط"
+
+#: app/templates/admin/users.html:51
+msgid "Suspended"
+msgstr "معلق"
+
+#: app/templates/admin/users.html:55 app/templates/student/list.html:78
+#: app/templates/supervisor/plans.html:37
+#: app/templates/supervisor/students.html:25
+#: app/templates/teacher/list.html:70
+msgid "Filter"
+msgstr "فلتر"
+
+#: app/templates/admin/users.html:71 app/templates/student/list.html:95
+#: app/templates/supervisor/students.html:46
+#: app/templates/supervisor/unassigned.html:38
+#: app/templates/teacher/list.html:87 app/templates/teacher/students.html:29
+msgid "Actions"
+msgstr "الإجراءات"
+
+#: app/templates/admin/users.html:118 app/templates/supervisor/index.html:248
+#: app/templates/supervisor/student_detail.html:193
+#: app/templates/supervisor/students.html:98
+#: app/templates/teacher/students.html:56
+msgid "View"
+msgstr "منظر"
+
+#: app/templates/admin/users.html:159
+msgid "Get started by adding a new user."
+msgstr "ابدأ بإضافة مستخدم جديد."
+
+#: app/templates/admin/users.html:181 app/templates/student/list.html:203
+#: app/templates/teacher/list.html:182
+msgid "Showing"
+msgstr "عرض"
+
+#: app/templates/admin/users.html:181
+msgid "to"
+msgstr "ل"
+
+#: app/templates/admin/users.html:183
+msgid "results"
+msgstr "نتائج"
+
+#: app/templates/admin/users.html:189 app/templates/student/list.html:210
+#: app/templates/teacher/list.html:189
+msgid "Previous"
+msgstr "سابق"
+
+#: app/templates/admin/users.html:195 app/templates/student/list.html:234
+#: app/templates/teacher/list.html:213
+msgid "Next"
+msgstr "التالي"
+
+#: app/templates/auth/change_password.html:3
+#: app/templates/auth/change_password.html:10
+#: app/templates/auth/profile.html:108 app/templates/components/navbar.html:87
+msgid "Account Settings"
+msgstr "إعدادات الحساب"
+
+#: app/templates/auth/change_password.html:4
+msgid "Change your password"
+msgstr "قم بتغيير كلمة المرور الخاصة بك"
+
+#: app/templates/auth/change_password.html:17
+msgid "Current Password"
+msgstr "كلمة المرور الحالية"
+
+#: app/templates/auth/edit_profile.html:3
+#: app/templates/auth/edit_profile.html:10 app/templates/auth/profile.html:105
+#: app/templates/teacher/detail.html:23 app/templates/teacher/detail.html:259
+msgid "Edit Profile"
+msgstr "تحرير الملف الشخصي"
+
+#: app/templates/auth/edit_profile.html:4
+msgid "Update your account information"
+msgstr "قم بتحديث معلومات حسابك"
+
+#: app/templates/auth/edit_profile.html:18 app/templates/auth/register.html:86
+msgid "First Name"
+msgstr "الاسم الأول"
+
+#: app/templates/auth/edit_profile.html:26 app/templates/auth/register.html:96
+msgid "Last Name"
+msgstr "اسم العائلة"
+
+#: app/templates/auth/edit_profile.html:35 app/templates/auth/profile.html:32
+#: app/templates/student/detail.html:83 app/templates/student/detail.html:180
+#: app/templates/teacher/detail.html:94
+#: app/templates/teacher/student_detail.html:26
+msgid "Email"
+msgstr "بريد إلكتروني"
+
+#: app/templates/auth/login.html:3 app/templates/auth/login.html:125
+#: app/templates/main/about.html:21 app/templates/main/index.html:21
+msgid "Sign In"
+msgstr "تسجيل الدخول"
+
+#: app/templates/auth/login.html:22 app/templates/teacher/index.html:4
+msgid "Welcome back"
+msgstr "مرحبًا بعودتك"
+
+#: app/templates/auth/login.html:25
+msgid "Sign in to your account to continue"
+msgstr "قم بتسجيل الدخول إلى حسابك للمتابعة"
+
+#: app/templates/auth/login.html:36
+msgid "Email or Username"
+msgstr "البريد الإلكتروني أو اسم المستخدم"
+
+#: app/templates/auth/login.html:80
+msgid "Enter your password"
+msgstr "أدخل كلمة المرور الخاصة بك"
+
+#: app/templates/auth/login.html:113
+msgid "Remember me"
+msgstr "تذكرنى"
+
+#: app/templates/auth/login.html:116
+msgid "Forgot password?"
+msgstr "هل نسيت كلمة السر؟"
+
+#: app/templates/auth/login.html:135
+msgid "New to TSMS?"
+msgstr "هل أنت جديد في خدمة TSMS؟"
+
+#: app/templates/auth/login.html:144
+msgid "Create an account"
+msgstr "إنشاء حساب"
+
+#: app/templates/auth/login.html:150
+msgid "By signing in, you agree to our"
+msgstr "من خلال تسجيل الدخول، فإنك توافق على لدينا"
+
+#: app/templates/auth/login.html:151 app/templates/auth/register.html:156
+#: app/templates/layouts/dashboard.html:49
+msgid "Terms of Service"
+msgstr "شروط الخدمة"
+
+#: app/templates/auth/login.html:152 app/templates/auth/register.html:156
+msgid "and"
+msgstr "و"
+
+#: app/templates/auth/login.html:153 app/templates/auth/register.html:157
+#: app/templates/layouts/dashboard.html:48
+msgid "Privacy Policy"
+msgstr "سياسة الخصوصية"
+
+#: app/templates/auth/login.html:188 app/templates/main/index.html:35
+msgid "Teachers & Students"
+msgstr "المعلمين والطلاب"
+
+#: app/templates/auth/login.html:188 app/templates/main/index.html:36
+msgid "Management System"
+msgstr "نظام الإدارة"
+
+#: app/templates/auth/login.html:191
+msgid ""
+"A comprehensive platform for managing teachers, students, and academic "
+"operations with ease and efficiency."
+msgstr ""
+"منصة شاملة لإدارة المعلمين والطلاب والعمليات الأكاديمية بكل سهولة وكفاءة."
+
+#: app/templates/auth/login.html:202 app/templates/components/sidebar.html:86
+#: app/templates/components/sidebar.html:369
+#: app/templates/planning/plan_detail.html:39
+#: app/templates/planning/plan_form.html:60 app/templates/student/list.html:3
+#: app/templates/student/list.html:11 app/templates/teacher/detail.html:241
+#: app/templates/teacher/list.html:85
+msgid "Students"
+msgstr "طلاب"
+
+#: app/templates/auth/login.html:203
+msgid "Manage records"
+msgstr "إدارة السجلات"
+
+#: app/templates/auth/login.html:211 app/templates/components/sidebar.html:67
+#: app/templates/components/sidebar.html:354 app/templates/teacher/list.html:3
+#: app/templates/teacher/list.html:11
+msgid "Teachers"
+msgstr "المعلمين"
+
+#: app/templates/auth/login.html:212
+msgid "Track performance"
+msgstr "تتبع الأداء"
+
+#: app/templates/auth/login.html:220
+msgid "Reports"
+msgstr "التقارير"
+
+#: app/templates/auth/login.html:221
+msgid "Analytics"
+msgstr "التحليلات"
+
+#: app/templates/auth/profile.html:3
+msgid "Profile"
+msgstr "حساب تعريفي"
+
+#: app/templates/auth/profile.html:38
+#: app/templates/planning/plan_detail.html:50
+#: app/templates/planning/plan_detail.html:54
+#: app/templates/student/list.html:121
+#: app/templates/supervisor/student_detail.html:129
+#: app/templates/supervisor/student_detail.html:133
+#: app/templates/teacher/student_detail.html:35
+#: app/templates/teacher/students.html:42
+msgid "Not set"
+msgstr "لم يتم ضبطه"
+
+#: app/templates/auth/profile.html:47
+msgid "Member Since"
+msgstr "عضو منذ"
+
+#: app/templates/auth/profile.html:70
+msgid "Account Active"
+msgstr "الحساب نشط"
+
+#: app/templates/auth/profile.html:77
+msgid "Account Inactive"
+msgstr "الحساب غير نشط"
+
+#: app/templates/auth/profile.html:88
+msgid "Email Verified"
+msgstr "تم التحقق من البريد الإلكتروني"
+
+#: app/templates/auth/profile.html:95
+msgid "Email Not Verified"
+msgstr "لم يتم التحقق من البريد الإلكتروني"
+
+#: app/templates/auth/register.html:3
+msgid "Create Account"
+msgstr "إنشاء حساب"
+
+#: app/templates/auth/register.html:12
+msgid "Join TSMS Today"
+msgstr "انضم إلى TSMS اليوم"
+
+#: app/templates/auth/register.html:15
+msgid ""
+"Start managing your educational institution with our comprehensive "
+"management system."
+msgstr "ابدأ في إدارة مؤسستك التعليمية من خلال نظام الإدارة الشامل الخاص بنا."
+
+#: app/templates/auth/register.html:26
+msgid "Manage unlimited students"
+msgstr "إدارة عدد غير محدود من الطلاب"
+
+#: app/templates/auth/register.html:34
+msgid "Track attendance & grades"
+msgstr "تتبع الحضور والدرجات"
+
+#: app/templates/auth/register.html:42
+msgid "Generate detailed reports"
+msgstr "توليد تقارير مفصلة"
+
+#: app/templates/auth/register.html:50
+msgid "Role-based access control"
+msgstr "التحكم في الوصول على أساس الدور"
+
+#: app/templates/auth/register.html:71
+msgid "Create your account"
+msgstr "أنشئ حسابك"
+
+#: app/templates/auth/register.html:74
+msgid "Get started with TSMS in minutes"
+msgstr "ابدأ مع TSMS خلال دقائق"
+
+#: app/templates/auth/register.html:119
+msgid "Email address"
+msgstr "عنوان البريد الإلكتروني"
+
+#: app/templates/auth/register.html:155
+msgid "I agree to the"
+msgstr "أنا أوافق على"
+
+#: app/templates/auth/register.html:169
+msgid "Already have an account?"
+msgstr "هل لديك حساب بالفعل؟"
+
+#: app/templates/auth/register.html:171
+msgid "Sign in"
+msgstr "تسجيل الدخول"
+
+#: app/templates/components/navbar.html:19
+#: app/templates/components/sidebar.html:48
+#: app/templates/components/sidebar.html:339
+#: app/templates/main/dashboard.html:3
+msgid "Dashboard"
+msgstr "لوحة القيادة"
+
+#: app/templates/components/navbar.html:20 app/templates/main/dashboard.html:4
+msgid "Overview & Statistics"
+msgstr "نظرة عامة وإحصائيات"
+
+#: app/templates/components/navbar.html:79
+msgid "My Profile"
+msgstr "ملفي الشخصي"
+
+#: app/templates/components/navbar.html:95
+msgid "Admin Panel"
+msgstr "لوحة الإدارة"
+
+#: app/templates/components/navbar.html:107
+msgid "Sign Out"
+msgstr "تسجيل الخروج"
+
+#: app/templates/components/sidebar.html:30
+#: app/templates/components/sidebar.html:326
+msgid "Main"
+msgstr "رئيسي"
+
+#: app/templates/components/sidebar.html:93
+#: app/templates/components/sidebar.html:376
+msgid "Teaching"
+msgstr "تدريس"
+
+#: app/templates/components/sidebar.html:111
+#: app/templates/components/sidebar.html:389
+msgid "My Dashboard"
+msgstr "لوحة القيادة الخاصة بي"
+
+#: app/templates/components/sidebar.html:128
+#: app/templates/components/sidebar.html:402
+#: app/templates/teacher/index.html:14 app/templates/teacher/index.html:119
+#: app/templates/teacher/students.html:3
+#: app/templates/teacher/students.html:10
+msgid "My Students"
+msgstr "طلابي"
+
+#: app/templates/components/sidebar.html:145
+#: app/templates/components/sidebar.html:204
+#: app/templates/components/sidebar.html:415
+#: app/templates/components/sidebar.html:460
+#: app/templates/planning/plan_detail.html:107
+#: app/templates/teacher/index.html:106
+#: app/templates/teacher/student_progress.html:3
+msgid "Student Progress"
+msgstr "تقدم الطالب"
+
+#: app/templates/components/sidebar.html:162
+#: app/templates/components/sidebar.html:221
+#: app/templates/components/sidebar.html:428
+#: app/templates/components/sidebar.html:473
+#: app/templates/planning/index.html:3
+msgid "Planning"
+msgstr "تخطيط"
+
+#: app/templates/components/sidebar.html:169
+#: app/templates/components/sidebar.html:187
+#: app/templates/components/sidebar.html:434
+#: app/templates/components/sidebar.html:447
+msgid "Supervision"
+msgstr "الإشراف"
+
+#: app/templates/components/sidebar.html:228
+#: app/templates/components/sidebar.html:479
+msgid "Administration"
+msgstr "إدارة"
+
+#: app/templates/components/sidebar.html:267
+#: app/templates/components/sidebar.html:509
+msgid "System Overview"
+msgstr "نظرة عامة على النظام"
+
+#: app/templates/components/sidebar.html:286
+msgid "Logout"
+msgstr "تسجيل الخروج"
+
+#: app/templates/errors/403.html:3 app/templates/errors/403.html:12
+msgid "Access Denied"
+msgstr "تم الرفض"
+
+#: app/templates/errors/403.html:14
+msgid ""
+"Sorry, you don't have permission to access this page. Please contact your "
+"administrator if you believe this is a mistake."
+msgstr ""
+"عذرا، ليس لديك إذن للوصول إلى هذه الصفحة. يرجى الاتصال بالمسؤول إذا كنت "
+"تعتقد أن هذا خطأ."
+
+#: app/templates/errors/403.html:19
+msgid "Go to Dashboard"
+msgstr "انتقل إلى لوحة المعلومات"
+
+#: app/templates/errors/403.html:23 app/templates/errors/404.html:24
+msgid "Go Back"
+msgstr "عُد"
+
+#: app/templates/errors/404.html:4 app/templates/errors/404.html:13
+msgid "Page Not Found"
+msgstr "لم يتم العثور على الصفحة"
+
+#: app/templates/errors/404.html:15
+msgid ""
+"Sorry, we couldn't find the page you're looking for. Perhaps you've mistyped"
+" the URL or the page has been moved."
+msgstr ""
+"عذرًا، لم نتمكن من العثور على الصفحة التي تبحث عنها. ربما أخطأت في كتابة "
+"عنوان URL أو تم نقل الصفحة."
+
+#: app/templates/errors/404.html:20 app/templates/errors/500.html:19
+msgid "Go Home"
+msgstr "العودة إلى المنزل"
+
+#: app/templates/errors/500.html:3 app/templates/errors/500.html:12
+msgid "Server Error"
+msgstr "خطأ في الخادم"
+
+#: app/templates/errors/500.html:14
+msgid ""
+"Oops! Something went wrong on our end. Our team has been notified and we're "
+"working to fix the issue."
+msgstr ""
+"أُووبس! حدث خطأ ما من جانبنا. لقد تم إخطار فريقنا ونحن نعمل على حل المشكلة."
+
+#: app/templates/errors/500.html:23
+msgid "Try Again"
+msgstr "حاول ثانية"
+
+#: app/templates/layouts/dashboard.html:45 app/templates/main/about.html:155
+#: app/templates/main/index.html:100
+msgid "All rights reserved."
+msgstr "جميع الحقوق محفوظة."
+
+#: app/templates/layouts/dashboard.html:50
+msgid "Support"
+msgstr "يدعم"
+
+#: app/templates/main/about.html:3
+msgid "About"
+msgstr "عن"
+
+#: app/templates/main/about.html:24 app/templates/main/index.html:24
+msgid "Get Started"
+msgstr "ابدأ"
+
+#: app/templates/main/about.html:36
+msgid "About TSMS"
+msgstr "حول TSMS"
+
+#: app/templates/main/about.html:39
+msgid ""
+"A comprehensive Teacher and Student Management System designed for modern "
+"educational institutions."
+msgstr "نظام شامل لإدارة المعلمين والطلاب مصمم للمؤسسات التعليمية الحديثة."
+
+#: app/templates/main/about.html:49
+msgid "Key Features"
+msgstr "الميزات الرئيسية"
+
+#: app/templates/main/about.html:50
+msgid "Everything you need to manage your educational institution"
+msgstr "كل ما تحتاجه لإدارة مؤسستك التعليمية"
+
+#: app/templates/main/about.html:61
+msgid "Student Management"
+msgstr "إدارة الطلاب"
+
+#: app/templates/main/about.html:63
+msgid ""
+"Complete student records management including academic progress monitoring "
+"and planning."
+msgstr ""
+"إدارة كاملة لسجلات الطلاب بما في ذلك مراقبة التقدم الأكاديمي والتخطيط."
+
+#: app/templates/main/about.html:74
+msgid "Teacher Portal"
+msgstr "بوابة المعلم"
+
+#: app/templates/main/about.html:76
+msgid ""
+"Dedicated dashboard for teachers to manage students, track progress, and "
+"create educational plans."
+msgstr ""
+"لوحة تحكم مخصصة للمعلمين لإدارة الطلاب وتتبع التقدم وإنشاء الخطط التعليمية."
+
+#: app/templates/main/about.html:87
+msgid "Educational Planning"
+msgstr "التخطيط التربوي"
+
+#: app/templates/main/about.html:89
+msgid ""
+"Create and manage educational plans with objectives, milestones, and "
+"progress tracking."
+msgstr "إنشاء وإدارة الخطط التعليمية بالأهداف والمعالم وتتبع التقدم."
+
+#: app/templates/main/about.html:100
+msgid "Analytics & Reports"
+msgstr "التحليلات والتقارير"
+
+#: app/templates/main/about.html:102
+msgid ""
+"Generate comprehensive reports on academic performance, attendance, and "
+"institutional metrics."
+msgstr "إنشاء تقارير شاملة عن الأداء الأكاديمي والحضور والمقاييس المؤسسية."
+
+#: app/templates/main/about.html:113
+msgid "Secure Access"
+msgstr "الوصول الآمن"
+
+#: app/templates/main/about.html:115
+msgid ""
+"Role-based access control ensuring data security and appropriate access "
+"levels for all users."
+msgstr ""
+"التحكم في الوصول المستند إلى الدور مما يضمن أمان البيانات ومستويات الوصول "
+"المناسبة لجميع المستخدمين."
+
+#: app/templates/main/about.html:126
+msgid "Modern Dashboard"
+msgstr "لوحة القيادة الحديثة"
+
+#: app/templates/main/about.html:128
+msgid ""
+"Clean, intuitive interface designed for productivity and ease of use across "
+"all devices."
+msgstr ""
+"واجهة نظيفة وبديهية مصممة لتحقيق الإنتاجية وسهولة الاستخدام عبر جميع "
+"الأجهزة."
+
+#: app/templates/main/about.html:138
+msgid "Ready to get started?"
+msgstr "هل أنت مستعد للبدء؟"
+
+#: app/templates/main/about.html:140
+msgid ""
+"Join thousands of educational institutions already using TSMS to manage "
+"their operations efficiently."
+msgstr ""
+"انضم إلى الآلاف من المؤسسات التعليمية التي تستخدم بالفعل TSMS لإدارة "
+"عملياتها بكفاءة."
+
+#: app/templates/main/about.html:145 app/templates/main/index.html:44
+msgid "Start Free Trial"
+msgstr "ابدأ النسخة التجريبية المجانية"
+
+#: app/templates/main/dashboard.html:31
+msgid "Here's what's happening with your school today."
+msgstr "إليك ما يحدث في مدرستك اليوم."
+
+#: app/templates/main/dashboard.html:65
+msgid "View all students"
+msgstr "عرض جميع الطلاب"
+
+#: app/templates/main/dashboard.html:95
+msgid "View all teachers"
+msgstr "عرض جميع المعلمين"
+
+#: app/templates/main/dashboard.html:101
+msgid "Staff members"
+msgstr "أعضاء هيئة التدريس"
+
+#: app/templates/main/dashboard.html:114
+msgid "Shortcuts to common tasks"
+msgstr "اختصارات للمهام المشتركة"
+
+#: app/templates/main/dashboard.html:141 app/templates/teacher/detail.html:175
+msgid "Manage Students"
+msgstr "إدارة الطلاب"
+
+#: app/templates/main/dashboard.html:142
+msgid "View and edit records"
+msgstr "عرض وتحرير السجلات"
+
+#: app/templates/main/dashboard.html:158
+msgid "Manage Users"
+msgstr "إدارة المستخدمين"
+
+#: app/templates/main/dashboard.html:159
+msgid "User administration"
+msgstr "إدارة المستخدم"
+
+#: app/templates/main/dashboard.html:175
+msgid "Settings"
+msgstr "إعدادات"
+
+#: app/templates/main/dashboard.html:176
+msgid "System configuration"
+msgstr "تكوين النظام"
+
+#: app/templates/main/index.html:3
+msgid "Welcome"
+msgstr "مرحباً"
+
+#: app/templates/main/index.html:39
+msgid ""
+"A comprehensive solution for educational institutions to manage teachers, "
+"students, and academic planning efficiently."
+msgstr ""
+"حل شامل للمؤسسات التعليمية لإدارة المعلمين والطلاب والتخطيط الأكاديمي "
+"بكفاءة."
+
+#: app/templates/main/index.html:48
+msgid "Learn More"
+msgstr "يتعلم أكثر"
+
+#: app/templates/main/index.html:64
+msgid ""
+"Easily manage student records, progress tracking, and planning all in one "
+"place."
+msgstr "يمكنك إدارة سجلات الطلاب وتتبع التقدم والتخطيط بسهولة في مكان واحد."
+
+#: app/templates/main/index.html:75 app/templates/teacher/index.html:3
+msgid "Teacher Dashboard"
+msgstr "لوحة تحكم المعلم"
+
+#: app/templates/main/index.html:77
+msgid ""
+"Teachers can manage their students, track progress, and create educational "
+"plans."
+msgstr "يمكن للمدرسين إدارة طلابهم وتتبع التقدم وإنشاء الخطط التعليمية."
+
+#: app/templates/main/index.html:88
+msgid "Reports & Analytics"
+msgstr "التقارير والتحليلات"
+
+#: app/templates/main/index.html:90
+msgid ""
+"Get insights with detailed reports on academic performance and institutional"
+" metrics."
+msgstr "احصل على رؤى مع تقارير مفصلة حول الأداء الأكاديمي والمقاييس المؤسسية."
+
+#: app/templates/planning/index.html:4
+msgid "Manage student plans and tasks"
+msgstr "إدارة خطط ومهام الطلاب"
+
+#: app/templates/planning/index.html:13
+#: app/templates/planning/student_plans.html:19
+msgid "Total Plans"
+msgstr "إجمالي الخطط"
+
+#: app/templates/planning/index.html:27
+#: app/templates/planning/student_plans.html:33
+#: app/templates/supervisor/index.html:32
+#: app/templates/supervisor/index.html:172 app/templates/teacher/index.html:32
+#: app/templates/teacher/student_progress.html:27
+msgid "Active Plans"
+msgstr "الخطط النشطة"
+
+#: app/templates/planning/index.html:41
+msgid "Draft Plans"
+msgstr "مسودة الخطط"
+
+#: app/templates/planning/index.html:55
+msgid "Completed Plans"
+msgstr "الخطط المكتملة"
+
+#: app/templates/planning/index.html:71
+msgid "Search"
+msgstr "يبحث"
+
+#: app/templates/planning/index.html:73
+msgid "Search by title or student..."
+msgstr "البحث حسب العنوان أو الطالب..."
+
+#: app/templates/planning/index.html:80 app/templates/supervisor/plans.html:19
+msgid "Draft"
+msgstr "مسودة"
+
+#: app/templates/planning/index.html:82
+#: app/templates/planning/student_plans.html:61
+#: app/templates/supervisor/plans.html:21
+#: app/templates/supervisor/student_detail.html:140
+#: app/templates/teacher/student_progress.html:37
+msgid "Completed"
+msgstr "مكتمل"
+
+#: app/templates/planning/index.html:83 app/templates/supervisor/plans.html:22
+msgid "On Hold"
+msgstr "في الانتظار"
+
+#: app/templates/planning/index.html:84 app/templates/supervisor/plans.html:23
+msgid "Cancelled"
+msgstr "تم الإلغاء"
+
+#: app/templates/planning/index.html:88
+msgid "Type"
+msgstr "يكتب"
+
+#: app/templates/planning/index.html:90 app/templates/supervisor/plans.html:28
+msgid "All Types"
+msgstr "جميع الأنواع"
+
+#: app/templates/planning/index.html:91 app/templates/supervisor/plans.html:29
+msgid "Academic"
+msgstr "أكاديمي"
+
+#: app/templates/planning/index.html:92 app/templates/supervisor/plans.html:30
+msgid "Project"
+msgstr "مشروع"
+
+#: app/templates/planning/index.html:93 app/templates/supervisor/plans.html:31
+msgid "Research"
+msgstr "بحث"
+
+#: app/templates/planning/index.html:94 app/templates/supervisor/plans.html:32
+msgid "Internship"
+msgstr "التدريب الداخلي"
+
+#: app/templates/planning/index.html:95 app/templates/supervisor/plans.html:33
+#: app/templates/teacher/list.html:53
+msgid "Other"
+msgstr "آخر"
+
+#: app/templates/planning/index.html:99
+msgid "Apply Filters"
+msgstr "تطبيق المرشحات"
+
+#: app/templates/planning/index.html:104
+#: app/templates/planning/plan_form.html:19
+#: app/templates/teacher/index.html:80 app/templates/teacher/planning.html:187
+msgid "New Plan"
+msgstr "خطة جديدة"
+
+#: app/templates/planning/index.html:113
+#: app/templates/supervisor/plans.html:45
+msgid "Plans"
+msgstr "الخطط"
+
+#: app/templates/planning/index.html:149
+#: app/templates/planning/plan_detail.html:41
+#: app/templates/supervisor/index.html:192
+#: app/templates/supervisor/index.html:240
+#: app/templates/supervisor/plans.html:82
+#: app/templates/teacher/assign_student.html:80
+#, python-format
+msgid "%(count)s students"
+msgstr "%(count)s الطلاب"
+
+#: app/templates/planning/index.html:151
+#: app/templates/planning/plan_detail.html:45
+#: app/templates/supervisor/index.html:194
+#: app/templates/supervisor/index.html:242
+#: app/templates/supervisor/plans.html:84
+msgid "No students"
+msgstr "لا طلاب"
+
+#: app/templates/planning/index.html:158
+#: app/templates/planning/student_plans.html:127
+#: app/templates/supervisor/plans.html:91
+msgid "tasks"
+msgstr "المهام"
+
+#: app/templates/planning/index.html:184
+#: app/templates/planning/student_plans.html:148
+#: app/templates/student/list.html:167 app/templates/supervisor/plans.html:113
+#: app/templates/teacher/list.html:148
+msgid "View Details"
+msgstr "عرض التفاصيل"
+
+#: app/templates/planning/index.html:198
+#: app/templates/supervisor/plans.html:127
+msgid "No plans found"
+msgstr "لم يتم العثور على خطط"
+
+#: app/templates/planning/index.html:199
+#: app/templates/supervisor/plans.html:128
+msgid "No plans match your filter criteria."
+msgstr "لا توجد خطط تتطابق مع معايير التصفية الخاصة بك."
+
+#: app/templates/planning/index.html:203
+msgid "Create First Plan"
+msgstr "إنشاء الخطة الأولى"
+
+#: app/templates/planning/plan_detail.html:4
+msgid "Plan Details"
+msgstr "تفاصيل الخطة"
+
+#: app/templates/planning/plan_detail.html:13
+#: app/templates/planning/plan_form.html:13
+msgid "Back to Plans"
+msgstr "العودة إلى الخطط"
+
+#: app/templates/planning/plan_detail.html:22
+msgid "Plan"
+msgstr "يخطط"
+
+#: app/templates/planning/plan_detail.html:49
+#: app/templates/planning/plan_form.html:118
+#: app/templates/planning/task_form.html:102
+#: app/templates/supervisor/student_detail.html:128
+msgid "Start Date"
+msgstr "تاريخ البدء"
+
+#: app/templates/planning/plan_detail.html:53
+#: app/templates/planning/plan_form.html:128
+#: app/templates/supervisor/student_detail.html:132
+msgid "End Date"
+msgstr "تاريخ الانتهاء"
+
+#: app/templates/planning/plan_detail.html:57
+msgid "Created By"
+msgstr "تم الإنشاء بواسطة"
+
+#: app/templates/planning/plan_detail.html:64
+#: app/templates/planning/plan_form.html:94
+#: app/templates/planning/task_form.html:54
+msgid "Description"
+msgstr "وصف"
+
+#: app/templates/planning/plan_detail.html:71
+msgid "Objectives Template"
+msgstr "قالب الأهداف"
+
+#: app/templates/planning/plan_detail.html:87
+msgid "Activate Plan"
+msgstr "تفعيل الخطة"
+
+#: app/templates/planning/plan_detail.html:95
+msgid "Are you sure you want to delete this plan?"
+msgstr "هل أنت متأكد أنك تريد حذف هذه الخطة؟"
+
+#: app/templates/planning/plan_detail.html:96
+msgid "Delete Plan"
+msgstr "حذف الخطة"
+
+#: app/templates/planning/plan_detail.html:129
+#, python-format
+msgid "%(done)s/%(total)s objectives"
+msgstr "%(done)s/%(total)s الأهداف"
+
+#: app/templates/planning/plan_detail.html:155
+msgid "Hide Objectives"
+msgstr "إخفاء الأهداف"
+
+#: app/templates/planning/plan_detail.html:155
+msgid "Show Objectives"
+msgstr "إظهار الأهداف"
+
+#: app/templates/planning/plan_detail.html:188
+msgid "No objectives for this student."
+msgstr "لا توجد أهداف لهذا الطالب."
+
+#: app/templates/planning/plan_detail.html:207
+msgid "Mark Complete"
+msgstr "وضع علامة كاملة"
+
+#: app/templates/planning/plan_detail.html:223
+#: app/templates/planning/plan_form.html:105
+#: app/templates/teacher/student_progress.html:32
+#: app/templates/teacher/student_progress.html:109
+msgid "Objectives"
+msgstr "أهداف"
+
+#: app/templates/planning/plan_detail.html:264
+#: app/templates/supervisor/student_detail.html:136
+msgid "Tasks"
+msgstr "المهام"
+
+#: app/templates/planning/plan_detail.html:267
+#: app/templates/planning/task_form.html:3
+#: app/templates/teacher/student_progress.html:200
+msgid "Add Task"
+msgstr "إضافة مهمة"
+
+#: app/templates/planning/plan_detail.html:304
+#: app/templates/teacher/student_progress.html:47
+#: app/templates/teacher/student_progress.html:133
+msgid "Overdue"
+msgstr "تأخرت"
+
+#: app/templates/planning/plan_detail.html:322
+#: app/templates/planning/student_plans.html:130
+#: app/templates/supervisor/index.html:244
+#, python-format
+msgid "Due: %(date)s"
+msgstr "المستحق: %(date)s"
+
+#: app/templates/planning/plan_detail.html:340
+msgid "Start Task"
+msgstr "ابدأ المهمة"
+
+#: app/templates/planning/plan_detail.html:352
+msgid "Complete Task"
+msgstr "مهمة كاملة"
+
+#: app/templates/planning/plan_detail.html:369
+msgid "Delete Task"
+msgstr "حذف المهمة"
+
+#: app/templates/planning/plan_detail.html:370
+msgid "Delete this task?"
+msgstr "هل تريد حذف هذه المهمة؟"
+
+#: app/templates/planning/plan_detail.html:388
+msgid "No tasks yet"
+msgstr "لا توجد مهام حتى الآن"
+
+#: app/templates/planning/plan_detail.html:389
+msgid "Add tasks to track progress on this plan."
+msgstr "أضف مهام لتتبع التقدم في هذه الخطة."
+
+#: app/templates/planning/plan_detail.html:392
+msgid "Add First Task"
+msgstr "أضف المهمة الأولى"
+
+#: app/templates/planning/plan_form.html:4
+msgid "Update plan details"
+msgstr "تحديث تفاصيل الخطة"
+
+#: app/templates/planning/plan_form.html:4
+msgid "Create a new plan for a student"
+msgstr "إنشاء خطة جديدة للطالب"
+
+#: app/templates/planning/plan_form.html:33
+msgid "Please fix the following errors:"
+msgstr "الرجاء إصلاح الأخطاء التالية:"
+
+#: app/templates/planning/plan_form.html:50
+msgid "Plan Title"
+msgstr "عنوان الخطة"
+
+#: app/templates/planning/plan_form.html:52
+msgid "e.g., Fall 2024 Academic Plan"
+msgstr "على سبيل المثال، الخطة الأكاديمية لخريف 2024"
+
+#: app/templates/planning/plan_form.html:74
+msgid "Select one or more students."
+msgstr "اختر طالبًا واحدًا أو أكثر."
+
+#: app/templates/planning/plan_form.html:82
+msgid "Plan Type"
+msgstr "نوع الخطة"
+
+#: app/templates/planning/plan_form.html:96
+msgid "Describe the plan objectives and goals..."
+msgstr "شرح أهداف الخطة وأهدافها..."
+
+#: app/templates/planning/plan_form.html:107
+msgid "List key objectives, one per line..."
+msgstr "قم بإدراج الأهداف الرئيسية، هدف واحد في كل سطر..."
+
+#: app/templates/planning/plan_form.html:108
+msgid "List key objectives or milestones for this plan."
+msgstr "قم بإدراج الأهداف أو المعالم الرئيسية لهذه الخطة."
+
+#: app/templates/planning/plan_form.html:157
+msgid "Tips for creating effective plans"
+msgstr "نصائح لإنشاء خطط فعالة"
+
+#: app/templates/planning/plan_form.html:159
+msgid "Set clear, achievable objectives"
+msgstr "ضع أهدافًا واضحة وقابلة للتحقيق"
+
+#: app/templates/planning/plan_form.html:160
+msgid "Include realistic start and end dates"
+msgstr "قم بتضمين تواريخ بداية وانتهاء واقعية"
+
+#: app/templates/planning/plan_form.html:161
+msgid "After creating the plan, add specific tasks with deadlines"
+msgstr "بعد إنشاء الخطة، قم بإضافة مهام محددة بمواعيد نهائية"
+
+#: app/templates/planning/plan_form.html:162
+msgid "Review and update progress regularly"
+msgstr "مراجعة وتحديث التقدم بانتظام"
+
+#: app/templates/planning/student_plans.html:3
+#: app/templates/planning/student_plans.html:92
+msgid "My Plans"
+msgstr "خططي"
+
+#: app/templates/planning/student_plans.html:4
+msgid "View your learning plans and progress"
+msgstr "عرض خطط التعلم الخاصة بك والتقدم"
+
+#: app/templates/planning/student_plans.html:10
+#, python-format
+msgid "Welcome, %(name)s!"
+msgstr "مرحبًا، %(name)s!"
+
+#: app/templates/planning/student_plans.html:11
+msgid "Track your progress and stay on top of your learning journey."
+msgstr "تتبع التقدم المحرز الخاص بك والبقاء على اطلاع برحلة التعلم الخاصة بك."
+
+#: app/templates/planning/student_plans.html:47
+msgid "Tasks Due Soon"
+msgstr "المهام المستحقة قريبا"
+
+#: app/templates/planning/student_plans.html:76
+msgid "Your Supervisor"
+msgstr "المشرف الخاص بك"
+
+#: app/templates/planning/student_plans.html:117
+msgid "Group Plan"
+msgstr "خطة المجموعة"
+
+#: app/templates/planning/student_plans.html:157
+#: app/templates/teacher/index.html:50
+msgid "Pending Tasks"
+msgstr "المهام المعلقة"
+
+#: app/templates/planning/student_plans.html:168
+#, python-format
+msgid "+%(count)s more"
+msgstr "+%(count)s المزيد"
+
+#: app/templates/planning/student_plans.html:183
+msgid "No plans yet"
+msgstr "لا توجد خطط حتى الآن"
+
+#: app/templates/planning/student_plans.html:184
+msgid "Your supervisor will create learning plans for you."
+msgstr "سيقوم المشرف الخاص بك بإنشاء خطط التعلم بالنسبة لك."
+
+#: app/templates/planning/task_form.html:4
+msgid "Update task details"
+msgstr "تحديث تفاصيل المهمة"
+
+#: app/templates/planning/task_form.html:4
+msgid "Add a new task to the plan"
+msgstr "أضف مهمة جديدة إلى الخطة"
+
+#: app/templates/planning/task_form.html:13
+msgid "Back to Plan"
+msgstr "العودة إلى الخطة"
+
+#: app/templates/planning/task_form.html:25
+msgid "Adding task to"
+msgstr "إضافة مهمة إلى"
+
+#: app/templates/planning/task_form.html:34
+msgid "New Task"
+msgstr "مهمة جديدة"
+
+#: app/templates/planning/task_form.html:43
+msgid "Task Title"
+msgstr "عنوان المهمة"
+
+#: app/templates/planning/task_form.html:45
+msgid "e.g., Complete chapter 1 reading"
+msgstr "على سبيل المثال، أكمل قراءة الفصل الأول"
+
+#: app/templates/planning/task_form.html:56
+msgid "Optional details about this task..."
+msgstr "تفاصيل اختيارية حول هذه المهمة..."
+
+#: app/templates/planning/task_form.html:66
+msgid "Priority"
+msgstr "أولوية"
+
+#: app/templates/planning/task_form.html:87
+msgid "Order"
+msgstr "طلب"
+
+#: app/templates/planning/task_form.html:90
+msgid "Position in task list (lower = earlier)"
+msgstr "الموضع في قائمة المهام (أقل = سابق)"
+
+#: app/templates/planning/task_form.html:112
+msgid "Due Date"
+msgstr "تاريخ الاستحقاق"
+
+#: app/templates/planning/task_form.html:123
+msgid "Priority Guide"
+msgstr "دليل الأولوية"
+
+#: app/templates/planning/task_form.html:127
+msgid "Low - Nice to have"
+msgstr "منخفض - جميل أن يكون لديك"
+
+#: app/templates/planning/task_form.html:131
+msgid "Medium - Should do"
+msgstr "متوسطة - ينبغي أن تفعل"
+
+#: app/templates/planning/task_form.html:135
+msgid "High - Important"
+msgstr "عالي - مهم"
+
+#: app/templates/planning/task_form.html:139
+msgid "Urgent - Critical"
+msgstr "عاجل - حرج"
+
+#: app/templates/student/assign_teacher.html:3
+#: app/templates/student/assign_teacher.html:50
+#: app/templates/student/assign_teacher.html:96
+#: app/templates/student/detail.html:308
+msgid "Assign Teacher"
+msgstr "تعيين المعلم"
+
+#: app/templates/student/assign_teacher.html:4
+#, python-format
+msgid "Assign a teacher to %(name)s"
+msgstr "تعيين مدرس لـ %(name)s"
+
+#: app/templates/student/assign_teacher.html:15
+#: app/templates/student/edit.html:15
+#: app/templates/teacher/assign_student.html:15
+#: app/templates/teacher/edit.html:15
+msgid "Back to Profile"
+msgstr "العودة إلى الملف الشخصي"
+
+#: app/templates/student/assign_teacher.html:27
+#: app/templates/student/detail.html:31
+msgid "No ID"
+msgstr "لا معرف"
+
+#: app/templates/student/assign_teacher.html:27
+msgid "No grade"
+msgstr "لا الصف"
+
+#: app/templates/student/assign_teacher.html:30
+msgid "Currently assigned to:"
+msgstr "المخصصة حاليا ل:"
+
+#: app/templates/student/assign_teacher.html:48
+msgid "Change Assigned Teacher"
+msgstr "تغيير المعلم المعين"
+
+#: app/templates/student/assign_teacher.html:60
+msgid "Select Teacher"
+msgstr "حدد المعلم"
+
+#: app/templates/student/assign_teacher.html:67
+msgid "Choose a teacher to oversee this student's academic progress."
+msgstr "اختر معلمًا للإشراف على التقدم الأكاديمي لهذا الطالب."
+
+#: app/templates/student/assign_teacher.html:73
+msgid "Selected teacher:"
+msgstr "المعلم المختار:"
+
+#: app/templates/student/assign_teacher.html:79
+msgid "Teacher Name"
+msgstr "اسم المعلم"
+
+#: app/templates/student/assign_teacher.html:80
+msgid "Subject"
+msgstr "موضوع"
+
+#: app/templates/student/assign_teacher.html:94
+msgid "Update Assignment"
+msgstr "تحديث المهمة"
+
+#: app/templates/student/assign_teacher.html:111
+msgid "About Teacher Assignment"
+msgstr "حول تعيين المعلم"
+
+#: app/templates/student/assign_teacher.html:113
+msgid ""
+"Assigning a teacher allows them to view and monitor this student's progress."
+" Teachers can only see students assigned to them, while administrators and "
+"supervisors can see all students."
+msgstr ""
+"يتيح لهم تعيين معلم إمكانية عرض ومراقبة تقدم هذا الطالب. يمكن للمعلمين رؤية "
+"الطلاب المعينين لهم فقط، بينما يمكن للمسؤولين والمشرفين رؤية جميع الطلاب."
+
+#: app/templates/student/create.html:3 app/templates/student/list.html:26
+msgid "Add Student"
+msgstr "إضافة طالب"
+
+#: app/templates/student/create.html:4
+msgid "Create a new student record"
+msgstr "إنشاء سجل طالب جديد"
+
+#: app/templates/student/create.html:15 app/templates/student/detail.html:15
+#: app/templates/supervisor/student_detail.html:13
+msgid "Back to Students"
+msgstr "العودة إلى الطلاب"
+
+#: app/templates/student/create.html:18
+msgid "Fill in the information below to create a new student record"
+msgstr "قم بملء المعلومات أدناه لإنشاء سجل طالب جديد"
+
+#: app/templates/student/create.html:32 app/templates/student/detail.html:77
+#: app/templates/student/edit.html:39
+msgid "Personal Information"
+msgstr "معلومات شخصية"
+
+#: app/templates/student/create.html:64 app/templates/student/edit.html:82
+#: app/templates/teacher/create.html:184 app/templates/teacher/edit.html:178
+msgid "Phone Number"
+msgstr "رقم التليفون"
+
+#: app/templates/student/create.html:75 app/templates/student/detail.html:107
+#: app/templates/student/edit.html:93
+#: app/templates/teacher/student_detail.html:42
+msgid "Date of Birth"
+msgstr "تاريخ الميلاد"
+
+#: app/templates/student/create.html:86 app/templates/student/detail.html:117
+#: app/templates/student/edit.html:104
+msgid "Gender"
+msgstr "جنس"
+
+#: app/templates/student/create.html:98 app/templates/student/detail.html:127
+#: app/templates/student/edit.html:116
+#: app/templates/teacher/student_detail.html:50
+msgid "Address"
+msgstr "عنوان"
+
+#: app/templates/student/create.html:100 app/templates/student/edit.html:118
+msgid "Enter address..."
+msgstr "أدخل العنوان..."
+
+#: app/templates/student/create.html:115 app/templates/student/edit.html:133
+msgid "Academic Information"
+msgstr "المعلومات الأكاديمية"
+
+#: app/templates/student/create.html:123 app/templates/student/detail.html:235
+#: app/templates/student/edit.html:141
+#: app/templates/teacher/student_detail.html:34
+msgid "Grade Level"
+msgstr "مستوى الصف"
+
+#: app/templates/student/create.html:125 app/templates/student/edit.html:143
+msgid "e.g., Grade 10, Year 2"
+msgstr "على سبيل المثال، الصف العاشر، السنة الثانية"
+
+#: app/templates/student/create.html:152 app/templates/student/detail.html:147
+#: app/templates/student/edit.html:170
+msgid "Guardian Information"
+msgstr "معلومات الوصي"
+
+#: app/templates/student/create.html:160 app/templates/student/detail.html:154
+#: app/templates/student/edit.html:178
+msgid "Guardian Name"
+msgstr "اسم الوصي"
+
+#: app/templates/student/create.html:162 app/templates/student/edit.html:180
+msgid "Enter guardian name"
+msgstr "أدخل اسم الوصي"
+
+#: app/templates/student/create.html:171 app/templates/student/detail.html:158
+#: app/templates/student/edit.html:189
+msgid "Relationship"
+msgstr "علاقة"
+
+#: app/templates/student/create.html:184 app/templates/student/edit.html:202
+msgid "Guardian Phone"
+msgstr "هاتف الجارديان"
+
+#: app/templates/student/create.html:195 app/templates/student/edit.html:213
+msgid "Guardian Email"
+msgstr "البريد الإلكتروني للوصي"
+
+#: app/templates/student/create.html:213 app/templates/student/edit.html:231
+msgid "Additional Notes"
+msgstr "ملاحظات إضافية"
+
+#: app/templates/student/create.html:217 app/templates/student/edit.html:235
+msgid "Any additional notes about the student..."
+msgstr "أي ملاحظات إضافية حول الطالب..."
+
+#: app/templates/student/create.html:232
+msgid "Create Student"
+msgstr "إنشاء الطالب"
+
+#: app/templates/student/detail.html:3
+#: app/templates/supervisor/student_detail.html:4
+#: app/templates/teacher/student_detail.html:3
+msgid "Student Profile"
+msgstr "الملف الشخصي للطالب"
+
+#: app/templates/student/detail.html:4
+msgid "View student information"
+msgstr "عرض معلومات الطالب"
+
+#: app/templates/student/detail.html:59 app/templates/student/detail.html:396
+#: app/templates/student/edit.html:313 app/templates/student/list.html:184
+#: app/templates/student/list.html:320 app/templates/teacher/edit.html:282
+#: app/templates/teacher/list.html:164 app/templates/teacher/list.html:298
+msgid "Delete"
+msgstr "يمسح"
+
+#: app/templates/student/detail.html:197
+msgid "No guardian information provided"
+msgstr "لم يتم تقديم معلومات الوصي"
+
+#: app/templates/student/detail.html:211
+#: app/templates/teacher/student_detail.html:54
+msgid "Notes"
+msgstr "ملحوظات"
+
+#: app/templates/student/detail.html:230
+msgid "Academic Info"
+msgstr "المعلومات الأكاديمية"
+
+#: app/templates/student/detail.html:245
+#: app/templates/teacher/student_detail.html:46
+msgid "Enrollment Date"
+msgstr "تاريخ التسجيل"
+
+#: app/templates/student/detail.html:264 app/templates/student/list.html:93
+msgid "Assigned Teacher"
+msgstr "المعلم المعين"
+
+#: app/templates/student/detail.html:275
+msgid "No subject"
+msgstr "لا يوجد موضوع"
+
+#: app/templates/student/detail.html:282
+msgid "Change"
+msgstr "يتغير"
+
+#: app/templates/student/detail.html:287
+msgid "Remove assigned teacher?"
+msgstr "هل ترغب في إزالة المعلم المعين؟"
+
+#: app/templates/student/detail.html:289
+msgid "Remove"
+msgstr "يزيل"
+
+#: app/templates/student/detail.html:301
+msgid "No teacher assigned"
+msgstr "لم يتم تعيين أي معلم"
+
+#: app/templates/student/detail.html:331
+msgid "Mark as Inactive"
+msgstr "وضع علامة على أنها غير نشطة"
+
+#: app/templates/student/detail.html:333
+msgid "Mark as Active"
+msgstr "وضع علامة كنشط"
+
+#: app/templates/student/detail.html:342
+msgid "Edit Student Info"
+msgstr "تحرير معلومات الطالب"
+
+#: app/templates/student/detail.html:382 app/templates/student/edit.html:250
+#: app/templates/student/edit.html:299 app/templates/student/list.html:306
+msgid "Delete Student"
+msgstr "حذف الطالب"
+
+#: app/templates/student/detail.html:384 app/templates/student/edit.html:301
+#: app/templates/student/list.html:308 app/templates/teacher/edit.html:270
+#: app/templates/teacher/list.html:286
+msgid "Are you sure you want to delete"
+msgstr "هل أنت متأكد أنك تريد الحذف"
+
+#: app/templates/student/detail.html:385 app/templates/student/edit.html:302
+#: app/templates/student/list.html:309 app/templates/teacher/edit.html:271
+#: app/templates/teacher/list.html:287
+msgid "This action cannot be undone."
+msgstr "لا يمكن التراجع عن هذا الإجراء."
+
+#: app/templates/student/edit.html:3
+msgid "Edit Student"
+msgstr "تحرير الطالب"
+
+#: app/templates/student/edit.html:4
+msgid "Update student information"
+msgstr "تحديث معلومات الطالب"
+
+#: app/templates/student/edit.html:22 app/templates/teacher/edit.html:22
+#, python-format
+msgid "Edit %(name)s"
+msgstr "تحرير %(name)s"
+
+#: app/templates/student/edit.html:70 app/templates/student/list.html:91
+#: app/templates/supervisor/students.html:42
+#: app/templates/supervisor/unassigned.html:35
+#: app/templates/teacher/students.html:26
+msgid "Student ID"
+msgstr "معرف الطالب"
+
+#: app/templates/student/edit.html:75
+msgid "Student ID cannot be changed"
+msgstr "لا يمكن تغيير معرف الطالب"
+
+#: app/templates/student/edit.html:259 app/templates/teacher/edit.html:228
+msgid "Save Changes"
+msgstr "حفظ التغييرات"
+
+#: app/templates/student/list.html:4
+msgid "Manage student records"
+msgstr "إدارة سجلات الطلاب"
+
+#: app/templates/student/list.html:14
+msgid "Manage and view all students in the system"
+msgstr "إدارة وعرض كافة الطلاب في النظام"
+
+#: app/templates/student/list.html:16
+msgid "View your assigned students"
+msgstr "عرض الطلاب المعينين لديك"
+
+#: app/templates/student/list.html:39
+msgid "Search by name, email, or student ID..."
+msgstr "البحث حسب الاسم أو البريد الإلكتروني أو معرف الطالب..."
+
+#: app/templates/student/list.html:52
+msgid "All Teachers"
+msgstr "جميع المعلمين"
+
+#: app/templates/student/list.html:68 app/templates/student/list.html:149
+#: app/templates/supervisor/students.html:21
+msgid "Graduated"
+msgstr "تخرج"
+
+#: app/templates/student/list.html:69 app/templates/student/list.html:154
+msgid "Transferred"
+msgstr "منقول"
+
+#: app/templates/student/list.html:70
+msgid "Dropped"
+msgstr "انخفض"
+
+#: app/templates/student/list.html:90
+#: app/templates/supervisor/students.html:41
+#: app/templates/supervisor/unassigned.html:34
+#: app/templates/teacher/students.html:25
+msgid "Student"
+msgstr "طالب"
+
+#: app/templates/student/list.html:92 app/templates/teacher/students.html:27
+msgid "Grade"
+msgstr "درجة"
+
+#: app/templates/student/list.html:203 app/templates/teacher/list.html:182
+msgid "of"
+msgstr "ل"
+
+#: app/templates/student/list.html:204
+msgid "students"
+msgstr "طلاب"
+
+#: app/templates/student/list.html:250
+#: app/templates/supervisor/students.html:114
+msgid "No students found"
+msgstr "لم يتم العثور على أي طلاب"
+
+#: app/templates/student/list.html:253
+msgid "No students match your search criteria. Try adjusting your filters."
+msgstr ""
+"لا يوجد طلاب مطابقون لمعايير البحث الخاصة بك. حاول تعديل المرشحات الخاصة بك."
+
+#: app/templates/student/list.html:255
+msgid "Get started by adding your first student."
+msgstr "ابدأ بإضافة طالبك الأول."
+
+#: app/templates/student/list.html:264
+msgid "Add Your First Student"
+msgstr "أضف طالبك الأول"
+
+#: app/templates/supervisor/assign_supervisor.html:3
+#: app/templates/supervisor/assign_supervisor.html:19
+#: app/templates/supervisor/student_detail.html:90
+#: app/templates/supervisor/unassigned.html:72
+msgid "Assign Supervisor"
+msgstr "تعيين المشرف"
+
+#: app/templates/supervisor/assign_supervisor.html:4
+#, python-format
+msgid "Assign a supervisor to %(name)s"
+msgstr "تعيين مشرف إلى %(name)s"
+
+#: app/templates/supervisor/assign_supervisor.html:13
+msgid "Back to Student"
+msgstr "العودة إلى الطالب"
+
+#: app/templates/supervisor/assign_supervisor.html:56
+msgid "Current Supervisor"
+msgstr "المشرف الحالي"
+
+#: app/templates/supervisor/assign_supervisor.html:57
+msgid "This student is currently supervised by"
+msgstr "ويشرف على هذا الطالب حاليا"
+
+#: app/templates/supervisor/assign_supervisor.html:57
+msgid "Assigning a new supervisor will replace the current one."
+msgstr "تعيين مشرف جديد سيحل محل المشرف الحالي."
+
+#: app/templates/supervisor/index.html:3
+msgid "Supervisor Dashboard"
+msgstr "لوحة تحكم المشرف"
+
+#: app/templates/supervisor/index.html:4
+msgid "Overview of teachers, students, and plans"
+msgstr "نظرة عامة على المعلمين والطلاب والخطط"
+
+#: app/templates/supervisor/index.html:14
+#: app/templates/supervisor/index.html:132
+#: app/templates/supervisor/students.html:33
+msgid "Managed Students"
+msgstr "طلاب الإدارة"
+
+#: app/templates/supervisor/index.html:42
+msgid "View plans"
+msgstr "عرض الخطط"
+
+#: app/templates/supervisor/index.html:50
+msgid "Overdue Tasks"
+msgstr "المهام المتأخرة"
+
+#: app/templates/supervisor/index.html:65
+msgid "Pending Reviews"
+msgstr "المراجعات المعلقة"
+
+#: app/templates/supervisor/index.html:92
+#: app/templates/supervisor/students.html:3
+msgid "Teacher Students"
+msgstr "طلاب المعلمين"
+
+#: app/templates/supervisor/index.html:93
+msgid "View teachers and their students"
+msgstr "عرض المعلمين وطلابهم"
+
+#: app/templates/supervisor/index.html:105 app/templates/teacher/index.html:93
+msgid "Manage Plans"
+msgstr "إدارة الخطط"
+
+#: app/templates/supervisor/index.html:106
+msgid "View plans and progress"
+msgstr "عرض الخطط والتقدم"
+
+#: app/templates/supervisor/index.html:120
+msgid "Students without supervisor"
+msgstr "الطلاب بدون مشرف"
+
+#: app/templates/supervisor/index.html:164
+#: app/templates/teacher/detail.html:214
+msgid "No students assigned yet"
+msgstr "لم يتم تعيين أي طلاب حتى الآن"
+
+#: app/templates/supervisor/index.html:213
+msgid "No active plans"
+msgstr "لا توجد خطط نشطة"
+
+#: app/templates/supervisor/index.html:229
+msgid "Attention Required"
+msgstr "الاهتمام مطلوب"
+
+#: app/templates/supervisor/index.html:230
+#, python-format
+msgid "There are %(count)s overdue task(s) that need attention."
+msgstr "هناك %(count)s مهمة (مهام) متأخرة تحتاج إلى الاهتمام."
+
+#: app/templates/supervisor/plans.html:3
+msgid "Supervised Plans"
+msgstr "الخطط الخاضعة للإشراف"
+
+#: app/templates/supervisor/plans.html:4
+msgid "Plans for students you supervise"
+msgstr "خطط للطلاب الذين تشرف عليهم"
+
+#: app/templates/supervisor/plans.html:13
+msgid "Search plans..."
+msgstr "خطط البحث..."
+
+#: app/templates/supervisor/plans.html:46
+#: app/templates/supervisor/student_detail.html:159
+msgid "View-only access"
+msgstr "الوصول للعرض فقط"
+
+#: app/templates/supervisor/plans.html:98
+msgid "Ongoing"
+msgstr "مستمر"
+
+#: app/templates/supervisor/student_detail.html:35
+#: app/templates/supervisor/students.html:59
+#: app/templates/supervisor/unassigned.html:51
+msgid "No email"
+msgstr "لا يوجد بريد إلكتروني"
+
+#: app/templates/supervisor/student_detail.html:59
+msgid "Plan creation is restricted for supervisors."
+msgstr "يقتصر إنشاء الخطة على المشرفين."
+
+#: app/templates/supervisor/student_detail.html:80
+msgid "Are you sure you want to unassign this supervisor?"
+msgstr "هل أنت متأكد أنك تريد إلغاء تعيين هذا المشرف؟"
+
+#: app/templates/supervisor/student_detail.html:81
+msgid "Unassign Supervisor"
+msgstr "إلغاء تعيين المشرف"
+
+#: app/templates/supervisor/student_detail.html:86
+msgid "No supervisor assigned"
+msgstr "لم يتم تعيين مشرف"
+
+#: app/templates/supervisor/student_detail.html:104
+#: app/templates/supervisor/students.html:44
+#: app/templates/teacher/student_progress.html:72
+msgid "Active Plan"
+msgstr "الخطة النشطة"
+
+#: app/templates/supervisor/student_detail.html:118
+#: app/templates/teacher/planning.html:129
+msgid "View Plan"
+msgstr "عرض الخطة"
+
+#: app/templates/supervisor/student_detail.html:158
+#: app/templates/teacher/planning.html:174
+#: app/templates/teacher/student_progress.html:210
+msgid "All Plans"
+msgstr "جميع الخطط"
+
+#: app/templates/supervisor/student_detail.html:202
+msgid "No plans created yet"
+msgstr "لم يتم إنشاء أي خطط حتى الآن"
+
+#: app/templates/supervisor/students.html:4
+msgid "Manage teachers and their students"
+msgstr "إدارة المعلمين وطلابهم"
+
+#: app/templates/supervisor/students.html:13
+msgid "Search by name or ID..."
+msgstr "البحث بالاسم أو الهوية..."
+
+#: app/templates/supervisor/students.html:45
+#: app/templates/teacher/planning.html:105
+msgid "Progress"
+msgstr "تقدم"
+
+#: app/templates/supervisor/students.html:79
+msgid "No active plan"
+msgstr "لا توجد خطة نشطة"
+
+#: app/templates/supervisor/students.html:115
+msgid "No students match your search criteria in your managed teacher scope."
+msgstr ""
+"لا يوجد طلاب مطابقون لمعايير البحث الخاصة بك في نطاق المعلم المُدار الخاص "
+"بك."
+
+#: app/templates/supervisor/unassigned.html:3
+#: app/templates/supervisor/unassigned.html:26
+msgid "Unassigned Students"
+msgstr "الطلاب غير المعينين"
+
+#: app/templates/supervisor/unassigned.html:4
+msgid "Students without a supervisor"
+msgstr "الطلاب بدون مشرف"
+
+#: app/templates/supervisor/unassigned.html:17
+msgid "Students Need Supervisors"
+msgstr "الطلاب بحاجة إلى المشرفين"
+
+#: app/templates/supervisor/unassigned.html:18
+msgid ""
+"The following students do not have a supervisor assigned. Assign supervisors"
+" to enable planning and progress tracking."
+msgstr ""
+"الطلاب التالية أسماؤهم ليس لديهم مشرف معين. تعيين المشرفين لتمكين التخطيط "
+"وتتبع التقدم."
+
+#: app/templates/supervisor/unassigned.html:37
+msgid "Enrolled"
+msgstr "مسجل"
+
+#: app/templates/supervisor/unassigned.html:87
+msgid "All students have supervisors"
+msgstr "جميع الطلاب لديهم مشرفين"
+
+#: app/templates/supervisor/unassigned.html:88
+msgid "Every student has been assigned to a supervisor."
+msgstr "تم تعيين كل طالب لمشرف."
+
+#: app/templates/teacher/assign_student.html:3
+#: app/templates/teacher/detail.html:30 app/templates/teacher/detail.html:220
+#: app/templates/teacher/detail.html:268
+msgid "Assign Students"
+msgstr "تعيين الطلاب"
+
+#: app/templates/teacher/assign_student.html:22
+#, python-format
+msgid "Assign Students to %(name)s"
+msgstr "تعيين الطلاب إلى %(name)s"
+
+#: app/templates/teacher/assign_student.html:23
+msgid "Manage student assignments for this teacher"
+msgstr "إدارة مهام الطلاب لهذا المعلم"
+
+#: app/templates/teacher/assign_student.html:35
+msgid "Assign New Student"
+msgstr "تعيين طالب جديد"
+
+#: app/templates/teacher/assign_student.html:54
+msgid "Assign Student"
+msgstr "تعيين الطالب"
+
+#: app/templates/teacher/assign_student.html:65
+msgid "All students have been assigned to this teacher"
+msgstr "تم تعيين جميع الطلاب لهذا المعلم"
+
+#: app/templates/teacher/assign_student.html:78
+msgid "Currently Assigned Students"
+msgstr "الطلاب المعينون حاليًا"
+
+#: app/templates/teacher/assign_student.html:110
+#, python-format
+msgid "Are you sure you want to remove %(student)s from %(teacher)s?"
+msgstr "هل أنت متأكد أنك تريد إزالة %(student)s من %(teacher)s؟"
+
+#: app/templates/teacher/assign_student.html:114
+#: app/templates/teacher/detail.html:198
+msgid "Unassign Student"
+msgstr "إلغاء تعيين الطالب"
+
+#: app/templates/teacher/assign_student.html:131
+msgid "No Students Assigned"
+msgstr "لم يتم تعيين أي طلاب"
+
+#: app/templates/teacher/assign_student.html:133
+msgid ""
+"This teacher doesn't have any students assigned yet. Use the form above to "
+"assign students."
+msgstr ""
+"هذا المعلم ليس لديه أي طلاب معينين حتى الآن. استخدم النموذج أعلاه لتعيين "
+"الطلاب."
+
+#: app/templates/teacher/assign_student.html:144
+#: app/templates/teacher/student_progress.html:125
+msgid "Done"
+msgstr "منتهي"
+
+#: app/templates/teacher/create.html:3 app/templates/teacher/list.html:19
+msgid "Add Teacher"
+msgstr "إضافة المعلم"
+
+#: app/templates/teacher/create.html:4
+msgid "Create a new teacher account"
+msgstr "إنشاء حساب معلم جديد"
+
+#: app/templates/teacher/create.html:15 app/templates/teacher/detail.html:15
+msgid "Back to Teachers"
+msgstr "العودة إلى المعلمين"
+
+#: app/templates/teacher/create.html:18
+msgid "Fill in the information below to create a new teacher account"
+msgstr "قم بملء المعلومات أدناه لإنشاء حساب معلم جديد"
+
+#: app/templates/teacher/create.html:104 app/templates/teacher/edit.html:98
+msgid "Professional Information"
+msgstr "المعلومات المهنية"
+
+#: app/templates/teacher/create.html:125 app/templates/teacher/edit.html:119
+msgid "e.g., Algebra, Organic Chemistry"
+msgstr "على سبيل المثال، الجبر، الكيمياء العضوية"
+
+#: app/templates/teacher/create.html:136 app/templates/teacher/detail.html:135
+#: app/templates/teacher/edit.html:130
+msgid "Qualification"
+msgstr "مؤهل"
+
+#: app/templates/teacher/create.html:138 app/templates/teacher/edit.html:132
+msgid "e.g., M.Sc., Ph.D."
+msgstr "على سبيل المثال، ماجستير، دكتوراه."
+
+#: app/templates/teacher/create.html:147 app/templates/teacher/edit.html:141
+msgid "Years of Experience"
+msgstr "سنوات من الخبرة"
+
+#: app/templates/teacher/create.html:158 app/templates/teacher/detail.html:149
+#: app/templates/teacher/edit.html:152
+msgid "Hire Date"
+msgstr "تاريخ الاستئجار"
+
+#: app/templates/teacher/create.html:176 app/templates/teacher/edit.html:170
+msgid "Contact & Additional Information"
+msgstr "الاتصال والمعلومات الإضافية"
+
+#: app/templates/teacher/create.html:207 app/templates/teacher/edit.html:201
+msgid "Bio / About"
+msgstr "السيرة الذاتية / حول"
+
+#: app/templates/teacher/create.html:209 app/templates/teacher/edit.html:203
+msgid "A brief description about the teacher..."
+msgstr "نبذة مختصرة عن المعلم..."
+
+#: app/templates/teacher/create.html:225
+msgid "Create Teacher"
+msgstr "إنشاء المعلم"
+
+#: app/templates/teacher/detail.html:52 app/templates/teacher/planning.html:97
+msgid "No department"
+msgstr "لا يوجد قسم"
+
+#: app/templates/teacher/detail.html:69 app/templates/teacher/list.html:62
+#: app/templates/teacher/list.html:140
+msgid "On Leave"
+msgstr "في إجازة"
+
+#: app/templates/teacher/detail.html:83
+msgid "Contact Information"
+msgstr "معلومات الاتصال"
+
+#: app/templates/teacher/detail.html:116
+msgid "Professional Details"
+msgstr "التفاصيل المهنية"
+
+#: app/templates/teacher/detail.html:139
+msgid "Experience"
+msgstr "خبرة"
+
+#: app/templates/teacher/detail.html:142
+#, python-format
+msgid "%(years)s years"
+msgstr "%(years)s سنة"
+
+#: app/templates/teacher/detail.html:162
+msgid "Bio"
+msgstr "السيرة الذاتية"
+
+#: app/templates/teacher/detail.html:172
+msgid "Assigned Students"
+msgstr "الطلاب المعينون"
+
+#: app/templates/teacher/detail.html:194
+#, python-format
+msgid "Remove this student from %(teacher)s?"
+msgstr "هل تريد إزالة هذا الطالب من %(teacher)s؟"
+
+#: app/templates/teacher/detail.html:232
+msgid "Overview"
+msgstr "ملخص"
+
+#: app/templates/teacher/detail.html:293
+msgid "Record Info"
+msgstr "سجل المعلومات"
+
+#: app/templates/teacher/edit.html:3
+msgid "Edit Teacher"
+msgstr "تحرير المعلم"
+
+#: app/templates/teacher/edit.html:4
+msgid "Update teacher information"
+msgstr "تحديث معلومات المعلم"
+
+#: app/templates/teacher/edit.html:86
+msgid "Employee ID cannot be changed"
+msgstr "لا يمكن تغيير معرف الموظف"
+
+#: app/templates/teacher/edit.html:219 app/templates/teacher/edit.html:268
+#: app/templates/teacher/list.html:284
+msgid "Delete Teacher"
+msgstr "حذف المعلم"
+
+#: app/templates/teacher/index.html:24
+msgid "View progress"
+msgstr "عرض التقدم"
+
+#: app/templates/teacher/index.html:42
+msgid "Manage plans"
+msgstr "إدارة الخطط"
+
+#: app/templates/teacher/index.html:60
+#, python-format
+msgid "%(count)s overdue"
+msgstr "%(count)s متأخرة"
+
+#: app/templates/teacher/index.html:81
+msgid "Create student plan"
+msgstr "إنشاء خطة الطالب"
+
+#: app/templates/teacher/index.html:94 app/templates/teacher/planning.html:140
+msgid "View all plans"
+msgstr "عرض جميع الخطط"
+
+#: app/templates/teacher/index.html:107
+msgid "View progress bars"
+msgstr "عرض أشرطة التقدم"
+
+#: app/templates/teacher/index.html:120
+msgid "View my students"
+msgstr "شاهد طلابي"
+
+#: app/templates/teacher/list.html:4
+msgid "Manage teaching staff"
+msgstr "إدارة أعضاء هيئة التدريس"
+
+#: app/templates/teacher/list.html:12
+msgid "Manage and view all teachers in the system"
+msgstr "إدارة وعرض جميع المعلمين في النظام"
+
+#: app/templates/teacher/list.html:31
+msgid "Search by name, email, or specialization..."
+msgstr "البحث بالاسم أو البريد الإلكتروني أو التخصص..."
+
+#: app/templates/teacher/list.html:43
+msgid "All Departments"
+msgstr "جميع الأقسام"
+
+#: app/templates/teacher/list.html:44
+msgid "Mathematics"
+msgstr "الرياضيات"
+
+#: app/templates/teacher/list.html:45
+msgid "Science"
+msgstr "علوم"
+
+#: app/templates/teacher/list.html:46
+msgid "English"
+msgstr "إنجليزي"
+
+#: app/templates/teacher/list.html:47
+msgid "History"
+msgstr "تاريخ"
+
+#: app/templates/teacher/list.html:48
+msgid "Arts"
+msgstr "الفنون"
+
+#: app/templates/teacher/list.html:49
+msgid "Physical Education"
+msgstr "التربية البدنية"
+
+#: app/templates/teacher/list.html:50
+msgid "Computer Science"
+msgstr "علوم الكمبيوتر"
+
+#: app/templates/teacher/list.html:51
+msgid "Languages"
+msgstr "اللغات"
+
+#: app/templates/teacher/list.html:52
+msgid "Music"
+msgstr "موسيقى"
+
+#: app/templates/teacher/list.html:183
+msgid "teachers"
+msgstr "المعلمين"
+
+#: app/templates/teacher/list.html:229
+msgid "No teachers found"
+msgstr "لم يتم العثور على المعلمين"
+
+#: app/templates/teacher/list.html:232
+msgid "No teachers match your search criteria. Try adjusting your filters."
+msgstr ""
+"لا يوجد معلمون مطابقون لمعايير البحث الخاصة بك. حاول تعديل المرشحات الخاصة "
+"بك."
+
+#: app/templates/teacher/list.html:234
+msgid "Get started by adding your first teacher."
+msgstr "ابدأ بإضافة معلمك الأول."
+
+#: app/templates/teacher/list.html:243
+msgid "Add Your First Teacher"
+msgstr "أضف معلمك الأول"
+
+#: app/templates/teacher/planning.html:3
+msgid "Student Planning"
+msgstr "التخطيط الطلابي"
+
+#: app/templates/teacher/planning.html:4
+msgid "Manage plans and tasks for your students"
+msgstr "إدارة الخطط والمهام لطلابك"
+
+#: app/templates/teacher/planning.html:12
+msgid "Create New Plan"
+msgstr "إنشاء خطة جديدة"
+
+#: app/templates/teacher/planning.html:37
+msgid "With Active Plans"
+msgstr "مع الخطط النشطة"
+
+#: app/templates/teacher/planning.html:51
+msgid "Without Plans"
+msgstr "بدون خطط"
+
+#: app/templates/teacher/planning.html:65
+#: app/templates/teacher/student_progress.html:42
+msgid "Total Tasks"
+msgstr "إجمالي المهام"
+
+#: app/templates/teacher/planning.html:80
+msgid "Students Progress"
+msgstr "تقدم الطلاب"
+
+#: app/templates/teacher/planning.html:82
+msgid "View detailed progress"
+msgstr "عرض التقدم التفصيلي"
+
+#: app/templates/teacher/planning.html:115
+msgid "Completed tasks"
+msgstr "المهام المكتملة"
+
+#: app/templates/teacher/planning.html:116
+#, python-format
+msgid "%(count)s done"
+msgstr "%(count)s تم"
+
+#: app/templates/teacher/planning.html:118
+msgid "Total tasks"
+msgstr "إجمالي المهام"
+
+#: app/templates/teacher/planning.html:119
+#, python-format
+msgid "%(count)s total"
+msgstr "%(count)s الإجمالي"
+
+#: app/templates/teacher/planning.html:128
+msgid "View active plan"
+msgstr "عرض الخطة النشطة"
+
+#: app/templates/teacher/planning.html:134
+msgid "Create new plan"
+msgstr "إنشاء خطة جديدة"
+
+#: app/templates/teacher/planning.html:158
+#: app/templates/teacher/student_progress.html:225
+msgid "No students assigned"
+msgstr "لم يتم تعيين أي طلاب"
+
+#: app/templates/teacher/planning.html:159
+#: app/templates/teacher/student_progress.html:226
+msgid "You don't have any students assigned to you yet."
+msgstr "ليس لديك أي طلاب تم تعيينهم لك حتى الآن."
+
+#: app/templates/teacher/planning.html:175
+msgid "View and manage all plans"
+msgstr "عرض وإدارة كافة الخطط"
+
+#: app/templates/teacher/planning.html:188
+msgid "Create a new student plan"
+msgstr "إنشاء خطة طلابية جديدة"
+
+#: app/templates/teacher/planning.html:200
+msgid "Progress Report"
+msgstr "تقرير التقدم"
+
+#: app/templates/teacher/planning.html:201
+msgid "Detailed student progress"
+msgstr "التقدم التفصيلي للطالب"
+
+#: app/templates/teacher/student_detail.html:4
+msgid "Assigned student details"
+msgstr "تفاصيل الطالب المعينة"
+
+#: app/templates/teacher/student_detail.html:14
+msgid "Back to My Students"
+msgstr "العودة إلى طلابي"
+
+#: app/templates/teacher/student_detail.html:21
+msgid "No student ID"
+msgstr "لا يوجد هوية الطالب"
+
+#: app/templates/teacher/student_detail.html:55
+msgid "No notes."
+msgstr "لا توجد ملاحظات."
+
+#: app/templates/teacher/student_progress.html:4
+msgid "Track progress and performance of your students"
+msgstr "تتبع التقدم وأداء طلابك"
+
+#: app/templates/teacher/student_progress.html:12
+msgid "Back to Planning"
+msgstr "العودة إلى التخطيط"
+
+#: app/templates/teacher/student_progress.html:76
+msgid "No Active Plan"
+msgstr "لا توجد خطة نشطة"
+
+#: app/templates/teacher/student_progress.html:88
+msgid "Overall Progress"
+msgstr "التقدم الشامل"
+
+#: app/templates/teacher/student_progress.html:113
+msgid "Tasks Done"
+msgstr "تم إنجاز المهام"
+
+#: app/templates/teacher/student_progress.html:121
+msgid "Total"
+msgstr "المجموع"
+
+#: app/templates/teacher/student_progress.html:129
+msgid "Pending"
+msgstr "قيد الانتظار"
+
+#: app/templates/teacher/student_progress.html:196
+msgid "View Active Plan"
+msgstr "عرض الخطة النشطة"
+
+#: app/templates/teacher/student_progress.html:231
+msgid "Back to dashboard"
+msgstr "العودة إلى لوحة القيادة"
+
+#: app/templates/teacher/students.html:4
+msgid "Students assigned to you"
+msgstr "الطلاب المعينين لك"
+
+#: app/templates/teacher/students.html:11
+msgid "Only students assigned to your account are shown."
+msgstr "يتم عرض الطلاب المعينين لحسابك فقط."
+
+#: app/templates/teacher/students.html:15
+msgid "View Progress"
+msgstr "عرض التقدم"
+
+#: app/templates/teacher/students.html:66
+msgid "No students are currently assigned to you."
+msgstr "لم يتم تعيين أي طلاب لك حاليًا."

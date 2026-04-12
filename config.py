@@ -34,6 +34,11 @@ class Config:
     
     # Pagination
     ITEMS_PER_PAGE = 20
+
+    # Internationalization
+    BABEL_DEFAULT_LOCALE = 'en'
+    BABEL_DEFAULT_TIMEZONE = 'UTC'
+    LANGUAGES = ['en', 'ar']
     
     # File upload settings
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB max file upload
@@ -74,10 +79,17 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
-    """Production configuration with PostgreSQL database."""
-    
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'postgresql://localhost/tsms'
+    """Production configuration for Render and similar hosts."""
+
+    _database_url = (os.environ.get('DATABASE_URL') or '').strip()
+    if _database_url:
+        # Render Postgres may provide postgres://, while SQLAlchemy expects postgresql://
+        if _database_url.startswith('postgres://'):
+            _database_url = _database_url.replace('postgres://', 'postgresql://', 1)
+        SQLALCHEMY_DATABASE_URI = _database_url
+    else:
+        # Fast demo fallback when no managed DB is configured.
+        SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data-demo.sqlite')
     
     @staticmethod
     def init_app(app):
