@@ -100,10 +100,10 @@
                     </div>
                     <div class="flex items-center space-x-2">
                         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold 
-                            {% if student.status == 'active' %}bg-emerald-100 text-emerald-700
-                            {% elif student.status == 'inactive' %}bg-slate-100 text-slate-600
+                            {% if student.status.value == 'active' %}bg-emerald-100 text-emerald-700
+                            {% elif student.status.value == 'inactive' %}bg-slate-100 text-slate-600
                             {% else %}bg-amber-100 text-amber-700{% endif %}">
-                            {{ student.status|capitalize }}
+                            {{ student.status.value|capitalize }}
                         </span>
                         <form action="{{ url_for('teacher.unassign_student', id=teacher.id, student_id=student.id) }}" 
                               method="POST"

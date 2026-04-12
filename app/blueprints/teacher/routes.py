@@ -16,7 +16,7 @@ from flask_login import login_required, current_user
 from app.extensions import db
 from app.models import User, UserRole, UserStatus
 from app.models.teacher import Teacher
-from app.models.student import Student
+from app.models.student import Student, StudentStatus
 
 from . import teacher_bp
 from .forms import TeacherForm, CreateTeacherForm, TeacherSearchForm, AssignStudentForm
@@ -144,16 +144,12 @@ def detail(id):
             abort(403)
     
     # Get teacher's assigned students
-    assigned_students = teacher.assigned_students.filter_by(status='active').all()
-    
-    # Get teacher's active courses
-    active_courses = teacher.get_active_courses()
+    assigned_students = teacher.assigned_students.filter_by(status=StudentStatus.ACTIVE).all()
     
     return render_template(
         'teacher/detail.html',
         teacher=teacher,
-        assigned_students=assigned_students,
-        active_courses=active_courses
+        assigned_students=assigned_students
     )
 
 
@@ -215,11 +211,6 @@ def delete(id):
         flash(f'Cannot delete {name}. They have students assigned. Please reassign students first.', 'error')
         return redirect(url_for('teacher.detail', id=id))
     
-    # Check for active courses
-    if teacher.courses.count() > 0:
-        flash(f'Cannot delete {name}. They have courses assigned. Please reassign courses first.', 'error')
-        return redirect(url_for('teacher.detail', id=id))
-    
     # Delete teacher profile (user will be deleted via cascade)
     db.session.delete(user)
     db.session.commit()
@@ -255,6 +246,7 @@ def toggle_status(id):
 def assign_student(id):
     """Assign a student to a teacher."""
     teacher = Teacher.query.get_or_404(id)
+    assigned_students = teacher.assigned_students.order_by(Student.name).all()
     
     # Get unassigned students
     unassigned_students = Student.query.filter(
@@ -262,7 +254,7 @@ def assign_student(id):
             Student.assigned_teacher_id.is_(None),
             Student.assigned_teacher_id != id
         )
-    ).filter_by(status='active').order_by(Student.name).all()
+    ).filter(Student.status == StudentStatus.ACTIVE).order_by(Student.name).all()
     
     form = AssignStudentForm()
     form.student_id.choices = [(0, 'Select a student...')] + [
@@ -281,7 +273,8 @@ def assign_student(id):
         'teacher/assign_student.html',
         form=form,
         teacher=teacher,
-        unassigned_students=unassigned_students
+        unassigned_students=unassigned_students,
+        assigned_students=assigned_students
     )
 
 

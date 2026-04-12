@@ -22,8 +22,12 @@ def teacher_required(f):
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
             abort(401)
-        # Restrict to teacher users only for teacher workspace pages
-        if not current_user.is_teacher() or not current_user.teacher_profile:
+        # Allow admins/supervisors, or teacher users with a profile
+        if not (
+            current_user.is_admin()
+            or current_user.is_supervisor()
+            or (current_user.is_teacher() and current_user.teacher_profile)
+        ):
             abort(403)
         return f(*args, **kwargs)
     return decorated_function
@@ -38,6 +42,8 @@ def index():
     
     teacher = current_user.teacher_profile
     if not teacher:
+        if current_user.is_admin() or current_user.is_supervisor():
+            return redirect(url_for('teacher.teacher_list'))
         abort(403)
 
     student_count = teacher.get_student_count()

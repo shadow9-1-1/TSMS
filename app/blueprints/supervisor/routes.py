@@ -20,6 +20,21 @@ from . import supervisor_bp
 from .forms import AssignSupervisorForm, StudentFilterForm
 
 
+def managed_students_query():
+    """Return student query within supervisor management scope."""
+    if current_user.is_admin():
+        return Student.query
+
+    # Supervisors manage teachers and their students.
+    # Also include students directly assigned to this supervisor.
+    return Student.query.filter(
+        db.or_(
+            Student.assigned_teacher_id.isnot(None),
+            Student.supervisor_id == current_user.id
+        )
+    )
+
+
 def supervisor_required(f):
     """Decorator to require supervisor or admin role."""
     @wraps(f)
@@ -41,19 +56,9 @@ def supervisor_required(f):
 @supervisor_required
 def index():
     """Supervisor dashboard."""
-    # Get supervised students
-    if current_user.is_admin():
-        # Admins see all students with supervisors
-        supervised_students = Student.query.filter(
-            Student.supervisor_id.isnot(None)
-        ).order_by(Student.name).all()
-        total_students = Student.query.count()
-    else:
-        # Supervisors see only their assigned students
-        supervised_students = Student.query.filter_by(
-            supervisor_id=current_user.id
-        ).order_by(Student.name).all()
-        total_students = len(supervised_students)
+    # Get students in supervisor scope
+    supervised_students = managed_students_query().order_by(Student.name).all()
+    total_students = len(supervised_students)
     
     # Get active plans for supervised students
     student_ids = [s.id for s in supervised_students]
@@ -96,10 +101,7 @@ def student_list():
     status_filter = request.args.get('status', '').strip()
     
     # Build query
-    if current_user.is_admin():
-        query = Student.query
-    else:
-        query = Student.query.filter_by(supervisor_id=current_user.id)
+    query = managed_students_query()
     
     # Apply search
     if search:
@@ -141,8 +143,10 @@ def student_detail(id):
     """View detailed student profile with plans."""
     student = Student.query.get_or_404(id)
     
-    # Check access (admin can view all, supervisors only their students)
-    if not current_user.is_admin() and student.supervisor_id != current_user.id:
+    # Check access (admin can view all; supervisors can view teachers' students and directly supervised students)
+    if not current_user.is_admin() and not (
+        student.assigned_teacher_id is not None or student.supervisor_id == current_user.id
+    ):
         flash('You do not have permission to view this student.', 'error')
         abort(403)
     
@@ -233,10 +237,8 @@ def plan_list():
     if current_user.is_admin():
         query = Plan.query
     else:
-        # Get supervised student IDs
-        student_ids = [s.id for s in Student.query.filter_by(
-            supervisor_id=current_user.id
-        ).all()]
+        # Get managed student IDs (teachers' students + directly supervised)
+        student_ids = [s.id for s in managed_students_query().all()]
         query = Plan.query.filter(Plan.student_id.in_(student_ids)) if student_ids else Plan.query.filter(False)
     
     # Apply status filter
@@ -264,17 +266,20 @@ def plan_detail(id):
     
     # Check access
     if not current_user.is_admin():
+        managed_ids = {s.id for s in managed_students_query().all()}
         has_access = False
+
         # For single-student plans
-        if plan.student and plan.student.supervisor_id == current_user.id:
+        if plan.student and plan.student.id in managed_ids:
             has_access = True
+
         # For multi-student plans
-        elif plan.is_multi_student:
+        if not has_access and plan.is_multi_student:
             for sp in plan.student_plans:
-                if sp.student.supervisor_id == current_user.id:
+                if sp.student_id in managed_ids:
                     has_access = True
                     break
-        
+
         if not has_access:
             flash('You do not have permission to view this plan.', 'error')
             abort(403)

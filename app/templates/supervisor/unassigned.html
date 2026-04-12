@@ -48,7 +48,7 @@
                                 </div>
                                 <div>
                                     <p class="font-medium text-slate-900">{{ student.name }}</p>
-                                    <p class="text-sm text-slate-500">{{ student.user.email if student.user else 'No email' }}</p>
+                                    <p class="text-sm text-slate-500">{{ student.email or 'No email' }}</p>
                                 </div>
                             </div>
                         </td>

@@ -7,6 +7,7 @@ Teachers are linked to User accounts and can manage students.
 from datetime import datetime
 from app.extensions import db
 from app.models.user import UserRole
+from app.models.student import StudentStatus
 
 
 class Teacher(db.Model):
@@ -71,11 +72,11 @@ class Teacher(db.Model):
     
     def get_student_count(self):
         """Get total number of students assigned to this teacher."""
-        return self.assigned_students.filter_by(status='active').count()
+        return self.assigned_students.filter_by(status=StudentStatus.ACTIVE).count()
     
     def get_active_students(self):
         """Get all active students assigned to this teacher."""
-        return self.assigned_students.filter_by(status='active').all()
+        return self.assigned_students.filter_by(status=StudentStatus.ACTIVE).all()
     
     def to_dict(self):
         """Convert teacher to dictionary representation."""

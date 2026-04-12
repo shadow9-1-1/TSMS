@@ -169,16 +169,16 @@
             <!-- Assigned Students -->
             <div class="bg-white rounded-2xl shadow-soft border border-slate-200/60 overflow-hidden">
                 <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200 flex items-center justify-between">
-                    <h3 class="text-lg font-semibold text-slate-900">Assigned Students</h3>
+                    <h3 class="text-lg font-semibold text-slate-900">Assigned Students ({{ assigned_students|length }})</h3>
                     <a href="{{ url_for('teacher.assign_student', id=teacher.id) }}" 
                        class="text-sm text-primary-600 hover:text-primary-700 font-medium">
                         Manage Students
                     </a>
                 </div>
                 <div class="p-6">
-                    {% if students %}
+                    {% if assigned_students %}
                     <div class="space-y-3">
-                        {% for student in students %}
+                        {% for student in assigned_students %}
                         <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors">
                             <div class="flex items-center space-x-4">
                                 <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
