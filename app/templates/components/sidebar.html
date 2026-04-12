@@ -71,13 +71,13 @@
         <!-- Students -->
         <a href="{{ url_for('student.student_list') }}" 
            class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200
-                  {% if 'student' in request.endpoint %}
+                  {% if request.endpoint and request.endpoint.startswith('student.') %}
                   bg-gradient-to-r from-primary-600 to-primary-500 text-white shadow-lg shadow-primary-500/25
                   {% else %}
                   text-slate-300 hover:bg-slate-800/50 hover:text-white
                   {% endif %}">
             <div class="flex items-center justify-center w-9 h-9 rounded-lg 
-                        {% if 'student' in request.endpoint %}bg-white/20{% else %}bg-slate-800 group-hover:bg-slate-700{% endif %}">
+                        {% if request.endpoint and request.endpoint.startswith('student.') %}bg-white/20{% else %}bg-slate-800 group-hover:bg-slate-700{% endif %}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                 </svg>
@@ -189,18 +189,18 @@
         <!-- My Students (Supervisor) -->
         <a href="{{ url_for('supervisor.student_list') }}" 
            class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200
-                  {% if 'supervisor.student' in request.endpoint %}
+                  {% if request.endpoint and request.endpoint.startswith('supervisor.student') %}
                   bg-gradient-to-r from-primary-600 to-primary-500 text-white shadow-lg shadow-primary-500/25
                   {% else %}
                   text-slate-300 hover:bg-slate-800/50 hover:text-white
                   {% endif %}">
             <div class="flex items-center justify-center w-9 h-9 rounded-lg 
-                        {% if 'supervisor.student' in request.endpoint %}bg-white/20{% else %}bg-slate-800 group-hover:bg-slate-700{% endif %}">
+                        {% if request.endpoint and request.endpoint.startswith('supervisor.student') %}bg-white/20{% else %}bg-slate-800 group-hover:bg-slate-700{% endif %}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
             </div>
-            <span x-show="sidebarOpen" x-transition class="ml-3">My Students</span>
+            <span x-show="sidebarOpen" x-transition class="ml-3">Student Progress</span>
         </a>
         
         <!-- Planning -->
