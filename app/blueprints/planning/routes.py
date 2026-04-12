@@ -68,6 +68,16 @@ def planning_access_required(f):
     return decorated_function
 
 
+def _managed_student_ids_for_supervisor():
+    """Get student IDs in supervisor management scope."""
+    return [s.id for s in Student.query.filter(
+        db.or_(
+            Student.assigned_teacher_id.isnot(None),
+            Student.supervisor_id == current_user.id
+        )
+    ).all()]
+
+
 # =============================================================================
 # PLAN ROUTES
 # =============================================================================
@@ -86,9 +96,7 @@ def index():
     if current_user.is_admin():
         query = Plan.query
     elif current_user.is_supervisor():
-        student_ids = [s.id for s in Student.query.filter_by(
-            supervisor_id=current_user.id
-        ).all()]
+        student_ids = _managed_student_ids_for_supervisor()
         if student_ids:
             query = Plan.query.filter(
                 db.or_(

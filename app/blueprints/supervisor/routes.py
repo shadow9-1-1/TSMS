@@ -14,7 +14,7 @@ from functools import wraps
 
 from app.extensions import db
 from app.models import User, UserRole, UserStatus, Student, StudentStatus
-from app.models.planning import Plan, Task, PlanStatus, TaskStatus
+from app.models.planning import Plan, Task, StudentPlan, PlanStatus, TaskStatus
 
 from . import supervisor_bp
 from .forms import AssignSupervisorForm, StudentFilterForm
@@ -31,6 +31,23 @@ def managed_students_query():
         db.or_(
             Student.assigned_teacher_id.isnot(None),
             Student.supervisor_id == current_user.id
+        )
+    )
+
+
+def managed_plans_query():
+    """Return plan query within supervisor management scope."""
+    if current_user.is_admin():
+        return Plan.query
+
+    student_ids = [s.id for s in managed_students_query().all()]
+    if not student_ids:
+        return Plan.query.filter(False)
+
+    return Plan.query.filter(
+        db.or_(
+            Plan.student_id.in_(student_ids),
+            Plan.student_plans.any(StudentPlan.student_id.in_(student_ids))
         )
     )
 
@@ -62,24 +79,23 @@ def index():
     
     # Get active plans for supervised students
     student_ids = [s.id for s in supervised_students]
-    active_plans = Plan.query.filter(
-        Plan.student_id.in_(student_ids),
+    active_plans = managed_plans_query().filter(
         Plan.status == PlanStatus.ACTIVE
     ).all() if student_ids else []
     
     # Get overdue tasks
+    managed_plan_ids = [pid for (pid,) in managed_plans_query().with_entities(Plan.id).all()]
     overdue_tasks = Task.query.join(Plan).filter(
-        Plan.student_id.in_(student_ids),
+        Plan.id.in_(managed_plan_ids),
         Task.status == TaskStatus.OVERDUE
-    ).all() if student_ids else []
+    ).all() if managed_plan_ids else []
     
     # Statistics
     stats = {
         'total_students': total_students,
         'active_plans': len(active_plans),
         'overdue_tasks': len(overdue_tasks),
-        'pending_reviews': Plan.query.filter(
-            Plan.student_id.in_(student_ids),
+        'pending_reviews': managed_plans_query().filter(
             Plan.status == PlanStatus.DRAFT
         ).count() if student_ids else 0
     }
@@ -151,7 +167,7 @@ def student_detail(id):
         abort(403)
     
     # Get student's plans
-    plans = student.plans.order_by(Plan.created_at.desc()).all()
+    plans = student.get_all_plans()
     active_plan = student.get_active_plan()
     
     return render_template('supervisor/student_detail.html',
@@ -234,12 +250,7 @@ def plan_list():
     status_filter = request.args.get('status', '').strip()
     
     # Build query
-    if current_user.is_admin():
-        query = Plan.query
-    else:
-        # Get managed student IDs (teachers' students + directly supervised)
-        student_ids = [s.id for s in managed_students_query().all()]
-        query = Plan.query.filter(Plan.student_id.in_(student_ids)) if student_ids else Plan.query.filter(False)
+    query = managed_plans_query()
     
     # Apply status filter
     if status_filter:

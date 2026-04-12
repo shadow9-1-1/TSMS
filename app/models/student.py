@@ -159,12 +159,33 @@ class Student(db.Model):
     
     def get_active_plan(self):
         """Get the currently active plan for this student."""
-        from app.models.planning import PlanStatus
-        return self.plans.filter_by(status=PlanStatus.ACTIVE).first()
+        from app.models.planning import Plan, StudentPlan, PlanStatus
+
+        # Prefer multi-student assignment status when available.
+        student_plan = StudentPlan.query.join(Plan).filter(
+            StudentPlan.student_id == self.id,
+            StudentPlan.status == PlanStatus.ACTIVE
+        ).order_by(Plan.created_at.desc()).first()
+        if student_plan:
+            return student_plan.plan
+
+        # Fallback for legacy single-student plans.
+        return self.plans.filter_by(status=PlanStatus.ACTIVE).order_by(Plan.created_at.desc()).first()
     
     def get_all_plans(self):
         """Get all plans for this student."""
-        return self.plans.order_by(db.desc('created_at')).all()
+        from app.models.planning import StudentPlan
+
+        legacy_plans = self.plans.order_by(db.desc('created_at')).all()
+        multi_plans = [sp.plan for sp in StudentPlan.query.filter_by(student_id=self.id).all() if sp.plan]
+
+        # Merge and de-duplicate by plan id, newest first.
+        merged = {plan.id: plan for plan in legacy_plans + multi_plans}
+        return sorted(
+            merged.values(),
+            key=lambda p: p.created_at or datetime.min,
+            reverse=True
+        )
     
     def to_dict(self):
         """Convert student to dictionary representation."""
